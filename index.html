@@ -1048,6 +1048,7 @@ function formVoz(){
       document.querySelectorAll('[data-vc],[data-vt]').forEach(e=>e.oninput=()=>upd(+(e.dataset.vc??e.dataset.vt)));
     };
     $('#vTxt').oninput=pintar;
+    {let ult='';const t=$('#vTxt');const chk=()=>{if(!document.body.contains(t)){clearInterval(iv);return}if(t.value!==ult){ult=t.value;pintar()}};const iv=setInterval(chk,400);['change','keyup','compositionend','blur'].forEach(ev=>t.addEventListener(ev,chk))}
     const teclado=()=>{const t=$('#vTxt');t.focus();const n=t.value.length;try{t.setSelectionRange(n,n)}catch(e){}};
     if(!SR)$('#vMic').onclick=teclado;
     if(SR){let rec=null,base='';

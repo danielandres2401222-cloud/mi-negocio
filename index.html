@@ -796,6 +796,7 @@ function vAjustes(){
   <div class="card"><h2>Apariencia</h2><div class="seg" style="margin:0"><button data-tema="light" class="${esOscuro()?'':'on'}">☀ Claro</button><button data-tema="dark" class="${esOscuro()?'on':''}">☾ Nocturno</button></div>
     <h2 style="margin:16px 0 10px">Fondo animado</h2>
     <div class="fxgrid">${FONDOS.map(([k,e,n])=>`<button data-fx="${k}" class="${BG.modo()===k?'on':''}"><b>${e}</b>${n}</button>`).join('')}</div>
+    <h2 style="margin:16px 0 0">Fluidez de animaciones</h2><div class="seg" id="fpsSeg" style="margin-top:8px">${[['30','30 FPS · ahorra batería'],['60','60 FPS · más fluido']].map(([k,n])=>`<button data-fps="${k}" class="${(localStorage.getItem('fps')||'60')===k?'on':''}">${n}</button>`).join('')}</div>
     <h2 style="margin:16px 0 0">Cantidad</h2>
     <div class="seg" style="margin:8px 0 0">${[['suave','Suave'],['normal','Normal'],['mucho','Mucho']].map(([k,n])=>`<button data-fc="${k}" class="${BG.cantidad()===k?'on':''}">${n}</button>`).join('')}</div></div>
   <div class="card"><h2>Tu negocio</h2>
@@ -818,6 +819,7 @@ function vAjustes(){
   </div>`;
   document.querySelectorAll('[data-tema]').forEach(b=>b.onclick=()=>setTema(b.dataset.tema));
   document.querySelectorAll('[data-fx]').forEach(b=>b.onclick=()=>{BG.set(b.dataset.fx);document.querySelectorAll('[data-fx]').forEach(y=>y.classList.toggle('on',y===b))});
+  document.querySelectorAll('[data-fps]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('fps',b.dataset.fps)}catch(_){}document.querySelectorAll('[data-fps]').forEach(y=>y.classList.toggle('on',y===b))});
   document.querySelectorAll('[data-fc]').forEach(b=>b.onclick=()=>{BG.cant(b.dataset.fc);document.querySelectorAll('[data-fc]').forEach(y=>y.classList.toggle('on',y===b))});
   $('#aSave').onclick=async()=>{S.config.negocio=$('#aNeg').value.trim()||'Mi Negocio';S.config.stockMin=Math.max(0,num($('#aMin').value));await guardar();toast('Guardado')};
   $('#aExp').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});entregar(blob,'respaldo-'+slug(S.config.negocio)+'-'+hoy()+'.json')};
@@ -1235,17 +1237,17 @@ const BG=(()=>{
     for(let i=0;i<3;i++){x.beginPath();x.arc(0,0,s*(.28+i*.24),i*1.4,i*1.4+4.2);x.stroke()}x.fillStyle='#7cc49a';x.beginPath();x.ellipse(s*.9,s*.75,s*.42,s*.18,.6,0,6.28);x.fill();x.restore()}
   function burbuja(o,t){const s=o.s;x.save();x.translate(o.x+Math.sin(t*1.3+o.f)*6,o.y);x.globalAlpha=.8;const g=x.createRadialGradient(-s*.3,-s*.3,s*.1,0,0,s);g.addColorStop(0,'rgba(255,255,255,.95)');g.addColorStop(.55,'rgba(255,170,205,.25)');g.addColorStop(1,'rgba(240,107,155,.55)');x.fillStyle=g;x.beginPath();x.arc(0,0,s,0,6.28);x.fill();x.strokeStyle='rgba(255,108,159,.75)';x.lineWidth=1.6;x.stroke();x.restore()}
   const DIB={corazones:corazon,petalos:petalo,brillos:brillo,mariposas:mariposa,rosas:rosa,burbujas:burbuja};
-  function frame(now,mover){
+  function frame(now,mover,k=1){
     const t=now/1000;x.clearRect(0,0,W,H);
     for(let i=0;i<P.length;i++){const o=P[i];
-      if(mover){o.y+=o.vy;o.x+=o.vx+Math.sin(t*.9+o.f)*(o.t==='petalos'||o.t==='mariposas'?.6:.25);o.a+=o.va;
+      if(mover){o.y+=o.vy*k;o.x+=(o.vx+Math.sin(t*.9+o.f)*(o.t==='petalos'||o.t==='mariposas'?.6:.25))*k;o.a+=o.va*k;
         if(o.y>H+70||o.y<-70||o.x<-70||o.x>W+70){P[i]=nueva(o.t,false);continue}
-        if(o.t==='brillos'&&Math.random()<.002){P[i]=nueva('brillos',true)}}
+        if(o.t==='brillos'&&Math.random()<.002*k){P[i]=nueva('brillos',true)}}
       DIB[o.t](o,t)}
   }
   function size(){const d=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;x.setTransform(d,0,0,d,0,0);sembrar();frame(performance.now(),false)}
   const red=matchMedia('(prefers-reduced-motion: reduce)');
-  function loop(now){if(!run)return;if(!document.hidden&&modo()!=='none'&&now-last>33){last=now;frame(now,!red.matches)}requestAnimationFrame(loop)}
+  function loop(now){if(!run)return;if(!document.hidden&&modo()!=='none'&&now-last>((localStorage.getItem('fps')||'60')==='60'?12:33)){const k=Math.min(2,(now-last)/33.3);last=now;frame(now,!red.matches,k)}requestAnimationFrame(loop)}
   addEventListener('resize',size);size();run=true;requestAnimationFrame(loop);
   return{set(m){document.documentElement.dataset.fx=m;try{localStorage.setItem('fondo_neg',m)}catch(_){}sembrar();x.clearRect(0,0,W,H);if(m!=='none')frame(performance.now(),false)},
          cant(c){try{localStorage.setItem('fondo_cant',c)}catch(_){}sembrar()},modo,cantidad:()=>localStorage.getItem('fondo_cant')||'normal'};

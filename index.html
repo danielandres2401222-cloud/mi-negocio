@@ -79,7 +79,9 @@ nav.tabs button.on{color:var(--rosa)}
 .scrim.on{opacity:1;pointer-events:auto}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;background:var(--bg);border-radius:22px 22px 0 0;max-height:92vh;overflow:auto;transform:translateY(105%);transition:transform .25s ease;padding:8px 18px calc(18px + var(--bot));max-width:640px;margin:0 auto;-webkit-overflow-scrolling:touch}
 .sheet.on{transform:none}
-.sheet .grab{width:40px;height:5px;border-radius:9px;background:#f4bfd2;margin:2px auto 10px}
+.sheet .grab{width:40px;height:5px;border-radius:9px;background:#f4bfd2;margin:2px auto 10px;position:relative}
+.sheet .grab::before{content:"";position:absolute;left:-60px;right:-60px;top:-14px;bottom:-12px}
+.sheet.drag{transition:none}
 .sheet h2{margin:0 0 12px;font-size:21px}
 .f{margin:0 0 12px}
 .f label{display:block;font-size:13px;color:var(--muted);font-weight:650;margin:0 0 5px}
@@ -805,6 +807,20 @@ const slug=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-zA-
 function abrir(html,onReady){$('#sheetBody').innerHTML=html;$('#scrim').classList.add('on');$('#sheet').classList.add('on');$('#sheet').scrollTop=0;onReady&&onReady()}
 function cerrar(){$('#scrim').classList.remove('on');$('#sheet').classList.remove('on');document.activeElement&&document.activeElement.blur()}
 $('#scrim').onclick=cerrar;
+/* deslizar hacia abajo para cerrar la hoja */
+(function(){
+  const sh=$('#sheet'),grab=sh.querySelector('.grab');let y0=null,dy=0,t0=0,fromGrab=false;
+  grab.addEventListener('click',cerrar);
+  sh.addEventListener('touchstart',e=>{fromGrab=!!e.target.closest('.grab');if(!fromGrab&&sh.scrollTop>0){y0=null;return}y0=e.touches[0].clientY;dy=0;t0=Date.now()},{passive:true});
+  sh.addEventListener('touchmove',e=>{if(y0==null)return;dy=e.touches[0].clientY-y0;
+    if(dy<=0){if(sh.classList.contains('drag')){sh.style.transform='';sh.classList.remove('drag')}if(!fromGrab){y0=null}return}
+    if(!fromGrab&&sh.scrollTop>0){y0=null;return}
+    e.preventDefault();sh.classList.add('drag');sh.style.transform=`translateY(${dy}px)`;
+    $('#scrim').style.opacity=String(Math.max(0,1-dy/400))},{passive:false});
+  const fin=()=>{if(y0==null)return;const v=dy/Math.max(1,Date.now()-t0);sh.classList.remove('drag');$('#scrim').style.opacity='';
+    if(dy>110||(dy>40&&v>0.5)){sh.style.transform='';cerrar()}else sh.style.transform='';y0=null;dy=0};
+  sh.addEventListener('touchend',fin);sh.addEventListener('touchcancel',fin);
+})();
 function confirmar(t,msg,btn,fn){abrir(`<h2>${esc(t)}</h2><p class="muted">${esc(msg)}</p><button class="btn dan" id="cOk" style="margin-bottom:10px">${esc(btn)}</button><button class="btn sec" id="cNo">Cancelar</button>`,()=>{$('#cOk').onclick=async()=>{cerrar();await fn()};$('#cNo').onclick=cerrar})}
 const unidades=['unidades','metros','paquetes','rollos','pliegos','gramos','cajas'];
 

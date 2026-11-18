@@ -1038,23 +1038,59 @@ const VOZ=(()=>{
     const segs=t.split(/\s*(?:[,;]\s+|\.\s+|\s+y\s+(?=\d)|\s+(?:y\s+)?(?:luego|despues|ademas|tambien)\s+|\s+(?=(?:y\s+)?(?:compre|compramos|agregue|agregamos|traje|pague|gaste)\b))/);
     return segs.map((s,i)=>segmento(s,i===segs.length-1)).filter(Boolean)}
   // ---- comparación de nombres ----
-  const COL={rojo:'roj',colorado:'roj',rosado:'rosad',rosadito:'rosad',fucsia:'fucs',morado:'morad',lila:'lil',lavanda:'lil',violeta:'morad',celeste:'celest',calipso:'celest',azul:'azul',calypso:'celest',burdeo:'burde',burdeos:'burde',vino:'burde',dorado:'dorad',oro:'dorad',plateado:'plat',plata:'plat',blanco:'blanc',negro:'negr',amarillo:'amarill',naranjo:'naranj',naranja:'naranj',verde:'verd'};
-  const st=w=>{w=w.replace(/(?:it|ic)(o|a)s?$/,'$1').replace(/ces$/,'z').replace(/([^aeiou])es$/,'$1').replace(/s$/,'');const c=COL[w]||COL[w.replace(/a$/,'o')];if(c)return c;return w.length>=4?w.replace(/[oae]$/,''):w};
-  const NO=['de','del','la','el','los','las','con','y','para','jabon','color','tipo','en'];
-  const toks=s=>sa(s).split(/[^a-z0-9ñ]+/).filter(x=>x&&!NO.includes(x)).map(st);
+  const COLOR={rojo:'C:rojo',roja:'C:rojo',colorado:'C:rojo',colorada:'C:rojo',red:'C:rojo',carmesi:'C:rojo',escarlata:'C:rojo',
+    rosado:'C:rosa',rosada:'C:rosa',pink:'C:rosa',rosadito:'C:rosa',rosadita:'C:rosa',
+    fucsia:'C:fucsia',magenta:'C:fucsia',morado:'C:morado',morada:'C:morado',violeta:'C:morado',purpura:'C:morado',lila:'C:lila',lavanda:'C:lila',
+    celeste:'C:celeste',calipso:'C:celeste',calypso:'C:celeste',turquesa:'C:celeste',azul:'C:azul',blue:'C:azul',
+    burdeo:'C:burdeo',burdeos:'C:burdeo',vino:'C:burdeo',granate:'C:burdeo',dorado:'C:dorado',dorada:'C:dorado',oro:'C:dorado',gold:'C:dorado',
+    plateado:'C:plata',plateada:'C:plata',plata:'C:plata',silver:'C:plata',blanco:'C:blanco',blanca:'C:blanco',white:'C:blanco',
+    negro:'C:negro',negra:'C:negro',black:'C:negro',amarillo:'C:amarillo',amarilla:'C:amarillo',yellow:'C:amarillo',
+    naranjo:'C:naranjo',naranja:'C:naranjo',anaranjado:'C:naranjo',verde:'C:verde',green:'C:verde',cafe:'C:cafe',marron:'C:cafe',
+    beige:'C:beige',crema:'C:beige',nude:'C:beige',salmon:'C:salmon',coral:'C:salmon',durazno:'C:salmon',gris:'C:gris',transparente:'C:transp',
+    multicolor:'C:multi',arcoiris:'C:multi',tornasol:'C:multi'};
+  const NO=['de','del','la','el','los','las','con','y','para','jabon','color','tipo','en','x','unidad','unidades','c','u','und','un','una'];
   const lev=(a,b)=>{if(Math.abs(a.length-b.length)>1)return 9;const d=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let pv=d[0];d[0]=i;for(let j=1;j<=b.length;j++){const t=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,pv+(a[i-1]===b[j-1]?0:1));pv=t}}return d[b.length]};
-  const igual=(a,b)=>a===b||(a.length>=4&&b.length>=4&&lev(a,b)<=1);
+  const sing=w=>w.replace(/(?:it|ic)(o|a)s?$/,'$1').replace(/ces$/,'z').replace(/([^aeiou])es$/,'$1').replace(/s$/,'');
+  const st=w=>w.length>=4?w.replace(/[oae]$/,''):w;
+  // tokens: colores -> 'C:...', "rosa" después de otra palabra es color (rosa rosa = rosa rosada)
+  function toks(s){
+    const w=sa(s).split(/[^a-z0-9ñ]+/).filter(x=>x&&!NO.includes(x));const out=[];
+    w.forEach((x,i)=>{const sx=sing(x);
+      if(COLOR[x]||COLOR[sx]||COLOR[sx+'o']){out.push(COLOR[x]||COLOR[sx]||COLOR[sx+'o']);return}
+      if(sx.length>=5){const ck=Object.keys(COLOR).find(c=>c.length>=5&&lev(c,sx)<=1);if(ck){out.push(COLOR[ck]);return}}
+      if(sx==='rosa'&&i>0){out.push('C:rosa');return}
+      out.push(st(sx))});
+    return out}
+  const igual=(a,b)=>a===b||(!a.startsWith('C:')&&!b.startsWith('C:')&&a.length>=4&&b.length>=4&&lev(a,b)<=1);
   const clave=s=>toks(s).join(' ');
-  // devuelve {mat, dudas:[...]} — coincide solo si TODAS las palabras dichas están en el material
+  /* Decide qué material es:
+     - mat: seguro (todas las palabras dichas calzan y el color es el mismo)
+     - dudas: varios posibles, o calza la cosa pero el material no dice color → pregunta
+     - parecidos: misma cosa con otro color/detalle → se muestran primero en la lista  */
   function buscar(nombre,mats,alias){
-    const k0=clave(nombre);if(alias&&alias[k0]){const x=mats.find(m=>m.id===alias[k0]);if(x)return{mat:x,dudas:[],aprendido:true}}
-    const q=toks(nombre);if(!q.length)return{mat:null,dudas:[]};
-    const c=[];
-    for(const x of mats){const k=toks(x.nombre);if(!q.every(a=>k.some(b=>igual(a,b))))continue;c.push({x,sc:q.length/k.length+(clave(x.nombre)===k0?1:0)})}
-    c.sort((a,b)=>b.sc-a.sc);
-    if(!c.length)return{mat:null,dudas:[]};
-    if(c.length>1&&c[0].sc-c[1].sc<0.01)return{mat:null,dudas:c.filter(y=>c[0].sc-y.sc<0.01).map(y=>y.x)};
-    return{mat:c[0].x,dudas:[]}}
+    const k0=clave(nombre);if(alias&&alias[k0]){const x=mats.find(m=>m.id===alias[k0]);if(x)return{mat:x,dudas:[],parecidos:[],aprendido:true}}
+    const q=toks(nombre);if(!q.length)return{mat:null,dudas:[],parecidos:[]};
+    const qc=q.filter(t=>t.startsWith('C:')),qn=q.filter(t=>!t.startsWith('C:'));
+    const full=[],part=[],par=[];
+    for(const x of mats){const k=toks(x.nombre);const kc=k.filter(t=>t.startsWith('C:')),kn=k.filter(t=>!t.startsWith('C:'));
+      const nOk=qn.filter(a=>kn.some(b=>igual(a,b))).length;
+      const nounOk=qn.length?kn.some(b=>igual(qn[0],b)):false;
+      const colorChoca=qc.length&&kc.length&&!qc.some(c=>kc.includes(c));
+      const colorFalta=qc.length&&!kc.length;
+      const colorExtra=kc.length&&!qc.length;
+      if(nounOk||(!qn.length&&qc.every(c=>kc.includes(c)))){
+        if(colorChoca){par.push(x);continue}
+        const sc=(nOk/Math.max(1,qn.length))*2+(qc.length&&!colorFalta?1:0)-(kn.length-nOk)*0.15-(colorExtra?0.3:0)+(clave(x.nombre)===k0?3:0);
+        if(nOk===qn.length&&!colorFalta)full.push({x,sc});
+        else part.push({x,sc})}
+    }
+    full.sort((a,b)=>b.sc-a.sc);part.sort((a,b)=>b.sc-a.sc);
+    if(full.length){
+      const top=full.filter(y=>full[0].sc-y.sc<0.01);
+      if(top.length===1&&(!qc.length||true))return{mat:top[0].x,dudas:[],parecidos:[...full.slice(1),...part].map(y=>y.x).concat(par)};
+      return{mat:null,dudas:top.map(y=>y.x),parecidos:[...full.filter(y=>!top.includes(y)),...part].map(y=>y.x).concat(par)}}
+    if(part.length)return{mat:null,dudas:part.map(y=>y.x),parecidos:par,nuevoPosible:true};
+    return{mat:null,dudas:[],parecidos:par}}
   return{interpretar,buscar,clave}
 })();
 
@@ -1067,7 +1103,7 @@ function formVoz(){
   <p class="small muted" style="margin:-4px 0 10px">Di cada cosa con su <b>total</b>. Ej: <i>"Compré 20 metros de cinta amarilla a 3.000 y 10 rosas amarillas a 2.000"</i></p>
   <button class="btn pri" id="vMic" style="margin-bottom:10px">🎤 Tocar y hablar</button>
   ${SR?'':`<div class="hint" id="vTip" style="margin:-2px 0 10px;text-align:center">Se abre el teclado: toca su <b>🎤 abajo a la derecha</b> y habla.</div>`}
-  <div class="f" style="margin-bottom:8px"><textarea id="vTxt" rows="3" placeholder="Compré 100 palos a 10.000, 50 rosas a 5.000"></textarea></div>
+  <div class="f" style="margin-bottom:8px"><textarea id="vTxt" rows="2" placeholder="Compré 100 palos a 10.000, 50 rosas a 5.000"></textarea></div>
   <div id="vPrev"></div>
   <div class="f"><label>Fecha</label><input type="date" id="vF" value="${hoy()}"></div>
   <button class="btn pri" id="vOk" disabled>Agregar al stock</button>`,()=>{
@@ -1077,13 +1113,13 @@ function formVoz(){
       const it=VOZ.interpretar($('#vTxt').value);const cuenta={};
       filas=it.map(r=>{const b=sa_(r.nombre);cuenta[b]=(cuenta[b]||0)+1;const key=b+'#'+cuenta[b];const e=ed[key]||{};
         const bx=VOZ.buscar(r.nombre,S.materiales,S.config.vozAlias||{});const x=bx.mat;const nuevo=singNom(r.nombre);
-        return{key,dicho:r.nombre,cant:e.cant??r.cant,total:e.total??r.total,matId:e.matId??(x?x.id:(bx.dudas.length?'':'__n')),dudas:bx.dudas.map(d=>d.id),apr:!!bx.aprendido&&e.matId==null,nuevo:nuevo.charAt(0).toUpperCase()+nuevo.slice(1),unidad:r.unidad||(x?x.unidad:'')}});
+        return{key,dicho:r.nombre,cant:e.cant??r.cant,total:e.total??r.total,matId:e.matId??(x?x.id:(bx.dudas.length?'':'__n')),dudas:bx.dudas.map(d=>d.id),par:(bx.parecidos||[]).map(d=>d.id),apr:!!bx.aprendido&&e.matId==null,nuevo:nuevo.charAt(0).toUpperCase()+nuevo.slice(1),unidad:r.unidad||(x?x.unidad:'')}});
       const f2=JSON.stringify(filas);if(f2===firma)return;firma=f2;
       $('#vOk').disabled=!filas.length;$('#vOk').textContent=filas.length?`Agregar ${filas.length} ${filas.length===1?'compra':'compras'} al stock`:'Agregar al stock';
       if(!$('#vTxt').value.trim()){$('#vPrev').innerHTML='';return}
       if(!filas.length){$('#vPrev').innerHTML=`<div class="hint" style="margin:0 0 12px">Sigue hablando… di la cantidad y qué compraste, ej: "20 metros de cinta amarilla a 3.000".</div>`;return}
       $('#vPrev').innerHTML=filas.map((r,i)=>{const un=r.matId==='__n'?(r.unidad||'unidades'):((mat(r.matId)||{}).unidad||'unidades');
-        const ord=[...r.dudas.map(id=>mat(id)).filter(Boolean),...mats().filter(x=>!r.dudas.includes(x.id))];
+        const pri=[...r.dudas,...r.par.filter(id=>!r.dudas.includes(id))];const ord=[...pri.map(id=>mat(id)).filter(Boolean),...mats().filter(x=>!pri.includes(x.id))];
         return`<div class="vrow ${r.matId==='__n'?'nuevo':''} ${r.matId===''?'duda':''}">
         ${r.matId===''?`<div class="vq">Dijiste “${esc(r.dicho)}”: ¿cuál es?</div>`:r.apr?`<div class="vq ok">✓ Como la última vez</div>`:''}
         <select data-vm="${i}">${r.matId===''?'<option value="" selected disabled>Elige el material…</option>':''}${ord.map(x=>`<option value="${x.id}" ${x.id===r.matId?'selected':''}>${esc(x.nombre)}</option>`).join('')}<option value="__n" ${r.matId==='__n'?'selected':''}>🆕 ${esc(r.nuevo)} (material nuevo)</option></select>

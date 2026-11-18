@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<script>try{if(localStorage.getItem("tema_neg")==="dark"){document.documentElement.dataset.theme="dark";}var f=localStorage.getItem("fondo_neg");document.documentElement.dataset.fx=(["seda","aurora","liquido","petalos","burbujas","cielo","eclipse","cc-deep-space","cc-nebula","cc-cosmic","cc-midnight","imagen","none"].indexOf(f)>=0)?f:"seda";}catch(e){}</script>
+<script>try{if(localStorage.getItem("tema_neg")==="dark"){document.documentElement.dataset.theme="dark";}var f=localStorage.getItem("fondo_neg");document.documentElement.dataset.fx=(["seda","aurora","liquido","petalos","burbujas","imagen","none"].indexOf(f)>=0)?f:"seda";}catch(e){}</script>
 <style>
 :root{--hdr:rgba(255,246,249,.92);--navbg:rgba(255,255,255,.94);--field:#fff;
   --bg:#fff6f9; --card:#ffffff; --ink:#3d1f2c; --muted:#a8798c; --line:#fbe0ea;
@@ -838,15 +838,15 @@ function vAjustes(){
   <div class="card"><h2>Apariencia</h2><div class="seg" style="margin:0"><button data-tema="light" class="${esOscuro()?'':'on'}">☀ Claro</button><button data-tema="dark" class="${esOscuro()?'on':''}">☾ Nocturno</button></div>
     <h2 style="margin:16px 0 10px">Fondo animado</h2>
     ${(()=>{const m=BG.modo(),F=Object.fromEntries(FONDOS.map(f=>[f[0],f])),t=k=>{const[,e,n]=F[k];return`<button data-fx="${k}" class="${m===k?'on':''}"><i class="sw" style="background:${e}"></i>${n}</button>`};
-      const ESP=[['cielo','✨ Cielo sereno'],['eclipse','🌘 Eclipse'],['cc-deep-space','🌠 Espacio profundo'],['cc-nebula','💜 Nebulosa'],['cc-cosmic','☄️ Cósmico'],['cc-midnight','🌙 Medianoche']];
+      const ESP=[];
       const enEsp=ESP.some(e=>e[0]===m);
       return`<div class="fxsec">Degradados</div><div class="fxgrid">${t('seda')}${t('aurora')}${t('liquido')}</div>
       <div class="fxsec">Partículas</div><div class="fxgrid">${t('petalos')}${t('burbujas')}</div>
-      <div class="fxsec">Espacio</div><button class="espbtn ${enEsp?'on':''}" id="espBtn"><span id="espTxt">${enEsp?ESP.find(e=>e[0]===m)[1]:'Elige un fondo espacial'}</span><span class="car">▾</span></button>
-      <div class="esplist hide" id="espList">${ESP.map(([k,n])=>`<button data-esp="${k}" class="${m===k?'on':''}">${n}</button>`).join('')}</div>
+      ${ESP.length?`<div class="fxsec">Espacio</div><button class="espbtn ${enEsp?'on':''}" id="espBtn"><span id="espTxt">${enEsp?ESP.find(e=>e[0]===m)[1]:'Elige un fondo espacial'}</span><span class="car">▾</span></button>
+      <div class="esplist hide" id="espList">${ESP.map(([k,n])=>`<button data-esp="${k}" class="${m===k?'on':''}">${n}</button>`).join('')}</div>`:''}
       <div class="fxsec">Personal</div><div class="fxgrid">${t('imagen')}${t('none')}</div>
       <button class="btn sec" id="fondoPick" style="margin-top:10px">🖼️ ${m==='imagen'?'Cambiar mi imagen':'Usar una imagen de mi galería'}</button>
-      <p class="small muted" id="fxNote" style="margin:8px 0 0">Los degradados cambian de colores en modo nocturno; los fondos espaciales y tu imagen usan siempre colores oscuros. Tu imagen se guarda solo en este teléfono.${m==='via-lactea'?' Imagen de la Vía Láctea: ESO/S. Brunier (CC BY 4.0). Tierra: NASA.':m==='cielo-profundo'?' Cielo y Tierra: NASA.':''}</p>`})()}
+      <p class="small muted" id="fxNote" style="margin:8px 0 0">Los degradados cambian de colores en modo nocturno; tu imagen usa siempre colores oscuros. Tu imagen se guarda solo en este teléfono.${m==='via-lactea'?' Imagen de la Vía Láctea: ESO/S. Brunier (CC BY 4.0). Tierra: NASA.':m==='cielo-profundo'?' Cielo y Tierra: NASA.':''}</p>`})()}
     <h2 style="margin:16px 0 0">Fluidez de animaciones</h2><div class="seg" id="fpsSeg" style="margin-top:8px">${[['30','30 FPS · ahorra batería'],['60','60 FPS · más fluido']].map(([k,n])=>`<button data-fps="${k}" class="${(localStorage.getItem('fps')||'60')===k?'on':''}">${n}</button>`).join('')}</div>
     </div>
   <div class="card"><h2>Tu negocio</h2>
@@ -869,7 +869,7 @@ function vAjustes(){
   </div>`;
   document.querySelectorAll('[data-tema]').forEach(b=>b.onclick=()=>setTema(b.dataset.tema));
   $('#fondoPick').onclick=()=>$('#fondoIn').click();
-  $('#espBtn').onclick=()=>{const l=$('#espList');l.classList.toggle('hide');$('#espBtn').classList.toggle('open',!l.classList.contains('hide'))};
+  if($('#espBtn'))$('#espBtn').onclick=()=>{const l=$('#espList');l.classList.toggle('hide');$('#espBtn').classList.toggle('open',!l.classList.contains('hide'))};
   document.querySelectorAll('[data-esp]').forEach(b=>b.onclick=()=>aplicarFondo(b.dataset.esp));
   document.querySelectorAll('.fxgrid [data-fx]').forEach(b=>b.onclick=async()=>{if(b.dataset.fx==='imagen'&&!(await idbGetK('fondo_img'))){$('#fondoIn').click();return}aplicarFondo(b.dataset.fx);return;document.querySelectorAll('.fxgrid [data-fx]').forEach(y=>y.classList.toggle('on',y===b))});
   document.querySelectorAll('[data-fps]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('fps',b.dataset.fps)}catch(_){}document.querySelectorAll('[data-fps]').forEach(y=>y.classList.toggle('on',y===b))});
@@ -1445,11 +1445,11 @@ const EXT=(()=>{const el=$('#bgfx');let cur=null,curK='',cargando={};
   return{set};
 })();
 function aplicarFondo(k){
-  const ESPN={'cielo':'✨ Cielo sereno','eclipse':'🌘 Eclipse','cc-deep-space':'🌠 Espacio profundo','cc-nebula':'💜 Nebulosa','cc-cosmic':'☄️ Cósmico','cc-midnight':'🌙 Medianoche'};
+  const ESPN={};
   document.querySelectorAll('.fxgrid [data-fx]').forEach(x=>x.classList.toggle('on',x.dataset.fx===k));
   document.querySelectorAll('[data-esp]').forEach(x=>x.classList.toggle('on',x.dataset.esp===k));
   const eb=$('#espBtn');if(eb){eb.classList.toggle('on',!!ESPN[k]);eb.classList.remove('open');$('#espTxt').textContent=ESPN[k]||'Elige un fondo espacial';const l=$('#espList');if(l)l.classList.add('hide')}
-  const nt=$('#fxNote');if(nt)nt.textContent='Los degradados cambian de colores en modo nocturno; los fondos espaciales y tu imagen usan siempre colores oscuros. Tu imagen se guarda solo en este teléfono.'+(k==='via-lactea'?' Imagen de la Vía Láctea: ESO/S. Brunier (CC BY 4.0). Tierra: NASA.':k==='cielo-profundo'?' Cielo y Tierra: NASA.':'');
+  const nt=$('#fxNote');if(nt)nt.textContent='Los degradados cambian de colores en modo nocturno; tu imagen usa siempre colores oscuros. Tu imagen se guarda solo en este teléfono.'+(k==='via-lactea'?' Imagen de la Vía Láctea: ESO/S. Brunier (CC BY 4.0). Tierra: NASA.':k==='cielo-profundo'?' Cielo y Tierra: NASA.':'');
   const fp=$('#fondoPick');if(fp)fp.textContent='🖼️ '+(k==='imagen'?'Cambiar mi imagen':'Usar una imagen de mi galería');
   if(BG.modo()===k)return;
   const h=document.documentElement;h.classList.add('fxfade');
@@ -1457,7 +1457,7 @@ function aplicarFondo(k){
 }
 const BG=(()=>{
   const P=window.PaperShaders, el=$('#bgfx'); let m=null, noise=null;
-  const modo=()=>{const v=document.documentElement.dataset.fx;return['seda','aurora','liquido','petalos','burbujas','cielo','eclipse','cc-deep-space','cc-nebula','cc-cosmic','cc-midnight','imagen','none'].includes(v)?v:'seda'};
+  const modo=()=>{const v=document.documentElement.dataset.fx;return['seda','aurora','liquido','petalos','burbujas','imagen','none'].includes(v)?v:'seda'};
   const osc=()=>document.documentElement.dataset.theme==='dark';
   function cfg(k,d){
     const C=P.getShaderColorFromString,F=P.ShaderFitOptions,OS=P.defaultObjectSizing,PS=P.defaultPatternSizing;

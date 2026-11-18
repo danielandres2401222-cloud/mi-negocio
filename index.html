@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<script>try{if(localStorage.getItem("tema_neg")==="dark"){document.documentElement.dataset.theme="dark";}var f=localStorage.getItem("fondo_neg");document.documentElement.dataset.fx=(["seda","aurora","liquido","petalos","burbujas","galaxia","via-lactea","cielo-profundo","cielo","eclipse","cc-deep-space","cc-nebula","cc-cosmic","cc-midnight","imagen","none"].indexOf(f)>=0)?f:"seda";}catch(e){}</script>
+<script>try{if(localStorage.getItem("tema_neg")==="dark"){document.documentElement.dataset.theme="dark";}var f=localStorage.getItem("fondo_neg");document.documentElement.dataset.fx=(["seda","aurora","liquido","petalos","burbujas","cielo","eclipse","cc-deep-space","cc-nebula","cc-cosmic","cc-midnight","imagen","none"].indexOf(f)>=0)?f:"seda";}catch(e){}</script>
 <style>
 :root{--hdr:rgba(255,246,249,.92);--navbg:rgba(255,255,255,.94);--field:#fff;
   --bg:#fff6f9; --card:#ffffff; --ink:#3d1f2c; --muted:#a8798c; --line:#fbe0ea;
@@ -838,7 +838,7 @@ function vAjustes(){
   <div class="card"><h2>Apariencia</h2><div class="seg" style="margin:0"><button data-tema="light" class="${esOscuro()?'':'on'}">☀ Claro</button><button data-tema="dark" class="${esOscuro()?'on':''}">☾ Nocturno</button></div>
     <h2 style="margin:16px 0 10px">Fondo animado</h2>
     ${(()=>{const m=BG.modo(),F=Object.fromEntries(FONDOS.map(f=>[f[0],f])),t=k=>{const[,e,n]=F[k];return`<button data-fx="${k}" class="${m===k?'on':''}"><i class="sw" style="background:${e}"></i>${n}</button>`};
-      const ESP=[['galaxia','🌌 Galaxia (dibujada)'],['via-lactea','🌍 Vía Láctea real + Tierra'],['cielo-profundo','🔭 Cielo profundo + Tierra'],['cielo','✨ Cielo sereno'],['eclipse','🌘 Eclipse'],['cc-deep-space','🌠 Espacio profundo'],['cc-nebula','💜 Nebulosa'],['cc-cosmic','☄️ Cósmico'],['cc-midnight','🌙 Medianoche']];
+      const ESP=[['cielo','✨ Cielo sereno'],['eclipse','🌘 Eclipse'],['cc-deep-space','🌠 Espacio profundo'],['cc-nebula','💜 Nebulosa'],['cc-cosmic','☄️ Cósmico'],['cc-midnight','🌙 Medianoche']];
       const enEsp=ESP.some(e=>e[0]===m);
       return`<div class="fxsec">Degradados</div><div class="fxgrid">${t('seda')}${t('aurora')}${t('liquido')}</div>
       <div class="fxsec">Partículas</div><div class="fxgrid">${t('petalos')}${t('burbujas')}</div>
@@ -1445,7 +1445,7 @@ const EXT=(()=>{const el=$('#bgfx');let cur=null,curK='',cargando={};
   return{set};
 })();
 function aplicarFondo(k){
-  const ESPN={'galaxia':'🌌 Galaxia (dibujada)','via-lactea':'🌍 Vía Láctea real + Tierra','cielo-profundo':'🔭 Cielo profundo + Tierra','cielo':'✨ Cielo sereno','eclipse':'🌘 Eclipse','cc-deep-space':'🌠 Espacio profundo','cc-nebula':'💜 Nebulosa','cc-cosmic':'☄️ Cósmico','cc-midnight':'🌙 Medianoche'};
+  const ESPN={'cielo':'✨ Cielo sereno','eclipse':'🌘 Eclipse','cc-deep-space':'🌠 Espacio profundo','cc-nebula':'💜 Nebulosa','cc-cosmic':'☄️ Cósmico','cc-midnight':'🌙 Medianoche'};
   document.querySelectorAll('.fxgrid [data-fx]').forEach(x=>x.classList.toggle('on',x.dataset.fx===k));
   document.querySelectorAll('[data-esp]').forEach(x=>x.classList.toggle('on',x.dataset.esp===k));
   const eb=$('#espBtn');if(eb){eb.classList.toggle('on',!!ESPN[k]);eb.classList.remove('open');$('#espTxt').textContent=ESPN[k]||'Elige un fondo espacial';const l=$('#espList');if(l)l.classList.add('hide')}
@@ -1457,7 +1457,7 @@ function aplicarFondo(k){
 }
 const BG=(()=>{
   const P=window.PaperShaders, el=$('#bgfx'); let m=null, noise=null;
-  const modo=()=>{const v=document.documentElement.dataset.fx;return['seda','aurora','liquido','petalos','burbujas','galaxia','via-lactea','cielo-profundo','cielo','eclipse','cc-deep-space','cc-nebula','cc-cosmic','cc-midnight','imagen','none'].includes(v)?v:'seda'};
+  const modo=()=>{const v=document.documentElement.dataset.fx;return['seda','aurora','liquido','petalos','burbujas','cielo','eclipse','cc-deep-space','cc-nebula','cc-cosmic','cc-midnight','imagen','none'].includes(v)?v:'seda'};
   const osc=()=>document.documentElement.dataset.theme==='dark';
   function cfg(k,d){
     const C=P.getShaderColorFromString,F=P.ShaderFitOptions,OS=P.defaultObjectSizing,PS=P.defaultPatternSizing;

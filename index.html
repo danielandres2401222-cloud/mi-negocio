@@ -12,8 +12,9 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
+<script>try{if(localStorage.getItem("tema_neg")==="dark"){document.documentElement.dataset.theme="dark";}}catch(e){}</script>
 <style>
-:root{
+:root{--hdr:rgba(255,246,249,.92);--navbg:rgba(255,255,255,.94);--field:#fff;
   --bg:#fff6f9; --card:#ffffff; --ink:#3d1f2c; --muted:#a8798c; --line:#fbe0ea;
   --rosa:#e8578a; --rosa-2:#fde3ed; --rosa-ink:#b82e63; --rosa-3:#ffeef4;
   --azul:#c2185b; --azul-2:#fbd3e3;
@@ -25,11 +26,11 @@
 html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif}
 body{min-height:100vh;padding-bottom:calc(76px + var(--bot))}
 button,input,select,textarea{font:inherit;color:inherit}
-header.top{position:sticky;top:0;z-index:5;background:rgba(255,246,249,.92);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);padding:calc(10px + var(--top)) 18px 10px;border-bottom:1px solid transparent}
+header.top{position:sticky;top:0;z-index:5;background:var(--hdr);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);padding:calc(10px + var(--top)) 18px 10px;border-bottom:1px solid transparent}
 header.top .sub{font-size:13px;color:var(--muted);font-weight:500;letter-spacing:.02em}
 header.top h1{margin:0;color:var(--rosa-ink);font-size:28px;letter-spacing:-.02em;font-weight:750}
 main{padding:6px 16px 24px;max-width:640px;margin:0 auto}
-nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 4px calc(6px + var(--bot))}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;display:flex;background:var(--navbg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 4px calc(6px + var(--bot))}
 nav.tabs button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--muted);padding:4px 0;font-weight:600}
 nav.tabs button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 nav.tabs button.on{color:var(--rosa)}
@@ -45,7 +46,7 @@ nav.tabs button.on{color:var(--rosa)}
 .btnrow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
 .btn{border:0;border-radius:14px;padding:13px 14px;font-weight:650;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;min-height:48px}
 .btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.btn.in{background:#fff;color:var(--rosa-ink);box-shadow:inset 0 0 0 1.5px var(--rosa)}
+.btn.in{background:var(--card);color:var(--rosa-ink);box-shadow:inset 0 0 0 1.5px var(--rosa)}
 .btn.out{background:var(--rosa);color:#fff}
 .btn.pri{background:var(--rosa);color:#fff;width:100%}
 .btn.sec{background:var(--rosa-2);color:var(--rosa-ink);width:100%}
@@ -53,7 +54,7 @@ nav.tabs button.on{color:var(--rosa)}
 .btn.ghost{background:none;color:var(--rosa);padding:8px;min-height:auto}
 .seg{display:flex;background:var(--rosa-2);border-radius:12px;padding:3px;margin:10px 0}
 .seg button{flex:1;border:0;background:none;padding:8px 6px;border-radius:9px;font-weight:600;font-size:14px;color:var(--muted)}
-.seg button.on{background:#fff;color:var(--rosa-ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.seg button.on{background:var(--card);color:var(--rosa-ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 .list{background:var(--card);border-radius:var(--r);box-shadow:var(--sombra);overflow:hidden;margin:10px 0}
 .row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);cursor:pointer}
 .row:last-child{border-bottom:0}
@@ -64,12 +65,12 @@ nav.tabs button.on{color:var(--rosa)}
 .row .r .s{font-weight:500}
 .dot{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:none}
 .dot svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.dot.in{background:#fff;color:var(--rosa);box-shadow:inset 0 0 0 1.5px var(--rosa-2)} .dot.out{background:var(--rosa-2);color:var(--rosa-ink)}
+.dot.in{background:var(--card);color:var(--rosa);box-shadow:inset 0 0 0 1.5px var(--rosa-2)} .dot.out{background:var(--rosa-2);color:var(--rosa-ink)}
 .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:99px;background:var(--rosa-3);color:var(--muted);vertical-align:1px}
 .badge.low{background:var(--rojo-2);color:var(--rojo)}
 .badge.ropa{background:var(--azul-2);color:var(--azul)} .badge.ramos{background:var(--rosa-2);color:var(--rosa-ink)}
 .empty{text-align:center;color:var(--muted);padding:26px 16px;font-size:14px}
-.search{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;margin:4px 0 0}
+.search{width:100%;border:1px solid var(--line);background:var(--field);border-radius:12px;padding:10px 12px;margin:4px 0 0}
 .sectitle{display:flex;justify-content:space-between;align-items:baseline;margin:18px 2px 4px}
 .sectitle h3{margin:0;font-size:17px}
 .muted{color:var(--muted)} .small{font-size:13px}
@@ -82,16 +83,16 @@ nav.tabs button.on{color:var(--rosa)}
 .sheet h2{margin:0 0 12px;font-size:21px}
 .f{margin:0 0 12px}
 .f label{display:block;font-size:13px;color:var(--muted);font-weight:650;margin:0 0 5px}
-.f input,.f select,.f textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px;font-size:16px;-webkit-appearance:none;appearance:none}
+.f input,.f select,.f textarea{width:100%;border:1px solid var(--line);background:var(--field);border-radius:12px;padding:12px;font-size:16px;-webkit-appearance:none;appearance:none}
 .f select{background-image:linear-gradient(45deg,transparent 50%,#8a7b80 50%),linear-gradient(135deg,#8a7b80 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
 .f input:focus,.f select:focus,.f textarea:focus{outline:2px solid var(--rosa-2);border-color:var(--rosa)}
 .f .hint{font-size:12px;color:var(--muted);margin-top:4px}
 .f2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.box{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;margin:0 0 12px}
-.total{display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:14px;padding:12px 14px;margin:4px 0 14px;font-weight:650}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:0 0 12px}
+.total{display:flex;justify-content:space-between;align-items:center;background:var(--card);border-radius:14px;padding:12px 14px;margin:4px 0 14px;font-weight:650}
 .total b{font-size:20px;font-variant-numeric:tabular-nums}
 .uline{display:grid;grid-template-columns:1fr 92px 34px;gap:8px;align-items:center;margin-bottom:8px}
-.uline select,.uline input{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px;font-size:16px;width:100%;-webkit-appearance:none}
+.uline select,.uline input{border:1px solid var(--line);background:var(--field);border-radius:10px;padding:10px;font-size:16px;width:100%;-webkit-appearance:none}
 .x{border:0;background:var(--rosa-3);border-radius:10px;height:40px;color:var(--muted);font-size:18px}
 .warn{background:var(--rojo-2);color:var(--rojo);border-radius:12px;padding:10px 12px;font-size:14px;margin:0 0 12px}
 .toast{position:fixed;left:50%;bottom:calc(90px + var(--bot));transform:translateX(-50%) translateY(20px);background:var(--rosa-ink);color:#fff;padding:10px 16px;border-radius:99px;font-size:14px;font-weight:600;opacity:0;transition:.25s;z-index:30;pointer-events:none;white-space:nowrap}
@@ -103,19 +104,44 @@ nav.tabs button.on{color:var(--rosa)}
 .bar{height:8px;border-radius:9px;background:var(--rosa-3);overflow:hidden;margin-top:8px;display:flex}
 .bar i{display:block;height:100%}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
-.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--muted)}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 12px;font-size:14px;font-weight:600;color:var(--muted)}
 .chip.on{background:var(--rosa);color:#fff;border-color:var(--rosa)}
 .install{background:var(--rosa-2);color:var(--rosa-ink);border-radius:14px;padding:12px 14px;font-size:14px;margin:12px 0}
+
+html[data-theme=dark]{--bg:#170d12;--card:#24141b;--field:#2c1821;--ink:#fbe4ee;--muted:#c792a8;--line:#3b2230;--rosa:#ff6c9f;--rosa-2:#47202f;--rosa-ink:#ff93b8;--rosa-3:#2e1720;--azul:#ff86b4;--azul-2:#4b1d31;--verde:#5ccf96;--verde-2:#183326;--rojo:#ff7b72;--rojo-2:#3d1d1b;--sombra:0 1px 2px rgba(0,0,0,.45),0 4px 16px rgba(0,0,0,.25);--hdr:rgba(23,13,18,.9);--navbg:rgba(30,17,23,.94);color-scheme:dark}
+html[data-theme=dark] .sheet .grab{background:#5a2c3e}
+html[data-theme=dark] .scrim{background:rgba(0,0,0,.55)}
+header.top .thb{position:absolute;right:16px;top:calc(12px + var(--top));border:0;background:var(--rosa-2);color:var(--rosa-ink);width:38px;height:38px;border-radius:12px;font-size:17px;display:flex;align-items:center;justify-content:center}
+nav.tabs button{font-size:10.5px}
+.badge.hoy{background:var(--rosa);color:#fff}
+.badge.ok{background:var(--verde-2);color:var(--verde)}
+.peak{display:flex;align-items:center;gap:14px}
+.peak .num{min-width:64px;text-align:center;background:var(--rosa-2);color:var(--rosa-ink);border-radius:14px;padding:8px 6px;font-weight:800;font-size:24px;line-height:1}
+.peak .num small{display:block;font-size:11px;font-weight:650;margin-top:3px}
+.wa{background:#25d366;color:#fff;width:100%}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:6px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+/* transiciones */
+@keyframes vin{from{opacity:0;transform:translateX(var(--dx,0px)) translateY(6px)}to{opacity:1;transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes grow{from{transform:scaleY(0)}to{transform:none}}
+#view.enter{animation:vin .3s cubic-bezier(.2,.8,.2,1)}
+#view.enter>*{animation:rise .42s cubic-bezier(.2,.8,.2,1) both}
+#view.enter>:nth-child(2){animation-delay:.04s}#view.enter>:nth-child(3){animation-delay:.08s}#view.enter>:nth-child(4){animation-delay:.12s}#view.enter>:nth-child(5){animation-delay:.16s}#view.enter>:nth-child(n+6){animation-delay:.2s}
+.gbar{transform-box:fill-box;transform-origin:bottom;animation:grow .8s cubic-bezier(.2,.8,.2,1) both}
+.bar i{transition:width 1s cubic-bezier(.2,.8,.2,1)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<header class="top"><div class="sub" id="hsub"></div><h1 id="htitle">Inicio</h1></header>
+<header class="top"><div class="sub" id="hsub"></div><h1 id="htitle">Inicio</h1><button class="thb" id="thBtn" aria-label="Claro / Nocturno"></button></header>
 <main id="view"></main>
 
 <nav class="tabs" id="tabs">
   <button data-v="inicio"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Inicio</button>
   <button data-v="ropa"><svg viewBox="0 0 24 24"><path d="M8 3l-5 3 2 5 2-1v11h10V10l2 1 2-5-5-3c0 2-2 3-4 3S8 5 8 3z"/></svg>Ropa</button>
   <button data-v="ramos"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 4c1 1.5 1 2.5 0 4M9 7c1.5.3 2.3 1 3 1M12 12v9M12 16c-2-1-4-1-5 0 1 1.5 3 1.5 5 0zM12 18c2-1 4-1 5 0-1 1.5-3 1.5-5 0z"/></svg>Ramos</button>
+  <button data-v="pedidos"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h4"/></svg>Pedidos</button>
   <button data-v="informes"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Informes</button>
   <button data-v="ajustes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></svg>Ajustes</button>
 </nav>
@@ -539,7 +565,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var r,n,i,a,
 /* ================= Datos (IndexedDB, solo en este teléfono) ================= */
 const DB_NAME='miNegocioDB', STORE='kv', KEY='estado';
 let S=null; // estado
-function vacio(){return{version:1,config:{negocio:'Mi Negocio',stockMin:3},productos:[],materiales:[],movs:[]}}
+function vacio(){return{version:1,config:{negocio:'Mi Negocio',stockMin:3},productos:[],materiales:[],movs:[],pedidos:[]}}
 function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
 async function cargar(){
   try{const db=await idb();S=await new Promise((res,rej)=>{const t=db.transaction(STORE).objectStore(STORE).get(KEY);t.onsuccess=()=>res(t.result||null);t.onerror=()=>rej(t.error)})}
@@ -596,11 +622,28 @@ function rangoMes(off=0){const d=new Date();const a=new Date(d.getFullYear(),d.g
 
 /* ================= Navegación ================= */
 let vista='inicio'; const ui={ropaTab:'stock',ramosTab:'stock',q:'',inf:{per:'mes',sec:'todo',desde:'',hasta:''}};
-document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{vista=b.dataset.v;render();window.scrollTo(0,0)});
+const TABS=['inicio','ropa','ramos','pedidos','informes','ajustes'];
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{const d=TABS.indexOf(b.dataset.v)-TABS.indexOf(vista);if(!d)return;$('#view').style.setProperty('--dx',(d>0?18:-18)+'px');vista=b.dataset.v;render();window.scrollTo(0,0)});
 function setHead(t,s){$('#htitle').textContent=t;$('#hsub').textContent=s||''}
-function render(){
+function render(anim){
+  syncTema();
   document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v===vista));
-  ({inicio:vInicio,ropa:vRopa,ramos:vRamos,informes:vInformes,ajustes:vAjustes})[vista]();
+  ({inicio:vInicio,ropa:vRopa,ramos:vRamos,pedidos:vPedidos,informes:vInformes,ajustes:vAjustes})[vista]();
+  const v=$('#view');
+  if(anim!==false){v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter');setTimeout(()=>v.style.setProperty('--dx','0px'),400)}
+  animarNumeros();
+}
+/* ---- Tema claro / nocturno ---- */
+const esOscuro=()=>document.documentElement.dataset.theme==='dark';
+function setTema(t){document.documentElement.dataset.theme=t;try{localStorage.setItem('tema_neg',t)}catch(_){}render(false)}
+function syncTema(){const b=$('#thBtn');b.textContent=esOscuro()?'☀':'☾';b.onclick=()=>setTema(esOscuro()?'light':'dark');const m=document.querySelector('meta[name=theme-color]');if(m)m.content=esOscuro()?'#170d12':'#fff6f9'}
+/* ---- Números animados ---- */
+const cnt$=v=>`<span data-m="${Math.round(v||0)}">${$$(0)}</span>`;
+function animarNumeros(){
+  const red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('[data-m]').forEach(el=>{const to=+el.dataset.m;if(red||!to){el.textContent=$$(to);return}
+    const t0=performance.now(),T=900;(function st(now){const k=Math.min(1,(now-t0)/T),e=1-Math.pow(1-k,3);el.textContent=$$(to*e);if(k<1&&el.isConnected)requestAnimationFrame(st)})(t0)});
+  requestAnimationFrame(()=>requestAnimationFrame(()=>document.querySelectorAll('.bar i[data-w]').forEach(i=>i.style.width=i.dataset.w+'%')));
 }
 
 /* ================= Vistas ================= */
@@ -621,19 +664,21 @@ function vInicio(){
   $('#view').innerHTML=`
   ${!standalone&&/iPhone|iPad/.test(navigator.userAgent)?`<div class="install"><b>Instálala en tu iPhone:</b> toca <b>Compartir</b> y luego <b>"Agregar a pantalla de inicio"</b>.</div>`:''}
   <div class="grid2" style="margin-top:8px">
-    <div class="kpi big"><div class="l">Ganancia del mes (ventas − costo de lo vendido)</div><div class="v ${r.ganancia>=0?'pos':'neg'}">${$$(r.ganancia)}</div></div>
-    <div class="kpi"><div class="l">Vendido</div><div class="v">${$$(r.ventas)}</div></div>
-    <div class="kpi"><div class="l">Compras</div><div class="v">${$$(r.compras)}</div></div>
+    <div class="kpi big"><div class="l">Ganancia del mes (ventas − costo de lo vendido)</div><div class="v ${r.ganancia>=0?'pos':'neg'}">${cnt$(r.ganancia)}</div></div>
+    <div class="kpi"><div class="l">Vendido</div><div class="v">${cnt$(r.ventas)}</div></div>
+    <div class="kpi"><div class="l">Compras</div><div class="v">${cnt$(r.compras)}</div></div>
   </div>
   <div class="card"><h2>Ventas por sección</h2>
     <div class="kv"><span><span class="badge ropa">Ropa</span></span><span>${$$(rr.ventas)}</span></div>
     <div class="kv"><span><span class="badge ramos">Ramos</span></span><span>${$$(rm.ventas)}</span></div>
-    <div class="bar"><i style="width:${rr.ventas/tot*100}%;background:var(--azul)"></i><i style="width:${rm.ventas/tot*100}%;background:var(--rosa)"></i></div>
+    <div class="bar"><i data-w="${rr.ventas/tot*100}" style="width:0;background:var(--azul)"></i><i data-w="${rm.ventas/tot*100}" style="width:0;background:var(--rosa)"></i></div>
   </div>
+  ${cardEntregas()}
+  ${cardPeak()}
   ${bajos.length?`<div class="card"><h2>Queda poco stock</h2>${bajos.slice(0,6).map(x=>`<div class="kv"><span>${esc(x.n)}</span><span class="${x.s<=0?'neg':''}">${nf(x.s)} ${esc(x.u)}</span></div>`).join('')}</div>`:''}
   <div class="sectitle"><h3>Últimos movimientos</h3></div>
   ${ult.length?`<div class="list">${ult.map(m=>filaMov(m,true)).join('')}</div>`:`<div class="card empty">Todavía no hay movimientos.<br>Parte en <b>Ropa</b> o <b>Ramos</b> registrando un ingreso.</div>`}`;
-  bindMovs();
+  bindMovs();bindInicioExtra();
 }
 
 function vRopa(){
@@ -710,6 +755,7 @@ function vInformes(){
     <div class="kv"><span>N° de ventas</span><span>${r.n}</span></div>
     <p class="small muted" style="margin:10px 0 0">El <b>balance de caja</b> compara lo que entró con lo que salió en el período. La <b>ganancia de las ventas</b> resta a cada venta lo que costó ese producto o los materiales de ese ramo.</p>
   </div>
+  ${graficos(i.sec,r,a,b)}
   <div class="btnrow"><button class="btn pri" id="bPdf">${ICON.dl} PDF</button><button class="btn sec" id="bCsv">${ICON.dl} Excel</button></div>
   <div class="sectitle"><h3>Movimientos del período</h3><span class="small muted">${r.movs.length}</span></div>
   ${r.movs.length?`<div class="list">${r.movs.slice(0,100).map(m=>filaMov(m,i.sec==='todo')).join('')}</div>`:`<div class="card empty">No hay movimientos en este período.</div>`}`;
@@ -723,6 +769,7 @@ function vInformes(){
 function vAjustes(){
   setHead('Ajustes','');
   $('#view').innerHTML=`
+  <div class="card"><h2>Apariencia</h2><div class="seg" style="margin:0"><button data-tema="light" class="${esOscuro()?'':'on'}">☀ Claro</button><button data-tema="dark" class="${esOscuro()?'on':''}">☾ Nocturno</button></div></div>
   <div class="card"><h2>Tu negocio</h2>
     <div class="f"><label>Nombre (sale en los informes)</label><input id="aNeg" value="${esc(S.config.negocio)}"></div>
     <div class="f"><label>Avisar cuando el stock sea igual o menor a</label><input id="aMin" inputmode="numeric" value="${S.config.stockMin}"></div>
@@ -737,12 +784,14 @@ function vAjustes(){
     <div class="kv"><span>Productos de ropa</span><span>${S.productos.length}</span></div>
     <div class="kv"><span>Materiales</span><span>${S.materiales.length}</span></div>
     <div class="kv"><span>Movimientos</span><span>${S.movs.length}</span></div>
+    <div class="kv"><span>Pedidos</span><span>${S.pedidos.length}</span></div>
     <button class="btn dan" id="aDel" style="margin-top:12px">Borrar todos los datos</button>
   </div>`;
+  document.querySelectorAll('[data-tema]').forEach(b=>b.onclick=()=>setTema(b.dataset.tema));
   $('#aSave').onclick=async()=>{S.config.negocio=$('#aNeg').value.trim()||'Mi Negocio';S.config.stockMin=Math.max(0,num($('#aMin').value));await guardar();toast('Guardado')};
   $('#aExp').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});entregar(blob,'respaldo-'+slug(S.config.negocio)+'-'+hoy()+'.json')};
   $('#aImp').onclick=()=>$('#fileIn').click();
-  $('#aDel').onclick=()=>confirmar('¿Borrar todo?','Se eliminarán todos los productos, materiales y movimientos de este teléfono. Esto no se puede deshacer.','Borrar todo',async()=>{S=vacio();await guardar();render();toast('Datos borrados')});
+  $('#aDel').onclick=()=>confirmar('¿Borrar todo?','Se eliminarán todos los productos, materiales, movimientos y pedidos de este teléfono. Esto no se puede deshacer.','Borrar todo',async()=>{S=vacio();await guardar();render();toast('Datos borrados')});
 }
 $('#fileIn').onchange=async e=>{
   const f=e.target.files[0];e.target.value='';if(!f)return;
@@ -760,7 +809,7 @@ function confirmar(t,msg,btn,fn){abrir(`<h2>${esc(t)}</h2><p class="muted">${esc
 const unidades=['unidades','metros','paquetes','rollos','pliegos','gramos','cajas'];
 
 /* ---- Ropa ---- */
-function formRopa(tipo,preId){
+function formRopa(tipo,preId,pre){
   const ing=tipo==='ingreso';
   const ps=[...S.productos].sort((a,b)=>a.nombre.localeCompare(b.nombre));
   if(!ing&&!ps.length){toast('Primero registra un ingreso de ropa');return}
@@ -785,6 +834,7 @@ function formRopa(tipo,preId){
       if(!ing){const s=stockProd(sel.value);$('#fw').innerHTML=num($('#fc').value)>s?`<div class="warn">Solo quedan ${nf(s)} en stock. Puedes guardarla igual, pero el stock quedará negativo.</div>`:''}
     };
     sel.onchange=()=>{$('#fu').dataset.touched='';sync()};$('#fc').oninput=sync;$('#fu').oninput=()=>{$('#fu').dataset.touched='1';sync()};sync();
+    if(pre){if(pre.unit){$('#fu').value=pre.unit;$('#fu').dataset.touched='1'}if(pre.nota)$('#fno').value=pre.nota;sync()}
     $('#fok').onclick=async()=>{
       let pid=sel.value;const cant=num($('#fc').value),unit=num($('#fu').value);
       if(pid==='__n'){const n=$('#fn').value.trim();if(!n)return toast('Escribe el nombre del producto');const p={id:uid(),nombre:n,detalle:$('#fd').value.trim(),precio:num($('#fpv').value)};S.productos.push(p);pid=p.id}
@@ -854,7 +904,7 @@ function formMaterial(id){
     const d=$('#xdel');if(d)d.onclick=()=>{if(usado)return toast('Tiene movimientos: elimínalos primero');confirmar('¿Eliminar material?',x.nombre,'Eliminar',async()=>{S.materiales=S.materiales.filter(y=>y.id!==id);await guardar();render()})};
   });
 }
-function formRamo(){
+function formRamo(pre){
   const ms=[...S.materiales].sort((a,b)=>a.nombre.localeCompare(b.nombre));
   const previos=[...new Set(S.movs.filter(m=>m.sec==='ramos'&&m.tipo==='salida').map(m=>m.desc).filter(Boolean))];
   abrir(`<h2>Venta de ramo</h2>
@@ -884,6 +934,7 @@ function formRamo(){
     if(ms.length)linea(ms[0].id,'');
     $('#rd').onchange=()=>{const prev=[...S.movs].reverse().find(m=>m.sec==='ramos'&&m.tipo==='salida'&&m.desc===$('#rd').value.trim());if(prev){$('#rl').innerHTML='';(prev.usados||[]).forEach(u=>{if(mat(u.matId))linea(u.matId,u.cantRamo??u.cant/(prev.cant||1))});if(!$('#rp').value)$('#rp').value=prev.unit||'';sync()}};
     $('#rc').oninput=sync;$('#rp').oninput=sync;sync();
+    if(pre){$('#rd').value=pre.desc||'';$('#rd').onchange();if(pre.unit)$('#rp').value=pre.unit;if(pre.nota)$('#rno').value=pre.nota;sync()}
     $('#rok').onclick=async()=>{
       const desc=$('#rd').value.trim()||'Ramo';const n=num($('#rc').value),unit=num($('#rp').value);
       if(n<=0)return toast('La cantidad debe ser mayor a 0');
@@ -915,6 +966,129 @@ function detalleMov(id){
     $('#mcl').onclick=cerrar;
     $('#mdel').onclick=()=>confirmar('¿Eliminar movimiento?','El stock y los informes se recalculan automáticamente.','Eliminar',async()=>{S.movs=S.movs.filter(x=>x.id!==id);await guardar();render();toast('Eliminado')});
   });
+}
+
+
+/* ================= Pedidos y encargos ================= */
+const ESTADO={pendiente:'Pendiente',listo:'Listo',entregado:'Entregado'};
+const ICO_PED='<svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h4"/></svg>';
+function diasA(f){return Math.round((new Date(f+'T00:00')-new Date(hoy()+'T00:00'))/864e5)}
+function cuando(f){const d=diasA(f);if(d<0)return{t:'Atrasado '+(-d)+' d',c:'low'};if(d===0)return{t:'Hoy',c:'hoy'};if(d===1)return{t:'Mañana',c:'hoy'};if(d<7)return{t:'En '+d+' días',c:''};return{t:fFecha(f),c:''}}
+const falta=p=>Math.max(0,(p.total||0)-(p.abono||0));
+function filaPed(p){const c=cuando(p.entrega),f=falta(p);
+  return `<div class="row" data-ped="${p.id}"><div class="dot ${p.estado==='entregado'?'in':'out'}">${ICO_PED}</div><div class="main"><div class="t">${esc(p.cliente)}</div><div class="s"><span class="badge ${p.sec}">${p.sec==='ropa'?'Ropa':'Ramos'}</span> ${esc(p.detalle||'')}</div></div><div class="r">${p.estado==='entregado'?`<span class="badge ok">Entregado</span>`:`<span class="badge ${c.c}">${p.estado==='listo'?'Listo · ':''}${c.t}</span>`}<div class="s">${f>0&&p.estado!=='entregado'?'Falta '+$$(f):$$(p.total)}</div></div></div>`}
+function vPedidos(){
+  setHead('Pedidos','Encargos y entregas');
+  const t=ui.pedTab||'pend';
+  const act=S.pedidos.filter(p=>p.estado!=='entregado'), ent=S.pedidos.filter(p=>p.estado==='entregado');
+  const list=(t==='pend'?act.sort((a,b)=>a.entrega.localeCompare(b.entrega)):ent.sort((a,b)=>b.entrega.localeCompare(a.entrega)));
+  const porCobrar=act.reduce((s,p)=>s+falta(p),0), semana=act.filter(p=>diasA(p.entrega)<=7).length;
+  $('#view').innerHTML=`
+  <div class="grid2" style="margin-top:8px">
+    <div class="kpi"><div class="l">Por cobrar</div><div class="v">${cnt$(porCobrar)}</div></div>
+    <div class="kpi"><div class="l">Entregas en 7 días</div><div class="v">${semana}</div></div>
+  </div>
+  <div style="margin:12px 0"><button class="btn pri" id="pNew">${ICON.plus} Nuevo pedido</button></div>
+  <div class="seg"><button data-pt="pend" class="${t==='pend'?'on':''}">Pendientes (${act.length})</button><button data-pt="ent" class="${t==='ent'?'on':''}">Entregados (${ent.length})</button></div>
+  ${list.length?`<div class="list">${list.map(filaPed).join('')}</div>`:`<div class="card empty">${t==='pend'?'No hay pedidos pendientes.<br>Toca <b>Nuevo pedido</b> cuando alguien te encargue algo.':'Aún no hay pedidos entregados.'}</div>`}`;
+  $('#pNew').onclick=()=>formPedido();
+  document.querySelectorAll('[data-pt]').forEach(b=>b.onclick=()=>{ui.pedTab=b.dataset.pt;render(false)});
+  bindPeds();
+}
+function bindPeds(){document.querySelectorAll('[data-ped]').forEach(el=>el.onclick=()=>formPedido(el.dataset.ped))}
+function waLink(p){let n=String(p.tel||'').replace(/\D/g,'');if(!n)return'';if(n.length===9&&n[0]==='9')n='56'+n;if(n.length===8)n='569'+n;
+  const f=falta(p);const msg=`Hola ${p.cliente}! `+(p.estado==='listo'?`Tu pedido (${p.detalle}) ya está listo 🌸`:`Te confirmo tu pedido (${p.detalle}) para el ${fFecha(p.entrega)} 🌸`)+(f>0?` Saldo pendiente: ${$$(f)}.`:'');
+  return 'https://wa.me/'+n+'?text='+encodeURIComponent(msg)}
+function formPedido(id){
+  const p=id?S.pedidos.find(x=>x.id===id):{cliente:'',tel:'',sec:'ramos',detalle:'',entrega:hoy(),total:'',abono:'',nota:'',estado:'pendiente'};
+  if(!p)return;
+  const wa=id?waLink(p):'';
+  abrir(`<h2>${id?'Pedido':'Nuevo pedido'}</h2>
+  ${id?`<div class="box"><div class="kv"><span>Estado</span><span>${ESTADO[p.estado]}</span></div><div class="kv"><span>Entrega</span><span>${fFecha(p.entrega)} · ${cuando(p.entrega).t}</span></div><div class="kv"><span>Falta por pagar</span><span class="${falta(p)>0?'neg':'pos'}">${$$(falta(p))}</span></div></div>
+  <div class="btnrow">${p.estado==='pendiente'?`<button class="btn sec" id="eListo">Marcar listo</button>`:`<button class="btn sec" id="ePend">Volver a pendiente</button>`}${p.estado!=='entregado'?`<button class="btn out" id="eEnt">Entregado</button>`:`<button class="btn out" id="eVenta">Registrar venta</button>`}</div>
+  ${wa?`<a class="btn wa" href="${wa}" target="_blank" rel="noopener" style="margin-bottom:12px;text-decoration:none">Enviar WhatsApp</a>`:''}`:''}
+  <div class="f"><label>Cliente</label><input id="qc" value="${esc(p.cliente)}" placeholder="Nombre"></div>
+  <div class="f2"><div class="f"><label>Teléfono (opcional)</label><input id="qt" inputmode="tel" value="${esc(p.tel||'')}" placeholder="9 1234 5678"></div>
+    <div class="f"><label>Sección</label><select id="qs"><option value="ramos" ${p.sec==='ramos'?'selected':''}>Ramos</option><option value="ropa" ${p.sec==='ropa'?'selected':''}>Ropa</option></select></div></div>
+  <div class="f"><label>¿Qué pidió?</label><input id="qd" value="${esc(p.detalle)}" placeholder="Ej: Ramo buchón 24 rosas rojas"></div>
+  <div class="f"><label>Fecha de entrega</label><input type="date" id="qf" value="${p.entrega}"></div>
+  <div class="f2"><div class="f"><label>Precio total</label><input id="qp" inputmode="numeric" value="${p.total||''}" placeholder="$"></div><div class="f"><label>Abono</label><input id="qa" inputmode="numeric" value="${p.abono||''}" placeholder="$"></div></div>
+  <div class="f"><label>Nota (opcional)</label><input id="qn" value="${esc(p.nota||'')}" placeholder="Ej: dirección, colores, tarjeta"></div>
+  <div class="total"><span>Falta por pagar</span><b id="qfa">$0</b></div>
+  <button class="btn pri" id="qok" style="margin-bottom:10px">Guardar pedido</button>
+  ${id?`<button class="btn dan" id="qdel">Eliminar pedido</button>`:''}`,()=>{
+    const sy=()=>{$('#qfa').textContent=$$(Math.max(0,num($('#qp').value)-num($('#qa').value)))};$('#qp').oninput=sy;$('#qa').oninput=sy;sy();
+    const leer=()=>({cliente:$('#qc').value.trim(),tel:$('#qt').value.trim(),sec:$('#qs').value,detalle:$('#qd').value.trim(),entrega:$('#qf').value||hoy(),total:num($('#qp').value),abono:num($('#qa').value),nota:$('#qn').value.trim()});
+    $('#qok').onclick=async()=>{const d=leer();if(!d.cliente)return toast('Escribe el nombre de la clienta o cliente');if(!d.detalle)return toast('Escribe qué pidió');
+      if(id)Object.assign(p,d);else S.pedidos.push(Object.assign({id:uid(),estado:'pendiente',creado:Date.now()},d));
+      await guardar();cerrar();render(false);toast('Pedido guardado')};
+    const setE=async(e)=>{Object.assign(p,leer(),{estado:e});await guardar();render(false)};
+    const venta=()=>{const pre={desc:p.detalle,unit:p.total,nota:p.cliente};cerrar();setTimeout(()=>p.sec==='ramos'?formRamo(pre):formRopa('salida',null,pre),260)};
+    if($('#eListo'))$('#eListo').onclick=async()=>{await setE('listo');cerrar();toast('Marcado como listo')};
+    if($('#ePend'))$('#ePend').onclick=async()=>{await setE('pendiente');cerrar();toast('Volvió a pendiente')};
+    if($('#eEnt'))$('#eEnt').onclick=async()=>{await setE('entregado');abrir(`<h2>¡Pedido entregado! 🌸</h2><p class="muted">¿Quieres registrar la venta ahora? Así queda en tus informes y se descuenta el stock.</p><button class="btn pri" id="vSi" style="margin-bottom:10px">Registrar venta</button><button class="btn sec" id="vNo">Ahora no</button>`,()=>{$('#vSi').onclick=venta;$('#vNo').onclick=cerrar})};
+    if($('#eVenta'))$('#eVenta').onclick=venta;
+    if($('#qdel'))$('#qdel').onclick=()=>confirmar('¿Eliminar pedido?',p.cliente+' · '+p.detalle,'Eliminar',async()=>{S.pedidos=S.pedidos.filter(x=>x.id!==id);await guardar();render(false)});
+  });
+}
+function cardEntregas(){
+  const act=S.pedidos.filter(p=>p.estado!=='entregado').sort((a,b)=>a.entrega.localeCompare(b.entrega)).slice(0,3);
+  if(!act.length)return'';
+  return `<div class="sectitle"><h3>Próximas entregas</h3><button class="btn ghost" id="verPed">Ver todas</button></div><div class="list">${act.map(filaPed).join('')}</div>`;
+}
+
+/* ================= Fechas peak (Chile) ================= */
+function domingoN(y,m,n){const d=new Date(y,m,1);return new Date(y,m,1+(7-d.getDay())%7+7*(n-1))}
+function fechasPeak(){
+  const y=new Date().getFullYear(),out=[];
+  for(const a of[y,y+1])out.push(
+    ['San Valentín',new Date(a,1,14),'Ramos','El día más fuerte para ramos: abre pedidos con 3 semanas de anticipación.'],
+    ['Día de la Mujer',new Date(a,2,8),'Ramos','Ramos pequeños y detalles se venden muy bien.'],
+    ['Día de la Madre',domingoN(a,4,2),'Ramos y ropa','Segundo domingo de mayo: fecha top para ramos y regalos.'],
+    ['Día del Padre',domingoN(a,5,3),'Ropa','Tercer domingo de junio: buen momento para ropa de hombre.'],
+    ['Fiestas Patrias',new Date(a,8,18),'Ropa','La gente compra ropa nueva para las fondas.'],
+    ['Día del Profesor',new Date(a,9,16),'Ramos','Ramos y detalles para regalar en colegios.'],
+    ['Graduaciones',new Date(a,11,1),'Ramos','Diciembre: ramos para licenciaturas y titulaciones.'],
+    ['Navidad',new Date(a,11,25),'Ropa y ramos','La temporada de regalos: ofrece packs.']);
+  const t=new Date(hoy()+'T00:00');
+  return out.map(([n,d,s,tip])=>({n,d,s,tip,dias:Math.round((d-t)/864e5)})).filter(x=>x.dias>=0).sort((a,b)=>a.dias-b.dias);
+}
+function fLarga(d){return d.getDate()+' de '+MESES[d.getMonth()]}
+function cardPeak(){
+  const f=fechasPeak()[0];if(!f)return'';
+  return `<div class="card" id="peakCard"><h2>Próxima fecha peak</h2><div class="peak"><div class="num">${f.dias}<small>${f.dias===1?'día':'días'}</small></div><div><b>${f.n}</b> · ${fLarga(f.d)}<div class="small muted">${esc(f.s)}</div></div></div>
+  <p class="small" style="margin:10px 0 0">${f.dias<=30?'💡 Compra materiales y avisa en tus redes desde ya. ':''}${esc(f.tip)}</p>
+  <button class="btn ghost" id="verPeak" style="padding:8px 0 0">Ver calendario de fechas</button></div>`;
+}
+function verFechas(){
+  const L=fechasPeak().slice(0,8);
+  abrir(`<h2>Fechas peak</h2><p class="small muted" style="margin-top:-6px">Prepárate con 2–3 semanas de anticipación.</p><div class="box">${L.map(f=>`<div class="kv"><span><b style="color:var(--ink)">${f.n}</b><br><span class="small">${esc(f.s)}</span></span><span>${fLarga(f.d)}<br><span class="small muted">${f.dias===0?'¡Hoy!':'en '+f.dias+' días'}</span></span></div>`).join('')}</div><button class="btn sec" id="fcl">Cerrar</button>`,()=>{$('#fcl').onclick=cerrar});
+}
+function bindInicioExtra(){const vp=$('#verPed');if(vp)vp.onclick=()=>{vista='pedidos';render()};const vf=$('#verPeak');if(vf)vf.onclick=verFechas;bindPeds()}
+
+/* ================= Gráficos ================= */
+const k$=v=>{const a=Math.abs(v);return (v<0?'-':'')+'$'+(a>=1e6?(a/1e6).toFixed(1).replace('.',',')+'M':a>=1e3?Math.round(a/1e3)+'k':Math.round(a))};
+function graficos(sec,r,a,b){
+  const meses=[];for(let o=-5;o<=0;o++){const[d,h,nom]=rangoMes(o);const x=resumen(d,h,sec);meses.push({n:nom.slice(0,3),v:x.ventas,c:x.compras,g:x.ganancia})}
+  const W=340,H=170,pl=6,pb=22,pt=16,cw=(W-pl*2)/6,max=Math.max(1,...meses.map(m=>Math.max(m.v,m.c)));
+  const Y=v=>(H-pb-pt)*(v/max);
+  let g='';meses.forEach((m,i)=>{const x=pl+i*cw,bw=cw*0.32,hv=Y(m.v),hc=Y(m.c);
+    g+=`<rect class="gbar" style="animation-delay:${i*.06}s;fill:var(--rosa)" x="${(x+cw*.16).toFixed(1)}" y="${(H-pb-hv).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(hv,0).toFixed(1)}" rx="3"/>`;
+    g+=`<rect class="gbar" style="animation-delay:${i*.06+.03}s;fill:var(--muted);opacity:.55" x="${(x+cw*.16+bw+2).toFixed(1)}" y="${(H-pb-hc).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(hc,0).toFixed(1)}" rx="3"/>`;
+    if(m.v)g+=`<text x="${(x+cw*.16+bw/2).toFixed(1)}" y="${(H-pb-hv-4).toFixed(1)}" text-anchor="middle" font-size="9" style="fill:var(--ink)">${k$(m.v)}</text>`;
+    g+=`<text x="${(x+cw/2).toFixed(1)}" y="${H-6}" text-anchor="middle" font-size="11" style="fill:var(--muted)">${m.n}</text>`});
+  g+=`<line x1="0" x2="${W}" y1="${H-pb}" y2="${H-pb}" style="stroke:var(--line)"/>`;
+  const gm=meses[5].g, ga=meses[4].g, dif=ga?Math.round((gm-ga)/Math.abs(ga)*100):null;
+  let donut='';
+  if(sec==='todo'){const ro=resumen(a,b,'ropa').ventas,ra=resumen(a,b,'ramos').ventas,t=ro+ra;
+    if(t>0){const C=2*Math.PI*36,pr=ro/t;
+      donut=`<div class="card"><h2>¿Qué vende más? · período elegido</h2><div style="display:flex;align-items:center;gap:18px">
+      <svg viewBox="0 0 100 100" width="110" height="110" style="flex:none;transform:rotate(-90deg)"><circle cx="50" cy="50" r="36" fill="none" style="stroke:var(--rosa)" stroke-width="16"/><circle cx="50" cy="50" r="36" fill="none" style="stroke:var(--azul)" stroke-width="16" stroke-dasharray="${(C*pr).toFixed(1)} ${C.toFixed(1)}"/></svg>
+      <div style="flex:1"><div class="kv"><span><span class="badge ropa">Ropa</span></span><span>${Math.round(pr*100)}% · ${$$(ro)}</span></div><div class="kv"><span><span class="badge ramos">Ramos</span></span><span>${Math.round((1-pr)*100)}% · ${$$(ra)}</span></div></div></div></div>`}}
+  return `<div class="card"><h2>Últimos 6 meses${sec!=='todo'?' · '+(sec==='ropa'?'Ropa':'Ramos'):''}</h2>
+  <svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">${g}</svg>
+  <div class="legend"><span><i style="background:var(--rosa)"></i>Ventas</span><span><i style="background:var(--muted);opacity:.55"></i>Compras</span></div>
+  <p class="small" style="margin:10px 0 0">Ganancia de las ventas este mes: <b class="${gm>=0?'pos':'neg'}">${$$(gm)}</b>${dif!=null&&isFinite(dif)?` <span class="${dif>=0?'pos':'neg'}">(${dif>=0?'▲':'▼'} ${Math.abs(dif)}% vs mes pasado)</span>`:''}</p></div>${donut}`;
 }
 
 /* ================= Informes: PDF y Excel ================= */

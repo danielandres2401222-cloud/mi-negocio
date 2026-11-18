@@ -152,7 +152,14 @@ html[data-fx]:not([data-fx=none]) .card,html[data-fx]:not([data-fx=none]) .kpi:n
 .fxgrid button{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:10px 4px;font-size:12px;font-weight:650;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:4px}
 .fxgrid button b{font-size:22px;line-height:1}
 .fxsec{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:14px 2px 8px}
-#fxEsp.on{border-color:var(--rosa);box-shadow:0 0 0 2px var(--rosa-2)}
+.espbtn{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);background:var(--field);border-radius:12px;padding:12px 14px;font:inherit;font-size:16px;color:var(--ink);text-align:left}
+.espbtn.on{border-color:var(--rosa);box-shadow:0 0 0 2px var(--rosa-2)}
+.espbtn .car{transition:transform .2s;color:var(--muted)}.espbtn.open .car{transform:rotate(180deg)}
+.esplist{display:grid;gap:6px;margin-top:8px}
+.esplist button{text-align:left;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:11px 14px;font:inherit;font-size:15px;color:var(--ink)}
+.esplist button.on{background:var(--rosa);color:#fff;border-color:var(--rosa)}
+#bgfx,#bgpart,#bgimg{transition:opacity .3s ease}
+html.fxfade #bgfx,html.fxfade #bgpart,html.fxfade #bgimg{opacity:0}
 .fxgrid .sw{display:block;width:100%;height:46px;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
 #bgfx canvas{display:block}
 #bgimg{position:fixed;inset:-5%;z-index:0;background:#05070f center/cover no-repeat;display:none;animation:kb 18s ease-in-out infinite alternate;will-change:transform}
@@ -835,10 +842,11 @@ function vAjustes(){
       const enEsp=ESP.some(e=>e[0]===m);
       return`<div class="fxsec">Degradados</div><div class="fxgrid">${t('seda')}${t('aurora')}${t('liquido')}</div>
       <div class="fxsec">Partículas</div><div class="fxgrid">${t('petalos')}${t('burbujas')}</div>
-      <div class="fxsec">Espacio</div><div class="f" style="margin:0"><select id="fxEsp" class="${enEsp?'on':''}"><option value="">Elige un fondo espacial…</option>${ESP.map(([k,n])=>`<option value="${k}" ${m===k?'selected':''}>${n}</option>`).join('')}</select></div>
+      <div class="fxsec">Espacio</div><button class="espbtn ${enEsp?'on':''}" id="espBtn"><span id="espTxt">${enEsp?ESP.find(e=>e[0]===m)[1]:'Elige un fondo espacial'}</span><span class="car">▾</span></button>
+      <div class="esplist hide" id="espList">${ESP.map(([k,n])=>`<button data-esp="${k}" class="${m===k?'on':''}">${n}</button>`).join('')}</div>
       <div class="fxsec">Personal</div><div class="fxgrid">${t('imagen')}${t('none')}</div>
       <button class="btn sec" id="fondoPick" style="margin-top:10px">🖼️ ${m==='imagen'?'Cambiar mi imagen':'Usar una imagen de mi galería'}</button>
-      <p class="small muted" style="margin:8px 0 0">Los degradados cambian de colores en modo nocturno; los fondos espaciales y tu imagen usan siempre colores oscuros. Tu imagen se guarda solo en este teléfono.${m==='via-lactea'?' Imagen de la Vía Láctea: ESO/S. Brunier (CC BY 4.0). Tierra: NASA.':m==='cielo-profundo'?' Cielo y Tierra: NASA.':''}</p>`})()}
+      <p class="small muted" id="fxNote" style="margin:8px 0 0">Los degradados cambian de colores en modo nocturno; los fondos espaciales y tu imagen usan siempre colores oscuros. Tu imagen se guarda solo en este teléfono.${m==='via-lactea'?' Imagen de la Vía Láctea: ESO/S. Brunier (CC BY 4.0). Tierra: NASA.':m==='cielo-profundo'?' Cielo y Tierra: NASA.':''}</p>`})()}
     <h2 style="margin:16px 0 0">Fluidez de animaciones</h2><div class="seg" id="fpsSeg" style="margin-top:8px">${[['30','30 FPS · ahorra batería'],['60','60 FPS · más fluido']].map(([k,n])=>`<button data-fps="${k}" class="${(localStorage.getItem('fps')||'60')===k?'on':''}">${n}</button>`).join('')}</div>
     </div>
   <div class="card"><h2>Tu negocio</h2>
@@ -861,8 +869,9 @@ function vAjustes(){
   </div>`;
   document.querySelectorAll('[data-tema]').forEach(b=>b.onclick=()=>setTema(b.dataset.tema));
   $('#fondoPick').onclick=()=>$('#fondoIn').click();
-  $('#fxEsp').onchange=e=>{if(!e.target.value)return;BG.set(e.target.value);render(false)};
-  document.querySelectorAll('[data-fx]').forEach(b=>b.onclick=async()=>{if(b.dataset.fx==='imagen'&&!(await idbGetK('fondo_img'))){$('#fondoIn').click();return}BG.set(b.dataset.fx);render(false);return;document.querySelectorAll('[data-fx]').forEach(y=>y.classList.toggle('on',y===b))});
+  $('#espBtn').onclick=()=>{const l=$('#espList');l.classList.toggle('hide');$('#espBtn').classList.toggle('open',!l.classList.contains('hide'))};
+  document.querySelectorAll('[data-esp]').forEach(b=>b.onclick=()=>aplicarFondo(b.dataset.esp));
+  document.querySelectorAll('.fxgrid [data-fx]').forEach(b=>b.onclick=async()=>{if(b.dataset.fx==='imagen'&&!(await idbGetK('fondo_img'))){$('#fondoIn').click();return}aplicarFondo(b.dataset.fx);return;document.querySelectorAll('.fxgrid [data-fx]').forEach(y=>y.classList.toggle('on',y===b))});
   document.querySelectorAll('[data-fps]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('fps',b.dataset.fps)}catch(_){}document.querySelectorAll('[data-fps]').forEach(y=>y.classList.toggle('on',y===b))});
   document.querySelectorAll('[data-fc]').forEach(b=>b.onclick=()=>{BG.cant(b.dataset.fc);document.querySelectorAll('[data-fc]').forEach(y=>y.classList.toggle('on',y===b))});
   $('#aSave').onclick=async()=>{S.config.negocio=$('#aNeg').value.trim()||'Mi Negocio';S.config.stockMin=Math.max(0,num($('#aMin').value));await guardar();toast('Guardado')};
@@ -1435,6 +1444,17 @@ const EXT=(()=>{const el=$('#bgfx');let cur=null,curK='',cargando={};
   document.addEventListener('visibilitychange',()=>{if(cur&&cur.pause){document.hidden?cur.pause():cur.resume()}});
   return{set};
 })();
+function aplicarFondo(k){
+  const ESPN={'galaxia':'🌌 Galaxia (dibujada)','via-lactea':'🌍 Vía Láctea real + Tierra','cielo-profundo':'🔭 Cielo profundo + Tierra','cielo':'✨ Cielo sereno','eclipse':'🌘 Eclipse','cc-deep-space':'🌠 Espacio profundo','cc-nebula':'💜 Nebulosa','cc-cosmic':'☄️ Cósmico','cc-midnight':'🌙 Medianoche'};
+  document.querySelectorAll('.fxgrid [data-fx]').forEach(x=>x.classList.toggle('on',x.dataset.fx===k));
+  document.querySelectorAll('[data-esp]').forEach(x=>x.classList.toggle('on',x.dataset.esp===k));
+  const eb=$('#espBtn');if(eb){eb.classList.toggle('on',!!ESPN[k]);eb.classList.remove('open');$('#espTxt').textContent=ESPN[k]||'Elige un fondo espacial';const l=$('#espList');if(l)l.classList.add('hide')}
+  const nt=$('#fxNote');if(nt)nt.textContent='Los degradados cambian de colores en modo nocturno; los fondos espaciales y tu imagen usan siempre colores oscuros. Tu imagen se guarda solo en este teléfono.'+(k==='via-lactea'?' Imagen de la Vía Láctea: ESO/S. Brunier (CC BY 4.0). Tierra: NASA.':k==='cielo-profundo'?' Cielo y Tierra: NASA.':'');
+  const fp=$('#fondoPick');if(fp)fp.textContent='🖼️ '+(k==='imagen'?'Cambiar mi imagen':'Usar una imagen de mi galería');
+  if(BG.modo()===k)return;
+  const h=document.documentElement;h.classList.add('fxfade');
+  setTimeout(()=>{BG.set(k);setTimeout(()=>requestAnimationFrame(()=>h.classList.remove('fxfade')),120)},300);
+}
 const BG=(()=>{
   const P=window.PaperShaders, el=$('#bgfx'); let m=null, noise=null;
   const modo=()=>{const v=document.documentElement.dataset.fx;return['seda','aurora','liquido','petalos','burbujas','galaxia','via-lactea','cielo-profundo','cielo','eclipse','cc-deep-space','cc-nebula','cc-cosmic','cc-midnight','imagen','none'].includes(v)?v:'seda'};

@@ -159,8 +159,10 @@ html[data-fx]:not([data-fx=none]) .card,html[data-fx]:not([data-fx=none]) .kpi:n
 html[data-theme=dark]{--glass:rgba(30,14,22,.46);--glassB:rgba(255,255,255,.12)}
 html[data-fx]:not([data-fx=none]) .card,html[data-fx]:not([data-fx=none]) .kpi:not(.big),html[data-fx]:not([data-fx=none]) .list,html[data-fx]:not([data-fx=none]) .install{background:var(--glass)!important;-webkit-backdrop-filter:blur(20px) saturate(1.5)!important;backdrop-filter:blur(20px) saturate(1.5)!important;border:1px solid var(--glassB);box-shadow:0 8px 28px rgba(120,30,70,.10)}
 html[data-fx]:not([data-fx=none]) .seg{background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
-html[data-fx]:not([data-fx=none]) header.top{background:transparent;-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5)}
-html[data-fx]:not([data-fx=none]) nav.tabs{background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);border-top-color:var(--glassB)}
+html[data-fx]:not([data-fx=none]) header.top{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+html[data-fx]:not([data-fx=none]) header.top::before{content:'';position:absolute;left:0;right:0;top:0;bottom:-26px;z-index:-1;-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);-webkit-mask-image:linear-gradient(to bottom,#000 55%,transparent);mask-image:linear-gradient(to bottom,#000 55%,transparent);pointer-events:none}
+html[data-fx]:not([data-fx=none]) nav.tabs{background:transparent;border-top-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
+html[data-fx]:not([data-fx=none]) nav.tabs::before{content:'';position:absolute;left:0;right:0;bottom:0;top:-22px;z-index:-1;background:linear-gradient(to bottom,transparent,var(--glass) 40%);-webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4);-webkit-mask-image:linear-gradient(to bottom,transparent,#000 45%);mask-image:linear-gradient(to bottom,transparent,#000 45%);pointer-events:none}
 html[data-fx]:not([data-fx=none]) .row{border-bottom-color:rgba(255,255,255,.18)}
 html[data-fx]:not([data-fx=none]) .kpi.big{box-shadow:0 10px 30px rgba(217,74,125,.35)}
 .fxgrid button.on{background:var(--rosa);border-color:var(--rosa);color:#fff}
@@ -1266,10 +1268,10 @@ const BG=(()=>{
     const sz=s=>({u_fit:F[s.fit],u_rotation:s.rotation,u_scale:s.scale,u_offsetX:s.offsetX,u_offsetY:s.offsetY,u_originX:s.originX,u_originY:s.originY,u_worldWidth:s.worldWidth,u_worldHeight:s.worldHeight});
     if(k==='seda'){const c=d?['#170d12','#7a1f45','#ff4f8b','#3a1450']:['#fff0f6','#ffb3cf','#f06b9b','#ffd9c9'];
       return[P.meshGradientFragmentShader,{u_colors:c.map(C),u_colorsCount:c.length,u_distortion:.82,u_swirl:.28,u_grainMixer:0,u_grainOverlay:0,...sz({...OS,fit:'cover'})},.35]}
-    if(k==='aurora'){const c=d?['#ff4f8b','#7b2cbf','#c2185b']:['#ff8fb5','#f7c6dd','#c9a2ff'];
-      return[P.grainGradientFragmentShader,{u_colorBack:C(d?'#140a10':'#fff6f9'),u_colors:c.map(C),u_colorsCount:c.length,u_softness:.85,u_intensity:d?.4:.3,u_noise:.18,u_shape:P.GrainGradientShapes.corners,u_noiseTexture:noise,...sz({...OS,fit:'cover'})},.45]}
+    if(k==='aurora'){const c=d?['#140a10','#ff4f8b','#7b2cbf','#c2185b','#3a1450']:['#fff6f9','#ff8fb5','#c9a2ff','#ffd6e6','#f7a8d0'];
+      return[P.meshGradientFragmentShader,{u_colors:c.map(C),u_colorsCount:c.length,u_distortion:1,u_swirl:.6,u_grainMixer:.18,u_grainOverlay:d?.12:.16,...sz({...OS,fit:'cover'})},.8]}
     const c=d?['#1a0c14','#c2185b','#2a0f20','#7b2cbf']:['#ffe3ee','#ff9cc4','#ffd0e1','#f48fb8'];
-    return[P.warpFragmentShader,{u_colors:c.map(C),u_colorsCount:c.length,u_proportion:.45,u_softness:1,u_distortion:.25,u_swirl:.8,u_swirlIterations:10,u_shapeScale:.1,u_shape:P.WarpPatterns.checks,u_noiseTexture:noise,...sz(PS)},.35];
+    return[P.warpFragmentShader,{u_colors:c.map(C),u_colorsCount:c.length,u_proportion:.45,u_softness:1,u_distortion:.25,u_swirl:.8,u_swirlIterations:10,u_shapeScale:.1,u_shape:P.WarpPatterns.checks,u_noiseTexture:noise,...sz(PS)},3];
   }
   function montar(){
     if(m){try{m.dispose()}catch(_){}m=null}el.innerHTML='';

@@ -670,6 +670,7 @@ function vInicio(){
     <div class="kpi"><div class="l">Vendido</div><div class="v">${cnt$(r.ventas)}</div></div>
     <div class="kpi"><div class="l">Compras</div><div class="v">${cnt$(r.compras)}</div></div>
   </div>
+  <button class="btn sec" id="bCat" style="margin-top:12px">📋 Copiar catálogo</button>
   <div class="card"><h2>Ventas por sección</h2>
     <div class="kv"><span><span class="badge ropa">Ropa</span></span><span>${$$(rr.ventas)}</span></div>
     <div class="kv"><span><span class="badge ramos">Ramos</span></span><span>${$$(rm.ventas)}</span></div>
@@ -680,7 +681,7 @@ function vInicio(){
   ${bajos.length?`<div class="card"><h2>Queda poco stock</h2>${bajos.slice(0,6).map(x=>`<div class="kv"><span>${esc(x.n)}</span><span class="${x.s<=0?'neg':''}">${nf(x.s)} ${esc(x.u)}</span></div>`).join('')}</div>`:''}
   <div class="sectitle"><h3>Últimos movimientos</h3></div>
   ${ult.length?`<div class="list">${ult.map(m=>filaMov(m,true)).join('')}</div>`:`<div class="card empty">Todavía no hay movimientos.<br>Parte en <b>Ropa</b> o <b>Ramos</b> registrando un ingreso.</div>`}`;
-  bindMovs();bindInicioExtra();
+  bindMovs();bindInicioExtra();$('#bCat').onclick=copiarCatalogo;
 }
 
 function vRopa(){
@@ -1105,6 +1106,58 @@ function graficos(sec,r,a,b){
   <svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">${g}</svg>
   <div class="legend"><span><i style="background:var(--rosa)"></i>Ventas</span><span><i style="background:var(--muted);opacity:.55"></i>Compras</span></div>
   <p class="small" style="margin:10px 0 0">Ganancia de las ventas este mes: <b class="${gm>=0?'pos':'neg'}">${$$(gm)}</b>${dif!=null&&isFinite(dif)?` <span class="${dif>=0?'pos':'neg'}">(${dif>=0?'▲':'▼'} ${Math.abs(dif)}% vs mes pasado)</span>`:''}</p></div>${donut}`;
+}
+
+
+/* ================= Catálogo para copiar y pegar en WhatsApp ================= */
+function itemsCatalogo(){
+  const ramos={};for(const m of S.movs)if(m.sec==='ramos'&&m.tipo==='salida'&&m.desc&&m.unit>0){const k=m.desc.trim();if(!ramos[k]||(m.creado||0)>ramos[k].c)ramos[k]={n:k,p:m.unit,c:m.creado||0}}
+  const R=Object.values(ramos).sort((a,b)=>a.p-b.p);
+  const P=S.productos.filter(p=>p.precio>0&&stockProd(p.id)>0).sort((a,b)=>a.nombre.localeCompare(b.nombre)).map(p=>({n:p.nombre+(p.detalle?' · '+p.detalle:''),p:p.precio}));
+  return{R,P};
+}
+function textoCatalogo(R,P){
+  let t=`🌸 *${S.config.negocio}* · Catálogo\n`;
+  if(R.length)t+=`\n💐 *Ramos buchones*\n`+R.map(x=>`• ${x.n}: ${$$(x.p)}`).join('\n')+'\n';
+  if(P.length)t+=`\n👗 *Ropa*\n`+P.map(x=>`• ${x.n}: ${$$(x.p)}`).join('\n')+'\n';
+  return t+`\nPide el tuyo por aquí 💌`;
+}
+function imagenCatalogo(R,P){
+  const W=1080,pad=70,rowH=74,secH=120;
+  const H=330+(R.length?secH+R.length*rowH:0)+(P.length?secH+P.length*rowH:0)+170;
+  const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#fff6f9');g.addColorStop(1,'#ffe3ee');x.fillStyle=g;x.fillRect(0,0,W,H);
+  const hg=x.createLinearGradient(0,0,W,0);hg.addColorStop(0,'#f06b9b');hg.addColorStop(1,'#d94a7d');x.fillStyle=hg;
+  x.beginPath();x.roundRect?x.roundRect(40,40,W-80,230,40):x.rect(40,40,W-80,230);x.fill();
+  const F='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif';
+  x.fillStyle='#fff';x.font=`800 76px ${F}`;x.fillText(S.config.negocio,pad+20,150);
+  x.font=`600 40px ${F}`;x.globalAlpha=.9;x.fillText('Catálogo 🌸',pad+20,215);x.globalAlpha=1;
+  let y=330;
+  const seccion=(titulo,L)=>{
+    x.fillStyle='#b82e63';x.font=`800 50px ${F}`;x.fillText(titulo,pad,y+60);y+=secH;
+    L.forEach((it,i)=>{
+      if(i%2===0){x.fillStyle='rgba(255,255,255,.75)';x.fillRect(pad-20,y-52,W-2*pad+40,rowH)}
+      x.fillStyle='#3d1f2c';x.font=`500 38px ${F}`;let n=it.n;while(x.measureText(n).width>W-2*pad-260&&n.length>3)n=n.slice(0,-2);if(n!==it.n)n=n.trim()+'…';
+      x.fillText(n,pad,y);x.fillStyle='#e8578a';x.font=`800 40px ${F}`;x.textAlign='right';x.fillText($$(it.p),W-pad,y);x.textAlign='left';y+=rowH;
+    });
+  };
+  if(R.length)seccion('💐 Ramos buchones',R);
+  if(P.length)seccion('👗 Ropa',P);
+  x.fillStyle='#a8798c';x.font=`600 38px ${F}`;x.textAlign='center';x.fillText('Pide el tuyo por WhatsApp 💌',W/2,H-80);x.textAlign='left';
+  return new Promise(res=>c.toBlob(res,'image/png'));
+}
+function copiarCatalogo(){
+  const{R,P}=itemsCatalogo();
+  if(!R.length&&!P.length){toast('Aún no hay productos con precio para el catálogo');return}
+  const txt=textoCatalogo(R,P);
+  const okImg=()=>toast('Catálogo copiado 📋 Ahora pégalo en el chat');
+  const conTexto=()=>{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(()=>toast('Catálogo copiado como texto 📋')).catch(()=>toast('No se pudo copiar'));else toast('No se pudo copiar')};
+  try{
+    if(navigator.clipboard&&window.ClipboardItem){
+      // la imagen se entrega como promesa para que el iPhone permita copiarla
+      navigator.clipboard.write([new ClipboardItem({'image/png':imagenCatalogo(R,P)})]).then(okImg).catch(conTexto);
+    }else conTexto();
+  }catch(e){conTexto()}
 }
 
 /* ================= Informes: PDF y Excel ================= */

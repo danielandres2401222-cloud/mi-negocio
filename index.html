@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<script>try{if(localStorage.getItem("tema_neg")==="dark"){document.documentElement.dataset.theme="dark";}var f=localStorage.getItem("fondo_neg");document.documentElement.dataset.fx=(["seda","aurora","liquido","petalos","burbujas","cielo","eclipse","galaxia","imagen","none"].indexOf(f)>=0)?f:"seda";}catch(e){}</script>
+<script>try{if(localStorage.getItem("tema_neg")==="dark"){document.documentElement.dataset.theme="dark";}var f=localStorage.getItem("fondo_neg");document.documentElement.dataset.fx=(["seda","aurora","liquido","petalos","burbujas","galaxia","via-lactea","cielo-profundo","cielo","eclipse","cc-deep-space","cc-nebula","cc-cosmic","cc-midnight","imagen","none"].indexOf(f)>=0)?f:"seda";}catch(e){}</script>
 <style>
 :root{--hdr:rgba(255,246,249,.92);--navbg:rgba(255,255,255,.94);--field:#fff;
   --bg:#fff6f9; --card:#ffffff; --ink:#3d1f2c; --muted:#a8798c; --line:#fbe0ea;
@@ -110,7 +110,7 @@ nav.tabs button.on{color:var(--rosa)}
 .chip.on{background:var(--rosa);color:#fff;border-color:var(--rosa)}
 .install{background:var(--rosa-2);color:var(--rosa-ink);border-radius:14px;padding:12px 14px;font-size:14px;margin:12px 0}
 
-html[data-theme=dark],html[data-fx=galaxia],html[data-fx=imagen]{--bg:#170d12;--card:#24141b;--field:#2c1821;--ink:#fbe4ee;--muted:#c792a8;--line:#3b2230;--rosa:#ff6c9f;--rosa-2:#47202f;--rosa-ink:#ff93b8;--rosa-3:#2e1720;--azul:#ff86b4;--azul-2:#4b1d31;--verde:#5ccf96;--verde-2:#183326;--rojo:#ff7b72;--rojo-2:#3d1d1b;--sombra:0 1px 2px rgba(0,0,0,.45),0 4px 16px rgba(0,0,0,.25);--hdr:rgba(23,13,18,.9);--navbg:rgba(30,17,23,.94);color-scheme:dark}
+html[data-theme=dark],html[data-fx=galaxia],html[data-fx=imagen],html[data-fx=via-lactea],html[data-fx=cielo-profundo],html[data-fx^=cc-]{--bg:#170d12;--card:#24141b;--field:#2c1821;--ink:#fbe4ee;--muted:#c792a8;--line:#3b2230;--rosa:#ff6c9f;--rosa-2:#47202f;--rosa-ink:#ff93b8;--rosa-3:#2e1720;--azul:#ff86b4;--azul-2:#4b1d31;--verde:#5ccf96;--verde-2:#183326;--rojo:#ff7b72;--rojo-2:#3d1d1b;--sombra:0 1px 2px rgba(0,0,0,.45),0 4px 16px rgba(0,0,0,.25);--hdr:rgba(23,13,18,.9);--navbg:rgba(30,17,23,.94);color-scheme:dark}
 html[data-theme=dark] .sheet .grab{background:#5a2c3e}
 html[data-theme=dark] .scrim{background:rgba(0,0,0,.55)}
 header.top .thb{position:absolute;right:16px;top:calc(12px + var(--top));border:0;background:var(--rosa-2);color:var(--rosa-ink);width:38px;height:38px;border-radius:12px;font-size:17px;display:flex;align-items:center;justify-content:center}
@@ -146,11 +146,13 @@ nav.tabs button{font-size:10px}
 #bgfx{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
 main{position:relative;z-index:1}
 :root{--cardA:rgba(255,255,255,.62)}
-html[data-theme=dark],html[data-fx=galaxia],html[data-fx=imagen]{--cardA:rgba(36,20,27,.6)}
+html[data-theme=dark],html[data-fx=galaxia],html[data-fx=imagen],html[data-fx=via-lactea],html[data-fx=cielo-profundo],html[data-fx^=cc-]{--cardA:rgba(36,20,27,.6)}
 html[data-fx]:not([data-fx=none]) .card,html[data-fx]:not([data-fx=none]) .kpi:not(.big),html[data-fx]:not([data-fx=none]) .list{background:var(--cardA);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(2px)}
 .fxgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .fxgrid button{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:10px 4px;font-size:12px;font-weight:650;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:4px}
 .fxgrid button b{font-size:22px;line-height:1}
+.fxsec{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:14px 2px 8px}
+#fxEsp.on{border-color:var(--rosa);box-shadow:0 0 0 2px var(--rosa-2)}
 .fxgrid .sw{display:block;width:100%;height:46px;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
 #bgfx canvas{display:block}
 #bgimg{position:fixed;inset:-5%;z-index:0;background:#05070f center/cover no-repeat;display:none;animation:kb 18s ease-in-out infinite alternate;will-change:transform}
@@ -161,7 +163,7 @@ html[data-fx=imagen] #bgimg{display:block}
 #bgpart{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
 .fxgrid{grid-template-columns:repeat(3,1fr)!important}
 :root{--glass:rgba(255,255,255,.52);--glassB:rgba(255,255,255,.65)}
-html[data-theme=dark],html[data-fx=galaxia],html[data-fx=imagen]{--glass:rgba(30,14,22,.46);--glassB:rgba(255,255,255,.12)}
+html[data-theme=dark],html[data-fx=galaxia],html[data-fx=imagen],html[data-fx=via-lactea],html[data-fx=cielo-profundo],html[data-fx^=cc-]{--glass:rgba(30,14,22,.46);--glassB:rgba(255,255,255,.12)}
 html[data-fx]:not([data-fx=none]) .card,html[data-fx]:not([data-fx=none]) .kpi:not(.big),html[data-fx]:not([data-fx=none]) .list,html[data-fx]:not([data-fx=none]) .install{background:var(--glass)!important;-webkit-backdrop-filter:blur(20px) saturate(1.5)!important;backdrop-filter:blur(20px) saturate(1.5)!important;border:1px solid var(--glassB);box-shadow:0 8px 28px rgba(120,30,70,.10)}
 html[data-fx]:not([data-fx=none]) .seg{background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 html[data-fx]:not([data-fx=none]) header.top{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
@@ -612,7 +614,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var r,n,i,a,
 /* ================= Datos (IndexedDB, solo en este teléfono) ================= */
 const DB_NAME='miNegocioDB', STORE='kv', KEY='estado';
 let S=null; // estado
-function vacio(){return{version:1,config:{negocio:'Mi Negocio',stockMin:3},productos:[],materiales:[],movs:[],pedidos:[],fotos:[]}}
+function vacio(){return{version:1,config:{negocio:'Mi Negocio',stockMin:3},productos:[],materiales:[],movs:[],pedidos:[],fotos:[],recetas:[]}}
 function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
 async function cargar(){
   try{const db=await idb();S=await new Promise((res,rej)=>{const t=db.transaction(STORE).objectStore(STORE).get(KEY);t.onsuccess=()=>res(t.result||null);t.onerror=()=>rej(t.error)})}
@@ -644,9 +646,13 @@ const ICON={in:'<svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 /* ================= Cálculos ================= */
 const prod=id=>S.productos.find(p=>p.id===id);
 const mat=id=>S.materiales.find(m=>m.id===id);
-function stockProd(id){let s=0;for(const m of S.movs)if(m.sec==='ropa'&&m.itemId===id)s+=m.tipo==='ingreso'?m.cant:-m.cant;return s}
+const pendiente=p=>p.estado!=='entregado'&&!p.movId;
+const receta=id=>(S.recetas||[]).find(r=>r.id===id);
+function reservaProd(id){let s=0;for(const p of S.pedidos||[])if(pendiente(p)&&p.sec==='ropa'&&p.prodId===id)s+=p.cant||1;return s}
+function reservaMat(id){let s=0;for(const p of S.pedidos||[])if(pendiente(p)&&p.sec==='ramos'&&p.recetaId){const r=receta(p.recetaId);if(r)for(const u of r.mats)if(u.matId===id)s+=u.cant*(p.cant||1)}return s}
+function stockProd(id){let s=0;for(const m of S.movs)if(m.sec==='ropa'&&m.itemId===id)s+=m.tipo==='ingreso'?m.cant:-m.cant;return s-reservaProd(id)}
 function costoProd(id){let c=0,q=0;for(const m of S.movs)if(m.sec==='ropa'&&m.tipo==='ingreso'&&m.itemId===id){c+=m.total;q+=m.cant}return q?c/q:0}
-function stockMat(id){let s=0;for(const m of S.movs){if(m.sec!=='ramos')continue;if(m.tipo==='ingreso'&&m.itemId===id)s+=m.cant;if(m.tipo==='salida')for(const u of(m.usados||[]))if(u.matId===id)s-=u.cant}return Math.round(s*1000)/1000}
+function stockMat(id){let s=-reservaMat(id);for(const m of S.movs){if(m.sec!=='ramos')continue;if(m.tipo==='ingreso'&&m.itemId===id)s+=m.cant;if(m.tipo==='salida')for(const u of(m.usados||[]))if(u.matId===id)s-=u.cant}return Math.round(s*1000)/1000}
 function costoMat(id){let c=0,q=0;for(const m of S.movs)if(m.sec==='ramos'&&m.tipo==='ingreso'&&m.itemId===id){c+=m.total;q+=m.cant}return q?c/q:0}
 function nombreMov(m){
   if(m.sec==='ropa'){const p=prod(m.itemId);return p?p.nombre+(p.detalle?' · '+p.detalle:''):'(producto eliminado)'}
@@ -736,7 +742,7 @@ function vRopa(){
     const q=ui.q.toLowerCase();
     const ps=S.productos.filter(p=>!q||(p.nombre+' '+(p.detalle||'')).toLowerCase().includes(q)).sort((a,b)=>a.nombre.localeCompare(b.nombre));
     body=`${S.productos.length>6?`<input class="search" id="q" placeholder="Buscar producto…" value="${esc(ui.q)}">`:''}
-    ${ps.length?`<div class="list">${ps.map(p=>{const s=stockProd(p.id);return`<div class="row" data-prod="${p.id}"><div class="main"><div class="t">${esc(p.nombre)}</div><div class="s">${esc(p.detalle||'Sin detalle')} · venta ${$$(p.precio)}</div></div><div class="r">${nf(s)} <span class="badge ${s<=S.config.stockMin?'low':''}">u.</span></div></div>`}).join('')}</div>`:`<div class="card empty">${S.productos.length?'Sin resultados.':'Aún no hay productos.<br>Toca <b>Ingreso</b> para agregar la primera compra de ropa.'}</div>`}
+    ${ps.length?`<div class="list">${ps.map(p=>{const s=stockProd(p.id);return`<div class="row" data-prod="${p.id}"><div class="main"><div class="t">${esc(p.nombre)}</div><div class="s">${esc(p.detalle||'Sin detalle')} · venta ${$$(p.precio)}${reservaProd(p.id)?` · <b>${nf(reservaProd(p.id))} reservado</b>`:''}</div></div><div class="r">${nf(s)} <span class="badge ${s<=S.config.stockMin?'low':''}">u.</span></div></div>`}).join('')}</div>`:`<div class="card empty">${S.productos.length?'Sin resultados.':'Aún no hay productos.<br>Toca <b>Ingreso</b> para agregar la primera compra de ropa.'}</div>`}
     <button class="btn ghost" id="nuevoProd">${ICON.plus} Agregar producto sin stock</button>`;
   }else{
     const ms=resumen('','','ropa').movs;
@@ -761,17 +767,23 @@ function vRamos(){
     const ms=[...S.materiales].sort((a,b)=>a.nombre.localeCompare(b.nombre));
     body=ms.length?`<div class="list">${ms.map(x=>{const s=stockMat(x.id);return`<div class="row" data-mat="${x.id}"><div class="main"><div class="t">${esc(x.nombre)}</div><div class="s">Costo prom. ${$$(costoMat(x.id))} por ${esc(unidadSing(x.unidad))}</div></div><div class="r">${nf(s)} <span class="badge ${s<=S.config.stockMin?'low':''}">${esc(x.unidad)}</span></div></div>`}).join('')}</div>`:`<div class="card empty">Aún no hay materiales.<br>Toca <b>Ingreso</b> para registrar la compra de rosas de jabón, papel, cintas, etc.</div>`;
     body+=`<button class="btn ghost" id="nuevoMat">${ICON.plus} Agregar material sin stock</button>`;
+  }else if(t==='recetas'){
+    const R=[...(S.recetas||[])].sort((a,b)=>a.nombre.localeCompare(b.nombre));
+    body=(R.length?`<div class="list">${R.map(r=>{const c=costoReceta(r);return`<div class="row" data-rec="${r.id}"><div class="main"><div class="t">${esc(r.nombre)}</div><div class="s">${r.mats.length} materiales · costo ${$$(c)} · ganas ${$$(r.precio-c)}</div></div><div class="r">${$$(r.precio)}</div></div>`}).join('')}</div>`
+      :`<div class="card empty">Guarda aquí tus ramos con sus materiales.<br>Así, al vender o pedir uno, los materiales se descuentan solos.</div>`)+`<button class="btn ghost" id="nuevaRec">${ICON.plus} Nuevo ramo</button>`;
   }else{
     const ms=resumen('','','ramos').movs;
     body=ms.length?`<div class="list">${ms.slice(0,200).map(m=>filaMov(m)).join('')}</div>`:`<div class="card empty">Sin movimientos todavía.</div>`;
   }
   $('#view').innerHTML=`
   <div class="btnrow"><button class="btn in" id="bIn">${ICON.in} Ingreso material</button><button class="btn out" id="bOut">${ICON.out} Venta de ramo</button></div>
-  <div class="seg"><button data-t="stock" class="${t==='stock'?'on':''}">Materiales</button><button data-t="movs" class="${t==='movs'?'on':''}">Movimientos</button></div>
+  <div class="seg"><button data-t="stock" class="${t==='stock'?'on':''}">Materiales</button><button data-t="recetas" class="${t==='recetas'?'on':''}">Mis ramos</button><button data-t="movs" class="${t==='movs'?'on':''}">Movimientos</button></div>
   ${body}`;
   $('#bIn').onclick=()=>formMatIngreso();$('#bOut').onclick=()=>formRamo();
   document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{ui.ramosTab=b.dataset.t;render()});
   const nm=$('#nuevoMat');if(nm)nm.onclick=()=>formMaterial();
+  const nr=$('#nuevaRec');if(nr)nr.onclick=()=>formReceta();
+  document.querySelectorAll('[data-rec]').forEach(el=>el.onclick=()=>formReceta(el.dataset.rec));
   document.querySelectorAll('[data-mat]').forEach(el=>el.onclick=()=>formMaterial(el.dataset.mat));
   bindMovs();
 }
@@ -818,9 +830,15 @@ function vAjustes(){
   $('#view').innerHTML=`
   <div class="card"><h2>Apariencia</h2><div class="seg" style="margin:0"><button data-tema="light" class="${esOscuro()?'':'on'}">☀ Claro</button><button data-tema="dark" class="${esOscuro()?'on':''}">☾ Nocturno</button></div>
     <h2 style="margin:16px 0 10px">Fondo animado</h2>
-    <div class="fxgrid">${FONDOS.map(([k,e,n])=>`<button data-fx="${k}" class="${BG.modo()===k?'on':''}"><i class="sw" style="background:${e}"></i>${n}</button>`).join('')}</div>
-    <button class="btn sec" id="fondoPick" style="margin-top:10px">🖼️ ${BG.modo()==='imagen'?'Cambiar mi imagen':'Usar una imagen de mi galería'}</button>
-    <p class="small muted" style="margin:8px 0 0">Cada fondo cambia solo de colores en modo nocturno. Galaxia y Mi imagen usan siempre colores oscuros. Tu imagen se guarda solo en este teléfono.</p>
+    ${(()=>{const m=BG.modo(),F=Object.fromEntries(FONDOS.map(f=>[f[0],f])),t=k=>{const[,e,n]=F[k];return`<button data-fx="${k}" class="${m===k?'on':''}"><i class="sw" style="background:${e}"></i>${n}</button>`};
+      const ESP=[['galaxia','🌌 Galaxia (dibujada)'],['via-lactea','🌍 Vía Láctea real + Tierra'],['cielo-profundo','🔭 Cielo profundo + Tierra'],['cielo','✨ Cielo sereno'],['eclipse','🌘 Eclipse'],['cc-deep-space','🌠 Espacio profundo'],['cc-nebula','💜 Nebulosa'],['cc-cosmic','☄️ Cósmico'],['cc-midnight','🌙 Medianoche']];
+      const enEsp=ESP.some(e=>e[0]===m);
+      return`<div class="fxsec">Degradados</div><div class="fxgrid">${t('seda')}${t('aurora')}${t('liquido')}</div>
+      <div class="fxsec">Partículas</div><div class="fxgrid">${t('petalos')}${t('burbujas')}</div>
+      <div class="fxsec">Espacio</div><div class="f" style="margin:0"><select id="fxEsp" class="${enEsp?'on':''}"><option value="">Elige un fondo espacial…</option>${ESP.map(([k,n])=>`<option value="${k}" ${m===k?'selected':''}>${n}</option>`).join('')}</select></div>
+      <div class="fxsec">Personal</div><div class="fxgrid">${t('imagen')}${t('none')}</div>
+      <button class="btn sec" id="fondoPick" style="margin-top:10px">🖼️ ${m==='imagen'?'Cambiar mi imagen':'Usar una imagen de mi galería'}</button>
+      <p class="small muted" style="margin:8px 0 0">Los degradados cambian de colores en modo nocturno; los fondos espaciales y tu imagen usan siempre colores oscuros. Tu imagen se guarda solo en este teléfono.${m==='via-lactea'?' Imagen de la Vía Láctea: ESO/S. Brunier (CC BY 4.0). Tierra: NASA.':m==='cielo-profundo'?' Cielo y Tierra: NASA.':''}</p>`})()}
     <h2 style="margin:16px 0 0">Fluidez de animaciones</h2><div class="seg" id="fpsSeg" style="margin-top:8px">${[['30','30 FPS · ahorra batería'],['60','60 FPS · más fluido']].map(([k,n])=>`<button data-fps="${k}" class="${(localStorage.getItem('fps')||'60')===k?'on':''}">${n}</button>`).join('')}</div>
     </div>
   <div class="card"><h2>Tu negocio</h2>
@@ -843,7 +861,8 @@ function vAjustes(){
   </div>`;
   document.querySelectorAll('[data-tema]').forEach(b=>b.onclick=()=>setTema(b.dataset.tema));
   $('#fondoPick').onclick=()=>$('#fondoIn').click();
-  document.querySelectorAll('[data-fx]').forEach(b=>b.onclick=async()=>{if(b.dataset.fx==='imagen'&&!(await idbGetK('fondo_img'))){$('#fondoIn').click();return}BG.set(b.dataset.fx);document.querySelectorAll('[data-fx]').forEach(y=>y.classList.toggle('on',y===b))});
+  $('#fxEsp').onchange=e=>{if(!e.target.value)return;BG.set(e.target.value);render(false)};
+  document.querySelectorAll('[data-fx]').forEach(b=>b.onclick=async()=>{if(b.dataset.fx==='imagen'&&!(await idbGetK('fondo_img'))){$('#fondoIn').click();return}BG.set(b.dataset.fx);render(false);return;document.querySelectorAll('[data-fx]').forEach(y=>y.classList.toggle('on',y===b))});
   document.querySelectorAll('[data-fps]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('fps',b.dataset.fps)}catch(_){}document.querySelectorAll('[data-fps]').forEach(y=>y.classList.toggle('on',y===b))});
   document.querySelectorAll('[data-fc]').forEach(b=>b.onclick=()=>{BG.cant(b.dataset.fc);document.querySelectorAll('[data-fc]').forEach(y=>y.classList.toggle('on',y===b))});
   $('#aSave').onclick=async()=>{S.config.negocio=$('#aNeg').value.trim()||'Mi Negocio';S.config.stockMin=Math.max(0,num($('#aMin').value));await guardar();toast('Guardado')};
@@ -980,6 +999,7 @@ function formRamo(pre){
   const ms=[...S.materiales].sort((a,b)=>a.nombre.localeCompare(b.nombre));
   const previos=[...new Set(S.movs.filter(m=>m.sec==='ramos'&&m.tipo==='salida').map(m=>m.desc).filter(Boolean))];
   abrir(`<h2>Venta de ramo</h2>
+  ${(S.recetas||[]).length?`<div class="f"><label>Ramo guardado</label><select id="rrec"><option value="">— Elegir de Mis ramos —</option>${S.recetas.map(r=>`<option value="${r.id}">${esc(r.nombre)} · ${$$(r.precio)}</option>`).join('')}</select><div class="hint">Carga el precio y los materiales; se descuentan del stock al guardar.</div></div>`:''}
   <div class="f"><label>Ramo</label><input id="rd" list="rdl" placeholder="Ej: Ramo buchón 24 rosas rojas"><datalist id="rdl">${previos.map(p=>`<option value="${esc(p)}">`).join('')}</datalist>
   ${previos.length?`<div class="hint">Si eliges un ramo que ya vendiste, se cargan los mismos materiales.</div>`:''}</div>
   <div class="f2"><div class="f"><label>Cantidad de ramos</label><input id="rc" inputmode="numeric" value="1"></div><div class="f"><label>Precio por ramo</label><input id="rp" inputmode="numeric" placeholder="$"></div></div>
@@ -1006,6 +1026,8 @@ function formRamo(pre){
     if(ms.length)linea(ms[0].id,'');
     $('#rd').onchange=()=>{const prev=[...S.movs].reverse().find(m=>m.sec==='ramos'&&m.tipo==='salida'&&m.desc===$('#rd').value.trim());if(prev){$('#rl').innerHTML='';(prev.usados||[]).forEach(u=>{if(mat(u.matId))linea(u.matId,u.cantRamo??u.cant/(prev.cant||1))});if(!$('#rp').value)$('#rp').value=prev.unit||'';sync()}};
     $('#rc').oninput=sync;$('#rp').oninput=sync;sync();
+    const rr=$('#rrec');if(rr)rr.onchange=()=>{const r=receta(rr.value);if(!r)return;$('#rd').value=r.nombre;$('#rp').value=r.precio||'';$('#rl').innerHTML='';r.mats.forEach(u=>{if(mat(u.matId))linea(u.matId,u.cant)});sync()};
+    if(pre&&pre.recetaId&&rr){rr.value=pre.recetaId;rr.onchange()}
     if(pre){$('#rd').value=pre.desc||'';$('#rd').onchange();if(pre.unit)$('#rp').value=pre.unit;if(pre.nota)$('#rno').value=pre.nota;sync()}
     $('#rok').onclick=async()=>{
       const desc=$('#rd').value.trim()||'Ramo';const n=num($('#rc').value),unit=num($('#rp').value);
@@ -1071,17 +1093,52 @@ function bindPeds(){document.querySelectorAll('[data-ped]').forEach(el=>el.oncli
 function waLink(p){let n=String(p.tel||'').replace(/\D/g,'');if(!n)return'';if(n.length===9&&n[0]==='9')n='56'+n;if(n.length===8)n='569'+n;
   const f=falta(p);const msg=`Hola ${p.cliente}! `+(p.estado==='listo'?`Tu pedido (${p.detalle}) ya está listo 🌸`:`Te confirmo tu pedido (${p.detalle}) para el ${fFecha(p.entrega)} 🌸`)+(f>0?` Saldo pendiente: ${$$(f)}.`:'');
   return 'https://wa.me/'+n+'?text='+encodeURIComponent(msg)}
+
+/* ---- Mis ramos (recetas): materiales por ramo para descontar stock automáticamente ---- */
+function costoReceta(r){return(r.mats||[]).reduce((s,u)=>s+costoMat(u.matId)*u.cant,0)}
+function formReceta(id){
+  const r=id?receta(id):{nombre:'',precio:'',mats:[]};if(!r)return;
+  const ms=[...S.materiales].sort((a,b)=>a.nombre.localeCompare(b.nombre));
+  abrir(`<h2>${id?'Ramo':'Nuevo ramo'}</h2>
+  <div class="f"><label>Nombre del ramo</label><input id="ec" value="${esc(r.nombre)}" placeholder="Ej: Ramo buchón 24 rosas rojas"></div>
+  <div class="f"><label>Precio de venta</label><input id="ep" inputmode="numeric" value="${r.precio||''}" placeholder="$"></div>
+  <div class="f"><label>Materiales de <b>un</b> ramo</label><div id="el"></div>
+    ${ms.length?`<button class="btn ghost" id="eadd">${ICON.plus} Agregar material</button>`:`<div class="hint">Primero registra materiales en la pestaña Materiales.</div>`}</div>
+  <div class="box"><div class="kv"><span>Costo de materiales</span><span id="eco">$0</span></div><div class="kv"><span><b>Ganancia por ramo</b></span><span id="ega"><b>$0</b></span></div></div>
+  <button class="btn pri" id="eok" style="margin-bottom:10px">Guardar ramo</button>
+  ${id?`<button class="btn dan" id="edel">Eliminar ramo</button>`:''}`,()=>{
+    const linea=(matId,cant)=>{const d=document.createElement('div');d.className='uline';d.innerHTML=`<select>${ms.map(x=>`<option value="${x.id}" ${x.id===matId?'selected':''}>${esc(x.nombre)}</option>`).join('')}</select><input inputmode="decimal" placeholder="Cant." value="${cant??''}"><button class="x" aria-label="Quitar">×</button>`;d.querySelector('.x').onclick=()=>{d.remove();sy()};d.querySelector('select').onchange=sy;d.querySelector('input').oninput=sy;$('#el').appendChild(d)};
+    const leer=()=>[...document.querySelectorAll('#el .uline')].map(d=>({matId:d.querySelector('select').value,cant:num(d.querySelector('input').value)})).filter(u=>u.cant>0);
+    const sy=()=>{const c=leer().reduce((s,u)=>s+costoMat(u.matId)*u.cant,0),g=num($('#ep').value)-c;$('#eco').textContent=$$(c);$('#ega').innerHTML=`<b class="${g>=0?'pos':'neg'}">${$$(g)}</b>`};
+    (r.mats||[]).forEach(u=>{if(mat(u.matId))linea(u.matId,u.cant)});if(!r.mats.length&&ms.length)linea(ms[0].id,'');
+    const ad=$('#eadd');if(ad)ad.onclick=()=>{linea(ms[0].id,'');sy()};$('#ep').oninput=sy;sy();
+    $('#eok').onclick=async()=>{const n=$('#ec').value.trim();if(!n)return toast('Escribe el nombre del ramo');
+      const d={nombre:n,precio:num($('#ep').value),mats:leer()};if(!S.recetas)S.recetas=[];
+      if(id)Object.assign(r,d);else S.recetas.push(Object.assign({id:uid()},d));await guardar();cerrar();render(false);toast('Ramo guardado')};
+    const de=$('#edel');if(de)de.onclick=()=>confirmar('¿Eliminar ramo?',r.nombre,'Eliminar',async()=>{S.recetas=S.recetas.filter(x=>x.id!==id);await guardar();render(false)});
+  });
+}
+/* Registra la venta de un pedido vinculado (descuenta stock definitivamente) */
+async function ventaDePedido(p){
+  const n=p.cant||1,unit=n?(p.total||0)/n:0;let m;
+  if(p.sec==='ropa'&&p.prodId&&prod(p.prodId)){m={id:uid(),sec:'ropa',tipo:'salida',fecha:hoy(),itemId:p.prodId,cant:n,unit,total:Math.round(p.total||0),costo:Math.round(costoProd(p.prodId)*n),nota:p.cliente,creado:Date.now()}}
+  else if(p.sec==='ramos'&&p.recetaId&&receta(p.recetaId)){const r=receta(p.recetaId);const usados=r.mats.filter(u=>mat(u.matId)).map(u=>({matId:u.matId,cantRamo:u.cant,cant:u.cant*n,costo:Math.round(costoMat(u.matId)*u.cant*n)}));
+    m={id:uid(),sec:'ramos',tipo:'salida',fecha:hoy(),itemId:null,desc:r.nombre,cant:n,unit,total:Math.round(p.total||0),costo:usados.reduce((s,u)=>s+u.costo,0),usados,nota:p.cliente,creado:Date.now()}}
+  if(!m)return false;S.movs.push(m);p.movId=m.id;await guardar();return true;
+}
+
 function formPedido(id){
   const p=id?S.pedidos.find(x=>x.id===id):{cliente:'',tel:'',sec:'ramos',detalle:'',entrega:hoy(),total:'',abono:'',nota:'',estado:'pendiente'};
   if(!p)return;
   const wa=id?waLink(p):'';
   abrir(`<h2>${id?'Pedido':'Nuevo pedido'}</h2>
   ${id?`<div class="box"><div class="kv"><span>Estado</span><span>${ESTADO[p.estado]}</span></div><div class="kv"><span>Entrega</span><span>${fFecha(p.entrega)} · ${cuando(p.entrega).t}</span></div><div class="kv"><span>Falta por pagar</span><span class="${falta(p)>0?'neg':'pos'}">${$$(falta(p))}</span></div></div>
-  <div class="btnrow">${p.estado==='pendiente'?`<button class="btn sec" id="eListo">Marcar listo</button>`:`<button class="btn sec" id="ePend">Volver a pendiente</button>`}${p.estado!=='entregado'?`<button class="btn out" id="eEnt">Entregado</button>`:`<button class="btn out" id="eVenta">Registrar venta</button>`}</div>
+  <div class="btnrow">${p.estado==='pendiente'?`<button class="btn sec" id="eListo">Marcar listo</button>`:`<button class="btn sec" id="ePend">Volver a pendiente</button>`}${p.estado!=='entregado'?`<button class="btn out" id="eEnt">Entregado</button>`:(p.movId?`<button class="btn sec" disabled>Venta registrada ✓</button>`:`<button class="btn out" id="eVenta">Registrar venta</button>`)}</div>
   ${wa?`<a class="btn wa" href="${wa}" target="_blank" rel="noopener" style="margin-bottom:12px;text-decoration:none">Enviar WhatsApp</a>`:''}`:''}
   <div class="f"><label>Cliente</label><input id="qc" value="${esc(p.cliente)}" placeholder="Nombre"></div>
   <div class="f2"><div class="f"><label>Teléfono (opcional)</label><input id="qt" inputmode="tel" value="${esc(p.tel||'')}" placeholder="9 1234 5678"></div>
     <div class="f"><label>Sección</label><select id="qs"><option value="ramos" ${p.sec==='ramos'?'selected':''}>Ramos</option><option value="ropa" ${p.sec==='ropa'?'selected':''}>Ropa</option></select></div></div>
+  <div id="qlink"></div>
   <div class="f"><label>¿Qué pidió?</label><input id="qd" value="${esc(p.detalle)}" placeholder="Ej: Ramo buchón 24 rosas rojas"></div>
   <div class="f"><label>Fecha de entrega</label><input type="date" id="qf" value="${p.entrega}"></div>
   <div class="f2"><div class="f"><label>Precio total</label><input id="qp" inputmode="numeric" value="${p.total||''}" placeholder="$"></div><div class="f"><label>Abono</label><input id="qa" inputmode="numeric" value="${p.abono||''}" placeholder="$"></div></div>
@@ -1090,16 +1147,29 @@ function formPedido(id){
   <button class="btn pri" id="qok" style="margin-bottom:10px">Guardar pedido</button>
   ${id?`<button class="btn dan" id="qdel">Eliminar pedido</button>`:''}`,()=>{
     const sy=()=>{$('#qfa').textContent=$$(Math.max(0,num($('#qp').value)-num($('#qa').value)))};$('#qp').oninput=sy;$('#qa').oninput=sy;sy();
-    const leer=()=>({cliente:$('#qc').value.trim(),tel:$('#qt').value.trim(),sec:$('#qs').value,detalle:$('#qd').value.trim(),entrega:$('#qf').value||hoy(),total:num($('#qp').value),abono:num($('#qa').value),nota:$('#qn').value.trim()});
+    const bloqueado=!!p.movId;
+    const pintarLink=()=>{const sec=$('#qs').value;const ropa=sec==='ropa';const L=ropa?[...S.productos].sort((a,b)=>a.nombre.localeCompare(b.nombre)):[...(S.recetas||[])].sort((a,b)=>a.nombre.localeCompare(b.nombre));
+      const sel=ropa?p.prodId:p.recetaId;
+      $('#qlink').innerHTML=`<div class="f2"><div class="f"><label>${ropa?'Prenda':'Ramo'} (descuenta stock)</label><select id="ql" ${bloqueado?'disabled':''}><option value="">— Sin vincular —</option>${L.map(x=>`<option value="${x.id}" ${x.id===sel?'selected':''}>${esc(x.nombre)}${x.detalle?' · '+esc(x.detalle):''}</option>`).join('')}</select></div>
+        <div class="f"><label>Cantidad</label><input id="qq" inputmode="numeric" value="${p.cant||1}" ${bloqueado?'disabled':''}></div></div>
+        ${!ropa&&!L.length?`<div class="hint" style="margin:-6px 0 12px">Guarda tus ramos en Ramos → Mis ramos para descontar materiales.</div>`:''}<div id="qw"></div>`;
+      const chk=()=>{const v=$('#ql').value,n=num($('#qq').value)||1;let falta=[];
+        if(v&&ropa){const disp=stockProd(v)+(p.prodId===v&&pendiente(p)?(p.cant||1):0);if(n>disp)falta.push(`quedan ${nf(disp)}`)}
+        if(v&&!ropa){const r=receta(v);if(r)for(const u of r.mats){const disp=stockMat(u.matId)+(p.recetaId===v&&pendiente(p)?u.cant*(p.cant||1):0);if(u.cant*n>disp)falta.push((mat(u.matId)||{}).nombre)}}
+        $('#qw').innerHTML=falta.length&&!bloqueado?`<div class="warn">No alcanza el stock${ropa?' ('+falta[0]+')':' de: '+esc(falta.join(', '))}. Puedes guardar igual.</div>`:''};
+      $('#ql').onchange=()=>{const v=$('#ql').value,x=ropa?prod(v):receta(v);if(x){if(!$('#qd').value.trim())$('#qd').value=x.nombre+(x.detalle?' · '+x.detalle:'');if(!num($('#qp').value))$('#qp').value=Math.round((ropa?x.precio:x.precio)*(num($('#qq').value)||1))||'';sy()}chk()};
+      $('#qq').oninput=()=>{const v=$('#ql').value,x=ropa?prod(v):receta(v);if(x&&x.precio)$('#qp').value=Math.round(x.precio*(num($('#qq').value)||1));sy();chk()};chk()};
+    $('#qs').onchange=pintarLink;pintarLink();
+    const leer=()=>({...(bloqueado?{}:{prodId:$('#qs').value==='ropa'?($('#ql').value||null):null,recetaId:$('#qs').value==='ramos'?($('#ql').value||null):null,cant:Math.max(1,num($('#qq').value)||1)}),cliente:$('#qc').value.trim(),tel:$('#qt').value.trim(),sec:$('#qs').value,detalle:$('#qd').value.trim(),entrega:$('#qf').value||hoy(),total:num($('#qp').value),abono:num($('#qa').value),nota:$('#qn').value.trim()});
     $('#qok').onclick=async()=>{const d=leer();if(!d.cliente)return toast('Escribe el nombre de la clienta o cliente');if(!d.detalle)return toast('Escribe qué pidió');
       if(id)Object.assign(p,d);else S.pedidos.push(Object.assign({id:uid(),estado:'pendiente',creado:Date.now()},d));
-      await guardar();cerrar();render(false);toast('Pedido guardado')};
+      await guardar();cerrar();render(false);toast((d.prodId||d.recetaId)?'Pedido guardado · stock reservado':'Pedido guardado')};
     const setE=async(e)=>{Object.assign(p,leer(),{estado:e});await guardar();render(false)};
     const venta=()=>{const pre={desc:p.detalle,unit:p.total,nota:p.cliente};cerrar();setTimeout(()=>p.sec==='ramos'?formRamo(pre):formRopa('salida',null,pre),260)};
     if($('#eListo'))$('#eListo').onclick=async()=>{await setE('listo');cerrar();toast('Marcado como listo')};
     if($('#ePend'))$('#ePend').onclick=async()=>{await setE('pendiente');cerrar();toast('Volvió a pendiente')};
-    if($('#eEnt'))$('#eEnt').onclick=async()=>{await setE('entregado');abrir(`<h2>¡Pedido entregado! 🌸</h2><p class="muted">¿Quieres registrar la venta ahora? Así queda en tus informes y se descuenta el stock.</p><button class="btn pri" id="vSi" style="margin-bottom:10px">Registrar venta</button><button class="btn sec" id="vNo">Ahora no</button>`,()=>{$('#vSi').onclick=venta;$('#vNo').onclick=cerrar})};
-    if($('#eVenta'))$('#eVenta').onclick=venta;
+    if($('#eEnt'))$('#eEnt').onclick=async()=>{await setE('entregado');if(!p.movId&&await ventaDePedido(p)){cerrar();render(false);toast('Entregado ✓ Venta registrada y stock descontado');return}abrir(`<h2>¡Pedido entregado! 🌸</h2><p class="muted">¿Quieres registrar la venta ahora? Así queda en tus informes y se descuenta el stock.</p><button class="btn pri" id="vSi" style="margin-bottom:10px">Registrar venta</button><button class="btn sec" id="vNo">Ahora no</button>`,()=>{$('#vSi').onclick=venta;$('#vNo').onclick=cerrar})};
+    if($('#eVenta'))$('#eVenta').onclick=async()=>{if(await ventaDePedido(p)){cerrar();render(false);toast('Venta registrada y stock descontado');return}venta()};
     if($('#qdel'))$('#qdel').onclick=()=>confirmar('¿Eliminar pedido?',p.cliente+' · '+p.detalle,'Eliminar',async()=>{S.pedidos=S.pedidos.filter(x=>x.id!==id);await guardar();render(false)});
   });
 }
@@ -1350,9 +1420,24 @@ const IMG=(()=>{const el=$('#bgimg');let url='';
 $('#fondoIn').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
   try{toast('Preparando imagen…');const bmp=await createImageBitmap(f);const M=1800,k=Math.min(1,M/Math.max(bmp.width,bmp.height));const c=document.createElement('canvas');c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
     const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.9));await idbSet('fondo_img',b);await IMG.recargar();BG.set('imagen');render(false);toast('Fondo listo ✨')}catch(_){toast('No se pudo usar esa imagen')}};
+
+/* ---- Fondos externos que se cargan solo si se eligen ----
+   Vía Láctea: ESO/S. Brunier (CC BY 4.0) · Cielo profundo y Tierra: NASA (dominio público) · CosmicCanvas (MIT) */
+const EXT=(()=>{const el=$('#bgfx');let cur=null,curK='',cargando={};
+  const script=src=>cargando[src]||(cargando[src]=new Promise((ok,no)=>{const sc=document.createElement('script');sc.src=src;sc.onload=ok;sc.onerror=no;document.head.appendChild(sc)}));
+  function parar(){if(cur){try{cur.dispose?cur.dispose():cur.destroy&&cur.destroy()}catch(_){}cur=null}curK='';}
+  async function set(k){
+    if(k===curK&&el.firstChild)return;parar();
+    if(k==='via-lactea'||k==='cielo-profundo'){curK=k;try{await script('realspace.js');if(curK!==k)return;el.innerHTML='';cur=RealSpace.escena(el,{sky:k==='via-lactea'?'milkyway.jpg':'tycho.jpg',tint:k==='via-lactea'?'#a9c4ff':'#c9dcff',base:'space/',dpr:Math.min(2,devicePixelRatio||1)})}catch(_){toast('No se pudo cargar el fondo')}}
+    else if(k.startsWith('cc-')){curK=k;try{await script('cosmiccanvas.js');if(curK!==k)return;el.innerHTML='';const cv=document.createElement('canvas');cv.style.cssText='position:absolute;inset:0;width:100%;height:100%';cv.width=innerWidth;cv.height=innerHeight;el.appendChild(cv);
+      cur=new CosmicCanvas(cv,{theme:k.slice(3),enableInteraction:false,enableParallax:false,touchSupport:false,performanceMode:'auto'});cur.start&&cur.start()}catch(_){toast('No se pudo cargar el fondo')}}
+  }
+  document.addEventListener('visibilitychange',()=>{if(cur&&cur.pause){document.hidden?cur.pause():cur.resume()}});
+  return{set};
+})();
 const BG=(()=>{
   const P=window.PaperShaders, el=$('#bgfx'); let m=null, noise=null;
-  const modo=()=>{const v=document.documentElement.dataset.fx;return['seda','aurora','liquido','petalos','burbujas','cielo','eclipse','galaxia','imagen','none'].includes(v)?v:'seda'};
+  const modo=()=>{const v=document.documentElement.dataset.fx;return['seda','aurora','liquido','petalos','burbujas','galaxia','via-lactea','cielo-profundo','cielo','eclipse','cc-deep-space','cc-nebula','cc-cosmic','cc-midnight','imagen','none'].includes(v)?v:'seda'};
   const osc=()=>document.documentElement.dataset.theme==='dark';
   function cfg(k,d){
     const C=P.getShaderColorFromString,F=P.ShaderFitOptions,OS=P.defaultObjectSizing,PS=P.defaultPatternSizing;
@@ -1366,7 +1451,7 @@ const BG=(()=>{
   }
   function montar(){
     if(m){try{m.dispose()}catch(_){}m=null}el.innerHTML='';
-    PART.set(modo());const k=modo();IMG.set(k);if(k==='none'||k==='petalos'||k==='burbujas'||k==='cielo'||k==='eclipse'||k==='galaxia'||k==='imagen'||!P)return;
+    PART.set(modo());const k=modo();IMG.set(k);EXT.set(k);if(['none','petalos','burbujas','cielo','eclipse','galaxia','imagen','via-lactea','cielo-profundo'].includes(k)||k.startsWith('cc-')||!P)return;
     if(!noise){noise=P.getShaderNoiseTexture()}
     if(!noise.complete){noise.addEventListener('load',montar,{once:true});return}
     try{

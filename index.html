@@ -153,10 +153,10 @@ html[data-fx]:not([data-fx=none]) .card,html[data-fx]:not([data-fx=none]) .kpi:n
 .fxgrid button b{font-size:22px;line-height:1}
 .fxgrid .sw{display:block;width:100%;height:46px;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
 #bgfx canvas{display:block}
-#bgimg{position:fixed;inset:-5%;z-index:0;background:#05070f center/cover no-repeat;display:none;animation:kb 45s ease-in-out infinite alternate;will-change:transform}
+#bgimg{position:fixed;inset:-5%;z-index:0;background:#05070f center/cover no-repeat;display:none;animation:kb 18s ease-in-out infinite alternate;will-change:transform}
 #bgimg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.25),rgba(0,0,0,.05) 40%,rgba(0,0,0,.3))}
 html[data-fx=imagen] #bgimg{display:block}
-@keyframes kb{from{transform:scale(1) translate(0,0)}to{transform:scale(1.08) translate(-1.5%,1%)}}
+@keyframes kb{0%{transform:scale(1) translate(0,0)}50%{transform:scale(1.07) translate(-1.5%,1%)}100%{transform:scale(1.12) translate(1%,-1%)}}
 @media (prefers-reduced-motion:reduce){#bgimg{animation:none}}
 #bgpart{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
 .fxgrid{grid-template-columns:repeat(3,1fr)!important}
@@ -1256,6 +1256,7 @@ const PART=(()=>{
   let fug=null;
   function sembrar(){L=[];fug=null;if(tipo==='none')return;
     if(tipo==='galaxia'){preGalaxia();return}
+    if(tipo==='imagen'){TW=[];for(let i=0;i<55;i++)TW.push({x:R(0,W),y:R(0,H*.9),r:R(.6,1.8),f:R(0,6.28),sp:R(.6,2),cruz:Math.random()<.15});return}
     if(tipo==='cielo'||tipo==='eclipse'){const n=Math.round(W*H/(tipo==='cielo'?2600:4200));for(let i=0;i<n;i++)L.push({x:R(0,W),y:R(0,tipo==='eclipse'?H*.72:H),r:R(.35,1.4),f:R(0,6.28),sp:R(.4,1.4),vx:R(-.02,.02)});return}const n=tipo==='petalos'?Math.round(Math.min(40,W*H/11000)):Math.round(Math.min(40,W*H/12000));for(let i=0;i<n;i++)L.push(nueva(true))}
   function petalo(o,t){x.save();x.translate(o.x,o.y);x.rotate(o.a);x.scale(Math.cos(t*1.7+o.f),1);x.globalAlpha=.9;const g=x.createLinearGradient(0,-o.s,0,o.s);g.addColorStop(0,'#fff5f9');g.addColorStop(1,o.c);x.fillStyle=g;x.shadowColor='rgba(184,46,99,.18)';x.shadowBlur=6;x.beginPath();x.moveTo(0,-o.s);x.quadraticCurveTo(o.s*.9,-o.s*.2,0,o.s);x.quadraticCurveTo(-o.s*.9,-o.s*.2,0,-o.s);x.fill();x.restore()}
   function burbuja(o,t){const s=o.s;x.save();x.translate(o.x+Math.sin(t*1.3+o.f)*6,o.y);x.globalAlpha=.8;const g=x.createRadialGradient(-s*.3,-s*.3,s*.1,0,0,s);g.addColorStop(0,'rgba(255,255,255,.95)');g.addColorStop(.55,'rgba(255,170,205,.25)');g.addColorStop(1,'rgba(240,107,155,.55)');x.fillStyle=g;x.beginPath();x.arc(0,0,s,0,6.28);x.fill();x.strokeStyle='rgba(255,108,159,.75)';x.lineWidth=1.6;x.stroke();x.restore()}
@@ -1322,15 +1323,15 @@ const PART=(()=>{
     // estrellas que titilan (algunas con destello en cruz)
     TW=[];for(let i=0;i<70;i++){const enB=Math.random()<.5;const[px,py]=enB?enBanda(PW*.14):[R(0,PW),R(0,PH*.85)];TW.push({x:px,y:py,r:R(.6,1.7),f:R(0,6.28),sp:R(.6,2),cruz:Math.random()<.12})}
   }
-  function galaxia(t,k){if(!pre)preGalaxia();
-    const dx=Math.sin(t*.025)*W*.025,dy=Math.cos(t*.02)*H*.012;x.drawImage(pre,-W*.03+dx,-H*.03+dy,W*1.06,H*1.06);
+  function galaxia(t,k){let dx=0,dy=0;if(tipo==='galaxia'){if(!pre)preGalaxia();
+    dx=Math.sin(t*.025)*W*.025;dy=Math.cos(t*.02)*H*.012;x.drawImage(pre,-W*.03+dx,-H*.03+dy,W*1.06,H*1.06)}else{dx=W*.03;dy=H*.03}
     for(const s of TW){const a=.25+.75*Math.pow(.5+.5*Math.sin(t*s.sp+s.f),2),px=s.x-W*.03+dx,py=s.y-H*.03+dy;
       const g=x.createRadialGradient(px,py,0,px,py,s.r*4);g.addColorStop(0,`rgba(255,255,255,${a})`);g.addColorStop(.3,`rgba(190,225,255,${a*.4})`);g.addColorStop(1,'rgba(190,225,255,0)');x.fillStyle=g;x.beginPath();x.arc(px,py,s.r*4,0,6.28);x.fill();
       if(s.cruz){x.strokeStyle=`rgba(220,240,255,${a*.7})`;x.lineWidth=.8;const L2=s.r*9*a;x.beginPath();x.moveTo(px-L2,py);x.lineTo(px+L2,py);x.moveTo(px,py-L2);x.lineTo(px,py+L2);x.stroke()}}
     if(!fug&&Math.random()<.004*k)fug={x:R(W*.3,W*1.1),y:R(0,H*.5),t:0};
     if(fug){fug.t+=.02*k;const Lg=120,ux=-Math.cos(.55),uy=Math.sin(.55),px=fug.x+ux*fug.t*340,py=fug.y+uy*fug.t*340;const g=x.createLinearGradient(px,py,px-ux*Lg,py-uy*Lg);g.addColorStop(0,`rgba(230,245,255,${Math.max(0,1-fug.t)})`);g.addColorStop(1,'rgba(230,245,255,0)');x.strokeStyle=g;x.lineWidth=1.5;x.lineCap='round';x.beginPath();x.moveTo(px,py);x.lineTo(px-ux*Lg,py-uy*Lg);x.stroke();if(fug.t>=1)fug=null}
   }
-  function frame(now,k){const t=now/1000;x.clearRect(0,0,W,H);if(tipo==='galaxia'){galaxia(t,k);return}if(tipo==='cielo'||tipo==='eclipse'){espacio(t,k);return}
+  function frame(now,k){const t=now/1000;x.clearRect(0,0,W,H);if(tipo==='galaxia'||tipo==='imagen'){galaxia(t,k);return}if(tipo==='cielo'||tipo==='eclipse'){espacio(t,k);return}
     for(let i=0;i<L.length;i++){const o=L[i];
       if(tipo==='petalos'){o.y+=o.vy*k;o.x+=(o.vx+Math.sin(t*.9+o.f)*.6)*k;o.a+=o.va*k;if(o.y>H+60||o.x<-60||o.x>W+60){L[i]=nueva(false);continue}petalo(o,t)}
       else{if(o.pop>0){o.pop+=.06*k;revienta(o);if(o.pop>=1)L[i]=nueva(false);continue}o.y+=o.vy*k;if(o.y<-60){L[i]=nueva(false);continue}burbuja(o,t)}}}
@@ -1338,7 +1339,7 @@ const PART=(()=>{
   const red=matchMedia('(prefers-reduced-motion: reduce)');
   (function loop(now){if(tipo!=='none'&&!document.hidden){const iv=(localStorage.getItem('fps')||'60')==='60'?12:33;if(now-last>iv){const k=Math.min(2,(now-last)/33.3);last=now;frame(now,red.matches?0:k)}}requestAnimationFrame(loop)})(performance.now());
   addEventListener('resize',size);size();
-  return{set(m){const n=['petalos','burbujas','cielo','eclipse','galaxia'].includes(m)?m:'none';if(n!==tipo){tipo=n;sembrar();x.clearRect(0,0,W,H)}}};
+  return{set(m){const n=['petalos','burbujas','cielo','eclipse','galaxia','imagen'].includes(m)?m:'none';if(n!==tipo){tipo=n;sembrar();x.clearRect(0,0,W,H)}}};
 })();
 
 /* ---- Fondo "Mi imagen": foto propia con movimiento lento ---- */

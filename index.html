@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<script>try{if(localStorage.getItem("tema_neg")==="dark"){document.documentElement.dataset.theme="dark";}var f=localStorage.getItem("fondo_neg");document.documentElement.dataset.fx=(["seda","aurora","liquido","petalos","burbujas","cielo","eclipse","none"].indexOf(f)>=0)?f:"seda";}catch(e){}</script>
+<script>try{if(localStorage.getItem("tema_neg")==="dark"){document.documentElement.dataset.theme="dark";}var f=localStorage.getItem("fondo_neg");document.documentElement.dataset.fx=(["seda","aurora","liquido","petalos","burbujas","cielo","eclipse","galaxia","imagen","none"].indexOf(f)>=0)?f:"seda";}catch(e){}</script>
 <style>
 :root{--hdr:rgba(255,246,249,.92);--navbg:rgba(255,255,255,.94);--field:#fff;
   --bg:#fff6f9; --card:#ffffff; --ink:#3d1f2c; --muted:#a8798c; --line:#fbe0ea;
@@ -110,7 +110,7 @@ nav.tabs button.on{color:var(--rosa)}
 .chip.on{background:var(--rosa);color:#fff;border-color:var(--rosa)}
 .install{background:var(--rosa-2);color:var(--rosa-ink);border-radius:14px;padding:12px 14px;font-size:14px;margin:12px 0}
 
-html[data-theme=dark]{--bg:#170d12;--card:#24141b;--field:#2c1821;--ink:#fbe4ee;--muted:#c792a8;--line:#3b2230;--rosa:#ff6c9f;--rosa-2:#47202f;--rosa-ink:#ff93b8;--rosa-3:#2e1720;--azul:#ff86b4;--azul-2:#4b1d31;--verde:#5ccf96;--verde-2:#183326;--rojo:#ff7b72;--rojo-2:#3d1d1b;--sombra:0 1px 2px rgba(0,0,0,.45),0 4px 16px rgba(0,0,0,.25);--hdr:rgba(23,13,18,.9);--navbg:rgba(30,17,23,.94);color-scheme:dark}
+html[data-theme=dark],html[data-fx=galaxia],html[data-fx=imagen]{--bg:#170d12;--card:#24141b;--field:#2c1821;--ink:#fbe4ee;--muted:#c792a8;--line:#3b2230;--rosa:#ff6c9f;--rosa-2:#47202f;--rosa-ink:#ff93b8;--rosa-3:#2e1720;--azul:#ff86b4;--azul-2:#4b1d31;--verde:#5ccf96;--verde-2:#183326;--rojo:#ff7b72;--rojo-2:#3d1d1b;--sombra:0 1px 2px rgba(0,0,0,.45),0 4px 16px rgba(0,0,0,.25);--hdr:rgba(23,13,18,.9);--navbg:rgba(30,17,23,.94);color-scheme:dark}
 html[data-theme=dark] .sheet .grab{background:#5a2c3e}
 html[data-theme=dark] .scrim{background:rgba(0,0,0,.55)}
 header.top .thb{position:absolute;right:16px;top:calc(12px + var(--top));border:0;background:var(--rosa-2);color:var(--rosa-ink);width:38px;height:38px;border-radius:12px;font-size:17px;display:flex;align-items:center;justify-content:center}
@@ -146,17 +146,22 @@ nav.tabs button{font-size:10px}
 #bgfx{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
 main{position:relative;z-index:1}
 :root{--cardA:rgba(255,255,255,.62)}
-html[data-theme=dark]{--cardA:rgba(36,20,27,.6)}
+html[data-theme=dark],html[data-fx=galaxia],html[data-fx=imagen]{--cardA:rgba(36,20,27,.6)}
 html[data-fx]:not([data-fx=none]) .card,html[data-fx]:not([data-fx=none]) .kpi:not(.big),html[data-fx]:not([data-fx=none]) .list{background:var(--cardA);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(2px)}
 .fxgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .fxgrid button{border:1px solid var(--line);background:var(--card);border-radius:14px;padding:10px 4px;font-size:12px;font-weight:650;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:4px}
 .fxgrid button b{font-size:22px;line-height:1}
 .fxgrid .sw{display:block;width:100%;height:46px;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
 #bgfx canvas{display:block}
+#bgimg{position:fixed;inset:-5%;z-index:0;background:#05070f center/cover no-repeat;display:none;animation:kb 45s ease-in-out infinite alternate;will-change:transform}
+#bgimg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.25),rgba(0,0,0,.05) 40%,rgba(0,0,0,.3))}
+html[data-fx=imagen] #bgimg{display:block}
+@keyframes kb{from{transform:scale(1) translate(0,0)}to{transform:scale(1.08) translate(-1.5%,1%)}}
+@media (prefers-reduced-motion:reduce){#bgimg{animation:none}}
 #bgpart{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
 .fxgrid{grid-template-columns:repeat(3,1fr)!important}
 :root{--glass:rgba(255,255,255,.52);--glassB:rgba(255,255,255,.65)}
-html[data-theme=dark]{--glass:rgba(30,14,22,.46);--glassB:rgba(255,255,255,.12)}
+html[data-theme=dark],html[data-fx=galaxia],html[data-fx=imagen]{--glass:rgba(30,14,22,.46);--glassB:rgba(255,255,255,.12)}
 html[data-fx]:not([data-fx=none]) .card,html[data-fx]:not([data-fx=none]) .kpi:not(.big),html[data-fx]:not([data-fx=none]) .list,html[data-fx]:not([data-fx=none]) .install{background:var(--glass)!important;-webkit-backdrop-filter:blur(20px) saturate(1.5)!important;backdrop-filter:blur(20px) saturate(1.5)!important;border:1px solid var(--glassB);box-shadow:0 8px 28px rgba(120,30,70,.10)}
 html[data-fx]:not([data-fx=none]) .seg{background:var(--glass);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px)}
 html[data-fx]:not([data-fx=none]) header.top{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
@@ -171,7 +176,9 @@ html[data-fx]:not([data-fx=none]) .kpi.big{box-shadow:0 10px 30px rgba(217,74,12
 <body>
 <header class="top"><div class="sub" id="hsub"></div><h1 id="htitle">Inicio</h1><button class="thb" id="thBtn" aria-label="Claro / Nocturno"></button></header>
 <div id="bgfx" aria-hidden="true"></div>
+<div id="bgimg" aria-hidden="true"></div>
 <canvas id="bgpart" aria-hidden="true"></canvas>
+<input type="file" id="fondoIn" accept="image/*" hidden>
 <script src="paper-shaders.min.js"></script>
 <main id="view"></main>
 
@@ -812,7 +819,8 @@ function vAjustes(){
   <div class="card"><h2>Apariencia</h2><div class="seg" style="margin:0"><button data-tema="light" class="${esOscuro()?'':'on'}">☀ Claro</button><button data-tema="dark" class="${esOscuro()?'on':''}">☾ Nocturno</button></div>
     <h2 style="margin:16px 0 10px">Fondo animado</h2>
     <div class="fxgrid">${FONDOS.map(([k,e,n])=>`<button data-fx="${k}" class="${BG.modo()===k?'on':''}"><i class="sw" style="background:${e}"></i>${n}</button>`).join('')}</div>
-    <p class="small muted" style="margin:8px 0 0">Cada fondo cambia solo de colores en modo nocturno.</p>
+    <button class="btn sec" id="fondoPick" style="margin-top:10px">🖼️ ${BG.modo()==='imagen'?'Cambiar mi imagen':'Usar una imagen de mi galería'}</button>
+    <p class="small muted" style="margin:8px 0 0">Cada fondo cambia solo de colores en modo nocturno. Galaxia y Mi imagen usan siempre colores oscuros. Tu imagen se guarda solo en este teléfono.</p>
     <h2 style="margin:16px 0 0">Fluidez de animaciones</h2><div class="seg" id="fpsSeg" style="margin-top:8px">${[['30','30 FPS · ahorra batería'],['60','60 FPS · más fluido']].map(([k,n])=>`<button data-fps="${k}" class="${(localStorage.getItem('fps')||'60')===k?'on':''}">${n}</button>`).join('')}</div>
     </div>
   <div class="card"><h2>Tu negocio</h2>
@@ -834,7 +842,8 @@ function vAjustes(){
     <button class="btn dan" id="aDel" style="margin-top:12px">Borrar todos los datos</button>
   </div>`;
   document.querySelectorAll('[data-tema]').forEach(b=>b.onclick=()=>setTema(b.dataset.tema));
-  document.querySelectorAll('[data-fx]').forEach(b=>b.onclick=()=>{BG.set(b.dataset.fx);document.querySelectorAll('[data-fx]').forEach(y=>y.classList.toggle('on',y===b))});
+  $('#fondoPick').onclick=()=>$('#fondoIn').click();
+  document.querySelectorAll('[data-fx]').forEach(b=>b.onclick=async()=>{if(b.dataset.fx==='imagen'&&!(await idbGetK('fondo_img'))){$('#fondoIn').click();return}BG.set(b.dataset.fx);document.querySelectorAll('[data-fx]').forEach(y=>y.classList.toggle('on',y===b))});
   document.querySelectorAll('[data-fps]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('fps',b.dataset.fps)}catch(_){}document.querySelectorAll('[data-fps]').forEach(y=>y.classList.toggle('on',y===b))});
   document.querySelectorAll('[data-fc]').forEach(b=>b.onclick=()=>{BG.cant(b.dataset.fc);document.querySelectorAll('[data-fc]').forEach(y=>y.classList.toggle('on',y===b))});
   $('#aSave').onclick=async()=>{S.config.negocio=$('#aNeg').value.trim()||'Mi Negocio';S.config.stockMin=Math.max(0,num($('#aMin').value));await guardar();toast('Guardado')};
@@ -1231,6 +1240,8 @@ const FONDOS=[
  ['burbujas','radial-gradient(circle at 35% 40%,transparent 0 22%,rgba(201,162,255,.9) 23% 26%,transparent 27%),radial-gradient(circle at 70% 65%,transparent 0 15%,rgba(143,227,255,.9) 16% 19%,transparent 20%),linear-gradient(160deg,#fff6f9,#ffe3ee)','Burbujas'],
  ['cielo','radial-gradient(circle at 20% 30%,#fff 0 1px,transparent 2px),radial-gradient(circle at 70% 20%,#fff 0 1px,transparent 2px),radial-gradient(circle at 55% 60%,#fff 0 1.2px,transparent 2px),radial-gradient(circle at 30% 75%,#fff 0 1px,transparent 2px),radial-gradient(circle at 85% 70%,#fff 0 1px,transparent 2px),#0b0614','Cielo sereno'],
  ['eclipse','radial-gradient(circle at 50% 190%,#05030a 0 72%,rgba(255,170,220,.9) 73%,rgba(192,132,252,.25) 80%,transparent 88%),#0b0614','Eclipse'],
+ ['galaxia','radial-gradient(circle at 80% 0%,#0b1a33 0 22%,#7fc8ff 23%,transparent 26%),radial-gradient(circle at 30% 45%,#2b6cb0 0 7%,transparent 8%),radial-gradient(ellipse 60% 18% at 55% 50%,rgba(120,180,255,.45),transparent),radial-gradient(circle at 45% 260%,#1e5aa8 0 70%,#9fdcff 71%,transparent 74%),#030a1a','Galaxia'],
+ ['imagen','linear-gradient(135deg,#3a2a5a,#0b1a33)','Mi imagen'],
  ['none','var(--bg)','Ninguno']];
 
 /* ---- Partículas sobre el degradado: pétalos y burbujas de jabón ---- */
@@ -1244,6 +1255,7 @@ const PART=(()=>{
     return o}
   let fug=null;
   function sembrar(){L=[];fug=null;if(tipo==='none')return;
+    if(tipo==='galaxia'){preGalaxia();return}
     if(tipo==='cielo'||tipo==='eclipse'){const n=Math.round(W*H/(tipo==='cielo'?2600:4200));for(let i=0;i<n;i++)L.push({x:R(0,W),y:R(0,tipo==='eclipse'?H*.72:H),r:R(.35,1.4),f:R(0,6.28),sp:R(.4,1.4),vx:R(-.02,.02)});return}const n=tipo==='petalos'?Math.round(Math.min(40,W*H/11000)):Math.round(Math.min(40,W*H/12000));for(let i=0;i<n;i++)L.push(nueva(true))}
   function petalo(o,t){x.save();x.translate(o.x,o.y);x.rotate(o.a);x.scale(Math.cos(t*1.7+o.f),1);x.globalAlpha=.9;const g=x.createLinearGradient(0,-o.s,0,o.s);g.addColorStop(0,'#fff5f9');g.addColorStop(1,o.c);x.fillStyle=g;x.shadowColor='rgba(184,46,99,.18)';x.shadowBlur=6;x.beginPath();x.moveTo(0,-o.s);x.quadraticCurveTo(o.s*.9,-o.s*.2,0,o.s);x.quadraticCurveTo(-o.s*.9,-o.s*.2,0,-o.s);x.fill();x.restore()}
   function burbuja(o,t){const s=o.s;x.save();x.translate(o.x+Math.sin(t*1.3+o.f)*6,o.y);x.globalAlpha=.8;const g=x.createRadialGradient(-s*.3,-s*.3,s*.1,0,0,s);g.addColorStop(0,'rgba(255,255,255,.95)');g.addColorStop(.55,'rgba(255,170,205,.25)');g.addColorStop(1,'rgba(240,107,155,.55)');x.fillStyle=g;x.beginPath();x.arc(0,0,s,0,6.28);x.fill();x.strokeStyle='rgba(255,108,159,.75)';x.lineWidth=1.6;x.stroke();x.restore()}
@@ -1265,7 +1277,60 @@ const PART=(()=>{
       x.fillStyle=d?'#05030a':'#f6eefc';x.beginPath();x.arc(cx,cy,R0,0,6.28);x.fill();
       x.strokeStyle=d?`rgba(255,220,240,${.9*p})`:`rgba(232,87,138,${.8*p})`;x.lineWidth=1.6;x.beginPath();x.arc(cx,cy,R0,Math.PI*1.18,Math.PI*1.82);x.stroke()}
   }
-  function frame(now,k){const t=now/1000;x.clearRect(0,0,W,H);if(tipo==='cielo'||tipo==='eclipse'){espacio(t,k);return}
+
+  /* Galaxia: escena pre-dibujada (Vía Láctea, planetas y la Tierra) + estrellas que titilan y fugaces */
+  let pre=null,TW=[];
+  function preGalaxia(){
+    const d=Math.min(2,devicePixelRatio||1),S=1.06,PW=W*S,PH=H*S;pre=document.createElement('canvas');pre.width=PW*d;pre.height=PH*d;const c=pre.getContext('2d');c.scale(d,d);
+    const gauss=()=>(Math.random()+Math.random()+Math.random()-1.5)/1.5;
+    let g=c.createLinearGradient(0,0,PW*.3,PH);g.addColorStop(0,'#020611');g.addColorStop(.5,'#061633');g.addColorStop(1,'#020814');c.fillStyle=g;c.fillRect(0,0,PW,PH);
+    const A=[PW*1.08,-PH*.02],B=[PW*.05,PH*1.02],ax=B[0]-A[0],ay=B[1]-A[1],al=Math.hypot(ax,ay),nx=-ay/al,ny=ax/al;
+    const enBanda=(w)=>{const t=Math.random(),o=gauss()*w;return[A[0]+ax*t+nx*o,A[1]+ay*t+ny*o]};
+    // nebulosas de la Vía Láctea
+    c.globalCompositeOperation='lighter';
+    const NC=[[80,140,255],[110,200,255],[170,140,255],[255,215,170],[90,120,220]];
+    for(let i=0;i<220;i++){const[px,py]=enBanda(PW*.2);const r=R(25,130),cc=NC[(Math.random()*NC.length)|0],a=R(.03,.085);const rg=c.createRadialGradient(px,py,0,px,py,r);rg.addColorStop(0,`rgba(${cc},${a})`);rg.addColorStop(1,`rgba(${cc},0)`);c.fillStyle=rg;c.beginPath();c.arc(px,py,r,0,6.28);c.fill()}
+    // núcleo brillante
+    for(let i=0;i<40;i++){const[px,py]=enBanda(PW*.04);const r=R(15,55);const rg=c.createRadialGradient(px,py,0,px,py,r);rg.addColorStop(0,'rgba(255,230,200,.10)');rg.addColorStop(1,'rgba(255,230,200,0)');c.fillStyle=rg;c.beginPath();c.arc(px,py,r,0,6.28);c.fill()}
+    c.globalCompositeOperation='source-over';
+    // polvo oscuro
+    for(let i=0;i<140;i++){const[px,py]=enBanda(PW*.07);const r=R(6,22);const rg=c.createRadialGradient(px,py,0,px,py,r);rg.addColorStop(0,'rgba(3,7,18,.22)');rg.addColorStop(1,'rgba(3,7,18,0)');c.fillStyle=rg;c.beginPath();c.arc(px,py,r,0,6.28);c.fill()}
+    // estrellas: densas en la banda y repartidas
+    const star=(px,py,r,a,col)=>{c.globalAlpha=a;c.fillStyle=col;c.beginPath();c.arc(px,py,r,0,6.28);c.fill()};
+    for(let i=0;i<Math.round(PW*PH/80);i++){const[px,py]=enBanda(PW*.22);star(px,py,R(.25,.9),R(.3,.9),Math.random()<.2?'#cfe6ff':'#ffffff')}
+    for(let i=0;i<Math.round(PW*PH/180);i++)star(R(0,PW),R(0,PH),R(.25,1.1),R(.25,.95),Math.random()<.25?'#bcd8ff':'#ffffff');
+    c.globalAlpha=1;
+    // planeta grande arriba a la derecha
+    const planeta=(x0,y0,r,base,rim,bandas)=>{
+      const halo=c.createRadialGradient(x0,y0,r*.95,x0,y0,r*1.25);halo.addColorStop(0,'rgba(127,200,255,.35)');halo.addColorStop(1,'rgba(127,200,255,0)');c.fillStyle=halo;c.beginPath();c.arc(x0,y0,r*1.25,0,6.28);c.fill();
+      c.save();c.beginPath();c.arc(x0,y0,r,0,6.28);c.clip();
+      let pg=c.createRadialGradient(x0+r*.35,y0+r*.4,r*.1,x0,y0,r*1.05);pg.addColorStop(0,base[0]);pg.addColorStop(.6,base[1]);pg.addColorStop(1,base[2]);c.fillStyle=pg;c.fillRect(x0-r,y0-r,r*2,r*2);
+      for(let i=0;i<bandas;i++){c.globalAlpha=R(.05,.14);c.fillStyle=Math.random()<.5?'#9fc6ee':'#1c3556';c.beginPath();c.ellipse(x0+R(-r,r)*.8,y0+R(-r,r)*.8,R(r*.15,r*.5),R(r*.04,r*.12),R(-.6,.6),0,6.28);c.fill()}
+      c.globalAlpha=1;const sh=c.createRadialGradient(x0-r*.55,y0-r*.6,r*.2,x0-r*.2,y0-r*.2,r*1.3);sh.addColorStop(0,'rgba(1,4,12,.85)');sh.addColorStop(.55,'rgba(1,4,12,.35)');sh.addColorStop(1,'rgba(1,4,12,0)');c.fillStyle=sh;c.fillRect(x0-r,y0-r,r*2,r*2);c.restore();
+      c.save();c.shadowColor=rim;c.shadowBlur=r*.25;c.strokeStyle=rim;c.lineWidth=Math.max(1.5,r*.03);c.beginPath();c.arc(x0,y0,r,-.15,Math.PI*.85);c.stroke();c.restore()};
+    planeta(PW*.8,PH*.03,PW*.33,['#3d6b9a','#14304f','#050d1c'],'#bfe6ff',26);
+    planeta(PW*.29,PH*.43,PW*.075,['#4a8ad0','#1b4f8a','#071a33'],'#9fdcff',10);
+    // lunita
+    star(PW*.17,PH*.845,PW*.014,1,'#9cc4ec');c.globalAlpha=1;
+    // la Tierra en el horizonte
+    const er=PW*1.7,ex=PW*.42,ey=PH*.83+er;
+    let at=c.createRadialGradient(ex,ey,er*.985,ex,ey,er*1.06);at.addColorStop(0,'rgba(140,210,255,.75)');at.addColorStop(.25,'rgba(80,160,255,.3)');at.addColorStop(1,'rgba(80,160,255,0)');c.fillStyle=at;c.beginPath();c.arc(ex,ey,er*1.06,0,6.28);c.fill();
+    c.save();c.beginPath();c.arc(ex,ey,er,0,6.28);c.clip();let eg=c.createLinearGradient(0,ey-er,0,ey-er+PH*.18);eg.addColorStop(0,'#3f8fe0');eg.addColorStop(.35,'#14467f');eg.addColorStop(1,'#061830');c.fillStyle=eg;c.fillRect(0,ey-er,PW,PH*.2);
+    for(let i=0;i<55;i++){c.globalAlpha=R(.08,.3);c.fillStyle='#ffffff';c.beginPath();c.ellipse(R(0,PW),ey-er+R(4,PH*.1),R(10,60),R(2,6),R(-.15,.15),0,6.28);c.fill()}
+    c.restore();c.globalAlpha=1;
+    c.save();c.shadowColor='#9fe2ff';c.shadowBlur=18;c.strokeStyle='rgba(200,240,255,.95)';c.lineWidth=2;c.beginPath();c.arc(ex,ey,er,Math.PI*1.3,Math.PI*1.7);c.stroke();c.restore();
+    // estrellas que titilan (algunas con destello en cruz)
+    TW=[];for(let i=0;i<70;i++){const enB=Math.random()<.5;const[px,py]=enB?enBanda(PW*.14):[R(0,PW),R(0,PH*.85)];TW.push({x:px,y:py,r:R(.6,1.7),f:R(0,6.28),sp:R(.6,2),cruz:Math.random()<.12})}
+  }
+  function galaxia(t,k){if(!pre)preGalaxia();
+    const dx=Math.sin(t*.025)*W*.025,dy=Math.cos(t*.02)*H*.012;x.drawImage(pre,-W*.03+dx,-H*.03+dy,W*1.06,H*1.06);
+    for(const s of TW){const a=.25+.75*Math.pow(.5+.5*Math.sin(t*s.sp+s.f),2),px=s.x-W*.03+dx,py=s.y-H*.03+dy;
+      const g=x.createRadialGradient(px,py,0,px,py,s.r*4);g.addColorStop(0,`rgba(255,255,255,${a})`);g.addColorStop(.3,`rgba(190,225,255,${a*.4})`);g.addColorStop(1,'rgba(190,225,255,0)');x.fillStyle=g;x.beginPath();x.arc(px,py,s.r*4,0,6.28);x.fill();
+      if(s.cruz){x.strokeStyle=`rgba(220,240,255,${a*.7})`;x.lineWidth=.8;const L2=s.r*9*a;x.beginPath();x.moveTo(px-L2,py);x.lineTo(px+L2,py);x.moveTo(px,py-L2);x.lineTo(px,py+L2);x.stroke()}}
+    if(!fug&&Math.random()<.004*k)fug={x:R(W*.3,W*1.1),y:R(0,H*.5),t:0};
+    if(fug){fug.t+=.02*k;const Lg=120,ux=-Math.cos(.55),uy=Math.sin(.55),px=fug.x+ux*fug.t*340,py=fug.y+uy*fug.t*340;const g=x.createLinearGradient(px,py,px-ux*Lg,py-uy*Lg);g.addColorStop(0,`rgba(230,245,255,${Math.max(0,1-fug.t)})`);g.addColorStop(1,'rgba(230,245,255,0)');x.strokeStyle=g;x.lineWidth=1.5;x.lineCap='round';x.beginPath();x.moveTo(px,py);x.lineTo(px-ux*Lg,py-uy*Lg);x.stroke();if(fug.t>=1)fug=null}
+  }
+  function frame(now,k){const t=now/1000;x.clearRect(0,0,W,H);if(tipo==='galaxia'){galaxia(t,k);return}if(tipo==='cielo'||tipo==='eclipse'){espacio(t,k);return}
     for(let i=0;i<L.length;i++){const o=L[i];
       if(tipo==='petalos'){o.y+=o.vy*k;o.x+=(o.vx+Math.sin(t*.9+o.f)*.6)*k;o.a+=o.va*k;if(o.y>H+60||o.x<-60||o.x>W+60){L[i]=nueva(false);continue}petalo(o,t)}
       else{if(o.pop>0){o.pop+=.06*k;revienta(o);if(o.pop>=1)L[i]=nueva(false);continue}o.y+=o.vy*k;if(o.y<-60){L[i]=nueva(false);continue}burbuja(o,t)}}}
@@ -1273,11 +1338,20 @@ const PART=(()=>{
   const red=matchMedia('(prefers-reduced-motion: reduce)');
   (function loop(now){if(tipo!=='none'&&!document.hidden){const iv=(localStorage.getItem('fps')||'60')==='60'?12:33;if(now-last>iv){const k=Math.min(2,(now-last)/33.3);last=now;frame(now,red.matches?0:k)}}requestAnimationFrame(loop)})(performance.now());
   addEventListener('resize',size);size();
-  return{set(m){const n=['petalos','burbujas','cielo','eclipse'].includes(m)?m:'none';if(n!==tipo){tipo=n;sembrar();x.clearRect(0,0,W,H)}}};
+  return{set(m){const n=['petalos','burbujas','cielo','eclipse','galaxia'].includes(m)?m:'none';if(n!==tipo){tipo=n;sembrar();x.clearRect(0,0,W,H)}}};
 })();
+
+/* ---- Fondo "Mi imagen": foto propia con movimiento lento ---- */
+const IMG=(()=>{const el=$('#bgimg');let url='';
+  async function cargar(){try{const b=await idbGetK('fondo_img');if(!b)return;if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(b);el.style.backgroundImage=`url("${url}")`}catch(_){}}
+  return{set(k){if(k==='imagen'&&!url)cargar()},recargar:cargar};
+})();
+$('#fondoIn').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
+  try{toast('Preparando imagen…');const bmp=await createImageBitmap(f);const M=1800,k=Math.min(1,M/Math.max(bmp.width,bmp.height));const c=document.createElement('canvas');c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
+    const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.9));await idbSet('fondo_img',b);await IMG.recargar();BG.set('imagen');render(false);toast('Fondo listo ✨')}catch(_){toast('No se pudo usar esa imagen')}};
 const BG=(()=>{
   const P=window.PaperShaders, el=$('#bgfx'); let m=null, noise=null;
-  const modo=()=>{const v=document.documentElement.dataset.fx;return['seda','aurora','liquido','petalos','burbujas','cielo','eclipse','none'].includes(v)?v:'seda'};
+  const modo=()=>{const v=document.documentElement.dataset.fx;return['seda','aurora','liquido','petalos','burbujas','cielo','eclipse','galaxia','imagen','none'].includes(v)?v:'seda'};
   const osc=()=>document.documentElement.dataset.theme==='dark';
   function cfg(k,d){
     const C=P.getShaderColorFromString,F=P.ShaderFitOptions,OS=P.defaultObjectSizing,PS=P.defaultPatternSizing;
@@ -1291,7 +1365,7 @@ const BG=(()=>{
   }
   function montar(){
     if(m){try{m.dispose()}catch(_){}m=null}el.innerHTML='';
-    PART.set(modo());const k=modo();if(k==='none'||k==='petalos'||k==='burbujas'||k==='cielo'||k==='eclipse'||!P)return;
+    PART.set(modo());const k=modo();IMG.set(k);if(k==='none'||k==='petalos'||k==='burbujas'||k==='cielo'||k==='eclipse'||k==='galaxia'||k==='imagen'||!P)return;
     if(!noise){noise=P.getShaderNoiseTexture()}
     if(!noise.complete){noise.addEventListener('load',montar,{once:true});return}
     try{

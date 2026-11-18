@@ -50,6 +50,15 @@ nav.tabs button.on{color:var(--rosa)}
 .btn.out{background:var(--rosa);color:#fff}
 .btn.pri{background:var(--rosa);color:#fff;width:100%}
 .btn.voz{width:100%;margin:-4px 0 12px}
+.vrow{background:var(--field);border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:8px;animation:vin .25s ease}
+.vrow.nuevo{border-color:var(--rosa-2)}
+.vrow.duda{border-color:#f59e0b;box-shadow:0 0 0 2px rgba(245,158,11,.18)}
+.vq{font-size:12px;font-weight:600;color:#b45309;margin:0 0 6px}.vq.ok{color:var(--muted);font-weight:500}
+.vrow select,.vrow input{width:100%;color:var(--ink);font-weight:600;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px;font-size:16px;-webkit-appearance:none;appearance:none}
+.vg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;align-items:end}
+.vg label{font-size:11px;color:var(--muted);display:grid;gap:3px}
+.vu{font-size:13px;font-weight:600;text-align:right;padding-bottom:4px;display:grid}.vu small{font-weight:400;color:var(--muted);font-size:11px}
+@keyframes vin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .btn.rec{animation:recpulse 1.2s ease-in-out infinite}
 @keyframes recpulse{0%,100%{box-shadow:0 0 0 0 rgba(236,72,153,.55)}50%{box-shadow:0 0 0 10px rgba(236,72,153,0)}}
 .btn.sec{background:var(--rosa-2);color:var(--rosa-ink);width:100%}
@@ -967,116 +976,153 @@ function formProducto(id){
 }
 
 /* ---- Ramos ---- */
-/* ===== Compra por voz: "compré 100 palos a 10.000, 50 rosas a 5 lucas" ===== */
+/* ===== Compra por voz (intérprete local, sin internet) ===== */
 const VOZ=(()=>{
-  const sa=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
-  const U={cero:0,un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,once:11,doce:12,trece:13,catorce:14,quince:15,dieciseis:16,diecisiete:17,dieciocho:18,diecinueve:19,veinte:20,veintiun:21,veintiuno:21,veintiuna:21,veintidos:22,veintitres:23,veinticuatro:24,veinticinco:25,veintiseis:26,veintisiete:27,veintiocho:28,veintinueve:29,treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90,cien:100,ciento:100,doscientos:200,doscientas:200,trescientos:300,trescientas:300,cuatrocientos:400,cuatrocientas:400,quinientos:500,quinientas:500,seiscientos:600,seiscientas:600,setecientos:700,setecientas:700,ochocientos:800,ochocientas:800,novecientos:900,novecientas:900,media:0.5,medio:0.5};
-  // convierte palabras-número en dígitos ("cien" -> 100, "diez mil" -> 10000, "treinta y cinco" -> 35)
+  const sa=s=>String(s).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  const U={un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,once:11,doce:12,trece:13,catorce:14,quince:15,dieciseis:16,diecisiete:17,dieciocho:18,diecinueve:19,veinte:20,veintiun:21,veintiuno:21,veintiuna:21,veintidos:22,veintitres:23,veinticuatro:24,veinticinco:25,veintiseis:26,veintisiete:27,veintiocho:28,veintinueve:29,treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90,cien:100,ciento:100,doscientos:200,doscientas:200,trescientos:300,trescientas:300,cuatrocientos:400,cuatrocientas:400,quinientos:500,quinientas:500,seiscientos:600,seiscientas:600,setecientos:700,setecientas:700,ochocientos:800,ochocientas:800,novecientos:900,novecientas:900};
   function palabras(t){
     const w=t.split(/(\s+)/);const out=[];let i=0;
-    const esNum=x=>x in U||x==='mil'||/^\d+(?:[.,]\d+)?$/.test(x);
-    while(i<w.length){
-      const x=w[i];
-      if(!x.trim()){out.push(x);i++;continue}
+    while(i<w.length){const x=w[i];
+      if((x==='uno'||x==='una'||x==='un')&&/^(cada|la|el)$/.test(w[i-2]||'')){out.push(x);i++;continue}
       if(x in U||x==='mil'){
         let total=0,cur=0,j=i,ult=i;
         while(j<w.length){const y=w[j];if(!y.trim()){j++;continue}
-          if(y in U){cur+=U[y];ult=j;j++}
+          if(y in U&&!(cur>0&&U[y]>=cur&&U[y]<1000&&!(cur>=100&&U[y]<100)&&!(cur>=20&&U[y]<10))){cur+=U[y];ult=j;j++}
           else if(y==='mil'){total+=(cur||1)*1000;cur=0;ult=j;j++}
-          else if(y==='y'&&j+2<w.length&&(w[j+2] in U)&&cur>=20&&cur<100&&cur%10===0){j++}
-          else if(/^\d+$/.test(y)&&cur===0&&total===0){cur=+y;ult=j;j++}
+          else if(y==='y'&&(w[j+2] in U)&&cur>=20&&cur<100&&cur%10===0)j++;
           else break}
         out.push(String(total+cur));i=ult+1;continue}
-      if(/^\d+(?:[.,]\d+)?$/.test(x)&&w[i+2]==='mil'){out.push(String(Math.round(numTxt(x)*1000)));i+=3;continue}
       out.push(x);i++}
     return out.join('')}
-  function numTxt(s){s=String(s);if(/^\d{1,3}(\.\d{3})+$/.test(s))return+s.replace(/\./g,'');if(/^\d{1,3}(,\d{3})+$/.test(s))return+s.replace(/,/g,'');return+s.replace(',','.')}
+  const numTxt=s=>{s=String(s);if(/^\d{1,3}(\.\d{3})+$/.test(s))return+s.replace(/\./g,'');if(/^\d{1,3}(,\d{3})+$/.test(s))return+s.replace(/,/g,'');return+s.replace(',','.')};
   const N='(\\d{1,3}(?:[.,]\\d{3})+|\\d+(?:[.,]\\d+)?)';
-  const RE=new RegExp(N+'\\s+(?:de\\s+)?([a-zñ][a-zñ ]*?)\\s+(?:a|por|en|y\\s+me\\s+costaron|me\\s+costaron|que\\s+me\\s+costaron|costaron|pague|=)\\s+(?:un\\s+total\\s+de\\s+|total\\s+|el\\s+total\\s+|todo\\s+)?\\$?\\s*'+N+'(\\s*(?:lucas?|mil))?(\\s*pesos)?(\\s*(?:cada\\s+(?:uno|una|1)|c\\/u|la\\s+unidad|por\\s+unidad|c\\s*u))?','g');
-  function interpretar(texto){
-    let t=sa(texto).replace(/\$\s*/g,'$').replace(/[;:]/g,',');
-    t=t.replace(/(\d)\s*mil\b/g,(m,d)=>d+' mil');
+  const UNI={metro:'metros',metros:'metros',mt:'metros',mts:'metros',m:'metros',rollo:'rollos',rollos:'rollos',paquete:'paquetes',paquetes:'paquetes',paquetito:'paquetes',paquetitos:'paquetes',bolsa:'paquetes',bolsas:'paquetes',caja:'cajas',cajas:'cajas',pliego:'pliegos',pliegos:'pliegos',hoja:'pliegos',hojas:'pliegos',gramo:'gramos',gramos:'gramos',gr:'gramos',grs:'gramos',kilo:'gramos',kilos:'gramos',unidad:'unidades',unidades:'unidades'};
+  const RELLENO=/^(?:(?:hola|oye|hoy|ayer|bueno|ya|ok|okay|y|e|o|tambien|ademas|despues|luego|me|nos|se|llegaron|llego|compre|compramos|compro|agregue|agregamos|agrega|agregar|anota|anotar|anade|suma|sumale|pon|ponle|traje|trajimos|ingresa|ingrese|ingresar|unas?|unos?|las|los|el|la|otras?|otros?|mas|de|pues|eh|em|este)\b\s*)+/;
+  function prep(texto){
+    let t=' '+sa(texto).replace(/[¿?¡!"]/g,' ')+' ';
+    t=t.replace(/\b(\d+)\s*k\b/g,'$1000');
+    t=t.replace(/(\d+(?:[.,]\d+)?)\s*mil\b/g,(x,d)=>String(Math.round(numTxt(d)*1000)));
     t=palabras(t);
-    t=t.replace(/(\d)\s+mil\b/g,(m,d)=>d+'000');
-    const res=[];let m;RE.lastIndex=0;
-    while((m=RE.exec(t))){
-      const cant=numTxt(m[1]);let precio=numTxt(m[3]);
-      if(m[4])precio*=1000;
-      let nombre=m[2].replace(/^(?:compre|compramos|y|tambien|ademas|otras?|otros?)\s+/g,'').replace(/\s+(?:mas|tambien)$/,'').trim();
-      if(!nombre||!cant)continue;
-      const total=Math.round(m[6]?precio*cant:precio);
-      let unidad='';const um=nombre.match(/^(metros?|rollos?|paquetes?|cajas?|pliegos?|gramos?|unidades|unidad)\s+(?:de\s+)?(.+)$/);
-      if(um){unidad={metro:'metros',rollo:'rollos',paquete:'paquetes',caja:'cajas',pliego:'pliegos',gramo:'gramos',unidad:'unidades'}[um[1].replace(/s$/,'').replace(/de$/,'')]||um[1];nombre=um[2]}
-      if(unidad==='unidade')unidad='unidades';
-      res.push({cant,nombre,total,unidad})}
-    return res}
-  const sing=w=>w.replace(/ces$/,'z').replace(/(?<=[^aeiou])es$/,'').replace(/s$/,'');
-  const toks=s=>sa(s).split(/[^a-z0-9ñ]+/).filter(x=>x&&!['de','del','la','el','los','las','con','y'].includes(x)).map(sing);
-  function buscar(nombre,mats){
-    const q=toks(nombre);if(!q.length)return null;let mejor=null,ms=0;
-    for(const x of mats){const k=toks(x.nombre);const comun=q.filter(a=>k.some(b=>b===a||(a.length>3&&b.startsWith(a))||(b.length>3&&a.startsWith(b)))).length;
-      if(!comun)continue;const sc=comun/q.length+comun/k.length;if(sc>ms){ms=sc;mejor=x}}
-    return mejor}
-  return{interpretar,buscar,sing}
+    t=t.replace(/(\d+(?:[.,]\d+)?)\s*mil\b/g,(x,d)=>String(Math.round(numTxt(d)*1000)));
+    t=t.replace(/\bmedia\s+docena\b/g,'6').replace(/\b(\d+)\s+docenas?\b/g,(x,d)=>String(d*12)).replace(/\b(?:una\s+)?docena\b/g,'12').replace(/\bun\s+par\s+de\b/g,'2').replace(/\bun\s+ciento\s+de\b/g,'100');
+    // lucas: "2 lucas y media" = 2500, "luca y media" = 1500, "una luca" = 1000
+    t=t.replace(/\b(\d+(?:[.,]\d+)?)?\s*lucas?(\s+y\s+media)?\b/g,(x,d,m)=>' '+String(Math.round(((d?numTxt(d):1)+(m?0.5:0))*1000))+' ');
+    t=t.replace(/\b(\d+)\s+(metros?|kilos?)\s+y\s+medio\b/g,(x,d,u)=>(+d+0.5)+' '+u).replace(/\bmedio\s+(metro|kilo)\b/g,'0.5 $1s');
+    t=t.replace(/(\d+(?:[.,]\d+)?)\s*(kilos?)\b/g,(x,d)=>String(numTxt(d)*1000)+' gramos');
+    t=t.replace(/\b(\d+)\s*(?:con|coma)\s*(\d)\b/g,'$1.$2');
+    return t}
+  const PRECIO=new RegExp('(?:^|\\s)(?:a|por|en|me\\s+costaron|me\\s+costo|me\\s+salieron|me\\s+salio|salieron|salio|costaron|costo|valieron|valio|pague|gaste|son|total|=|\\$)\\s*(?:un\\s+total\\s+de\\s+|el\\s+total\\s+|total\\s+|todo\\s+|todas?\\s+|todos\\s+)?\\$?\\s*'+N+'(\\s*pesos)?(\\s*(?:cada\\s+(?:uno|una|1|un\\w*|\\w+)|c\\/u|c\\s*u|la\\s+unidad|por\\s+unidad|por\\s+cada\\s+\\w+|(?:el|la)\\s+(?!total)\\w+))?(?=\\s|$)');
+  function segmento(seg,finalAbierto){
+    seg=seg.replace(RELLENO,'').trim();if(!seg)return null;
+    // "pagué 10.000 por 100 palos" / "gasté 5000 en 50 rosas"
+    let pm=seg.match(new RegExp('^(?:pague|gaste|fueron|son)\\s+\\$?'+N+'\\s*(?:pesos\\s*)?(?:por|en)\\s+(?:los|las|el|la)?\\s*'+N+'\\s+(.*)$'));
+    if(pm)seg=pm[2]+' '+pm[3]+' a '+pm[1];
+    const m=seg.match(new RegExp('^(.*?)'+N+'\\s*(.*)$'));if(!m)return null;
+    let pre=m[1].trim(),cant=numTxt(m[2]),rest=m[3];
+    if(/(?:^|\s)(?:a|por|en|\$|pague|gaste)$/.test(pre))return null;
+    let total=null,cada=false;const p=(' '+rest).match(PRECIO);
+    if(p){total=numTxt(p[1]);cada=!!p[3];rest=(' '+rest).slice(0,p.index)}
+    let unidad='',uw='';let w=rest.trim().split(/\s+/).filter(Boolean);
+    if(w.length&&UNI[w[0]]){unidad=UNI[w[0]];uw=w.shift()}
+    if(w[0]==='de')w.shift();
+    let nombre=w.join(' ').trim();
+    pre=pre.replace(RELLENO,'').replace(/\s+(?:de)$/,'').trim();
+    if(pre&&!/^(?:a|por|en)$/.test(pre))nombre=nombre?pre+' '+nombre:pre;
+    nombre=nombre.replace(/(?:\s+(?:que|mas|tambien|y|pesos|en\s+total|total))+$/,'').replace(/^(?:de|del)\s+/,'').trim();
+    if(!nombre&&uw&&uw.length>2){if(total==null&&finalAbierto)return null;nombre=uw;unidad='unidades'}
+    if(!nombre||!(cant>0))return null;
+    if(total!=null&&cada)total*=cant;
+    return{cant,nombre,unidad,total:total==null?null:Math.round(total)}}
+  function interpretar(texto){
+    const t=prep(texto);
+    const segs=t.split(/\s*(?:[,;]\s+|\.\s+|\s+y\s+(?=\d)|\s+(?:y\s+)?(?:luego|despues|ademas|tambien)\s+|\s+(?=(?:y\s+)?(?:compre|compramos|agregue|agregamos|traje|pague|gaste)\b))/);
+    return segs.map((s,i)=>segmento(s,i===segs.length-1)).filter(Boolean)}
+  // ---- comparación de nombres ----
+  const COL={rojo:'roj',colorado:'roj',rosado:'rosad',rosadito:'rosad',fucsia:'fucs',morado:'morad',lila:'lil',lavanda:'lil',violeta:'morad',celeste:'celest',calipso:'celest',azul:'azul',calypso:'celest',burdeo:'burde',burdeos:'burde',vino:'burde',dorado:'dorad',oro:'dorad',plateado:'plat',plata:'plat',blanco:'blanc',negro:'negr',amarillo:'amarill',naranjo:'naranj',naranja:'naranj',verde:'verd'};
+  const st=w=>{w=w.replace(/(?:it|ic)(o|a)s?$/,'$1').replace(/ces$/,'z').replace(/([^aeiou])es$/,'$1').replace(/s$/,'');const c=COL[w]||COL[w.replace(/a$/,'o')];if(c)return c;return w.length>=4?w.replace(/[oae]$/,''):w};
+  const NO=['de','del','la','el','los','las','con','y','para','jabon','color','tipo','en'];
+  const toks=s=>sa(s).split(/[^a-z0-9ñ]+/).filter(x=>x&&!NO.includes(x)).map(st);
+  const lev=(a,b)=>{if(Math.abs(a.length-b.length)>1)return 9;const d=[...Array(b.length+1).keys()];for(let i=1;i<=a.length;i++){let pv=d[0];d[0]=i;for(let j=1;j<=b.length;j++){const t=d[j];d[j]=Math.min(d[j]+1,d[j-1]+1,pv+(a[i-1]===b[j-1]?0:1));pv=t}}return d[b.length]};
+  const igual=(a,b)=>a===b||(a.length>=4&&b.length>=4&&lev(a,b)<=1);
+  const clave=s=>toks(s).join(' ');
+  // devuelve {mat, dudas:[...]} — coincide solo si TODAS las palabras dichas están en el material
+  function buscar(nombre,mats,alias){
+    const k0=clave(nombre);if(alias&&alias[k0]){const x=mats.find(m=>m.id===alias[k0]);if(x)return{mat:x,dudas:[],aprendido:true}}
+    const q=toks(nombre);if(!q.length)return{mat:null,dudas:[]};
+    const c=[];
+    for(const x of mats){const k=toks(x.nombre);if(!q.every(a=>k.some(b=>igual(a,b))))continue;c.push({x,sc:q.length/k.length+(clave(x.nombre)===k0?1:0)})}
+    c.sort((a,b)=>b.sc-a.sc);
+    if(!c.length)return{mat:null,dudas:[]};
+    if(c.length>1&&c[0].sc-c[1].sc<0.01)return{mat:null,dudas:c.filter(y=>c[0].sc-y.sc<0.01).map(y=>y.x)};
+    return{mat:c[0].x,dudas:[]}}
+  return{interpretar,buscar,clave}
 })();
 
+const sa_=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim();
+const singNom=s=>s.split(' ').map(w=>w.length>3?w.replace(/ces$/,'z').replace(/([lrnd])es$/,'$1').replace(/s$/,''):w).join(' ');
 function formVoz(){
   const ios=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
   const SR=(ios||localStorage.getItem('voz_teclado'))?null:(window.SpeechRecognition||window.webkitSpeechRecognition);
   abrir(`<h2>🎤 Compra por voz</h2>
-  <p class="small muted" style="margin:-4px 0 12px">Di lo que compraste con el <b>total</b> de cada cosa. Ej: <i>"Compré 100 palos a 10.000 y 50 rosas a 5.000"</i></p>
+  <p class="small muted" style="margin:-4px 0 10px">Di cada cosa con su <b>total</b>. Ej: <i>"Compré 20 metros de cinta amarilla a 3.000 y 10 rosas amarillas a 2.000"</i></p>
   <button class="btn pri" id="vMic" style="margin-bottom:10px">🎤 Tocar y hablar</button>
-  ${SR?'':`<div class="box" id="vTip" style="margin-bottom:12px;text-align:center"><b>Se abrirá el teclado:</b> toca el <b>🎤 abajo a la derecha</b> del teclado, habla, y toca de nuevo el 🎤 para terminar.</div>`}
-  <div class="f"><label>Lo que escuché (puedes corregirlo)</label><textarea id="vTxt" rows="3" placeholder="Compré 100 palos a 10.000, 50 rosas a 5.000"></textarea></div>
+  ${SR?'':`<div class="hint" id="vTip" style="margin:-2px 0 10px;text-align:center">Se abre el teclado: toca su <b>🎤 abajo a la derecha</b> y habla.</div>`}
+  <div class="f" style="margin-bottom:8px"><textarea id="vTxt" rows="3" placeholder="Compré 100 palos a 10.000, 50 rosas a 5.000"></textarea></div>
   <div id="vPrev"></div>
   <div class="f"><label>Fecha</label><input type="date" id="vF" value="${hoy()}"></div>
   <button class="btn pri" id="vOk" disabled>Agregar al stock</button>`,()=>{
-    let filas=[];
+    let filas=[];const ed={};let firma='';
     const mats=()=>[...S.materiales].sort((a,b)=>a.nombre.localeCompare(b.nombre));
     const pintar=()=>{
-      const it=VOZ.interpretar($('#vTxt').value);
-      filas=it.map(r=>{const x=VOZ.buscar(r.nombre,S.materiales);return{...r,matId:x?x.id:'__n',nuevo:r.nombre.charAt(0).toUpperCase()+r.nombre.slice(1)}});
+      const it=VOZ.interpretar($('#vTxt').value);const cuenta={};
+      filas=it.map(r=>{const b=sa_(r.nombre);cuenta[b]=(cuenta[b]||0)+1;const key=b+'#'+cuenta[b];const e=ed[key]||{};
+        const bx=VOZ.buscar(r.nombre,S.materiales,S.config.vozAlias||{});const x=bx.mat;const nuevo=singNom(r.nombre);
+        return{key,dicho:r.nombre,cant:e.cant??r.cant,total:e.total??r.total,matId:e.matId??(x?x.id:(bx.dudas.length?'':'__n')),dudas:bx.dudas.map(d=>d.id),apr:!!bx.aprendido&&e.matId==null,nuevo:nuevo.charAt(0).toUpperCase()+nuevo.slice(1),unidad:r.unidad||(x?x.unidad:'')}});
+      const f2=JSON.stringify(filas);if(f2===firma)return;firma=f2;
       $('#vOk').disabled=!filas.length;$('#vOk').textContent=filas.length?`Agregar ${filas.length} ${filas.length===1?'compra':'compras'} al stock`:'Agregar al stock';
       if(!$('#vTxt').value.trim()){$('#vPrev').innerHTML='';return}
-      if(!filas.length){$('#vPrev').innerHTML=`<div class="hint" style="margin:-4px 0 12px">No entendí cantidades y precios todavía. Prueba con: "50 rosas a 5.000".</div>`;return}
-      $('#vPrev').innerHTML=`<div class="fxsec" style="margin-top:0">Entendí esto — revisa antes de guardar</div>`+filas.map((r,i)=>`<div class="box" style="margin-bottom:10px">
-        <div class="f"><label>Material</label><select data-vm="${i}"><option value="__n" ${r.matId==='__n'?'selected':''}>+ Nuevo: ${esc(r.nuevo)}</option>${mats().map(x=>`<option value="${x.id}" ${x.id===r.matId?'selected':''}>${esc(x.nombre)}</option>`).join('')}</select></div>
-        <div class="f2"><div class="f"><label>Cantidad</label><input data-vc="${i}" inputmode="decimal" value="${nf(r.cant)}"></div><div class="f"><label>Total pagado</label><input data-vt="${i}" inputmode="numeric" value="${r.total}"></div></div>
-        <div class="kv"><span>Sale a</span><span data-vu="${i}">${$$(r.cant?r.total/r.cant:0)} c/u</span></div></div>`).join('');
-      const upd=i=>{const r=filas[i];r.cant=num($(`[data-vc="${i}"]`).value);r.total=Math.round(num($(`[data-vt="${i}"]`).value));$(`[data-vu="${i}"]`).textContent=$$(r.cant?r.total/r.cant:0)+' c/u'};
-      document.querySelectorAll('[data-vm]').forEach(s=>s.onchange=()=>filas[+s.dataset.vm].matId=s.value);
+      if(!filas.length){$('#vPrev').innerHTML=`<div class="hint" style="margin:0 0 12px">Sigue hablando… di la cantidad y qué compraste, ej: "20 metros de cinta amarilla a 3.000".</div>`;return}
+      $('#vPrev').innerHTML=filas.map((r,i)=>{const un=r.matId==='__n'?(r.unidad||'unidades'):((mat(r.matId)||{}).unidad||'unidades');
+        const ord=[...r.dudas.map(id=>mat(id)).filter(Boolean),...mats().filter(x=>!r.dudas.includes(x.id))];
+        return`<div class="vrow ${r.matId==='__n'?'nuevo':''} ${r.matId===''?'duda':''}">
+        ${r.matId===''?`<div class="vq">Dijiste “${esc(r.dicho)}”: ¿cuál es?</div>`:r.apr?`<div class="vq ok">✓ Como la última vez</div>`:''}
+        <select data-vm="${i}">${r.matId===''?'<option value="" selected disabled>Elige el material…</option>':''}${ord.map(x=>`<option value="${x.id}" ${x.id===r.matId?'selected':''}>${esc(x.nombre)}</option>`).join('')}<option value="__n" ${r.matId==='__n'?'selected':''}>🆕 ${esc(r.nuevo)} (material nuevo)</option></select>
+        <div class="vg"><label>Cantidad<input data-vc="${i}" inputmode="decimal" value="${nf(r.cant)}"></label><label>Total $<input data-vt="${i}" inputmode="numeric" value="${r.total??''}" placeholder="falta"></label><div class="vu" data-vu="${i}">${r.total!=null&&r.cant?$$(r.total/r.cant)+' c/u':'<span class="neg">falta precio</span>'}<small>${esc(un)}</small></div></div></div>`}).join('');
+      const upd=i=>{const r=filas[i];const c=num($(`[data-vc="${i}"]`).value),tv=$(`[data-vt="${i}"]`).value.trim();r.cant=c;r.total=tv===''?null:Math.round(num(tv));ed[r.key]={...(ed[r.key]||{}),cant:r.cant,total:r.total};
+        $(`[data-vu="${i}"]`).firstChild.replaceWith(document.createRange().createContextualFragment(r.total!=null&&r.cant?$$(r.total/r.cant)+' c/u':'<span class="neg">falta precio</span>'));firma=JSON.stringify(filas)};
+      document.querySelectorAll('[data-vm]').forEach(s=>s.onchange=()=>{const r=filas[+s.dataset.vm];r.matId=s.value;ed[r.key]={...(ed[r.key]||{}),matId:s.value};firma='';pintar()});
       document.querySelectorAll('[data-vc],[data-vt]').forEach(e=>e.oninput=()=>upd(+(e.dataset.vc??e.dataset.vt)));
     };
-    $('#vTxt').oninput=pintar;
-    {let ult='';const t=$('#vTxt');const chk=()=>{if(!document.body.contains(t)){clearInterval(iv);return}if(t.value!==ult){ult=t.value;pintar()}};const iv=setInterval(chk,400);['change','keyup','compositionend','blur'].forEach(ev=>t.addEventListener(ev,chk))}
-    const teclado=()=>{const t=$('#vTxt');t.focus();const n=t.value.length;try{t.setSelectionRange(n,n)}catch(e){}};
+    const t=$('#vTxt');t.oninput=pintar;
+    {let ult='';const chk=()=>{if(!document.body.contains(t)){clearInterval(iv);return}if(t.value!==ult){ult=t.value;pintar()}};const iv=setInterval(chk,350);['change','keyup','compositionend','blur'].forEach(ev=>t.addEventListener(ev,chk))}
+    const teclado=()=>{t.focus();const n=t.value.length;try{t.setSelectionRange(n,n)}catch(e){}};
     if(!SR)$('#vMic').onclick=teclado;
-    if(SR){let rec=null,base='';
-      const parar=()=>{try{rec&&rec.stop()}catch(e){}};
+    else{let rec=null,base='';
+      const parar=()=>{try{rec&&rec.stop()}catch(e){}};window.__vozStop=parar;
       $('#vMic').onclick=()=>{
         if(rec){parar();return}
-        try{rec=new SR()}catch(e){toast('Usa el 🎤 del teclado');return}
-        rec.lang='es-CL';rec.interimResults=true;rec.continuous=true;base=$('#vTxt').value.trim();base=base?base+', ':'';
-        rec.onresult=e=>{let t='';for(const r of e.results)t+=r[0].transcript;$('#vTxt').value=base+t.trim();pintar()};
+        try{rec=new SR()}catch(e){teclado();return}
+        rec.lang='es-CL';rec.interimResults=true;rec.continuous=true;base=t.value.trim();base=base?base+', ':'';
+        rec.onresult=e=>{let s='';for(const r of e.results)s+=r[0].transcript;t.value=base+s.trim();pintar()};
         rec.onerror=e=>{if(e.error==='no-speech'||e.error==='aborted')return;try{localStorage.setItem('voz_teclado','1')}catch(_){}toast('Usa el 🎤 del teclado');$('#vMic').onclick=teclado};
         rec.onend=()=>{rec=null;const b=$('#vMic');if(b){b.textContent='🎤 Tocar y hablar';b.classList.remove('rec')}};
-        try{rec.start();$('#vMic').textContent='⏹ Escuchando… toca para terminar';$('#vMic').classList.add('rec')}catch(e){rec=null;toast('Usa el 🎤 del teclado')}
-      };
-      window.__vozStop=parar;
-    }
+        try{rec.start();$('#vMic').textContent='⏹ Escuchando… toca para terminar';$('#vMic').classList.add('rec')}catch(e){rec=null;teclado()}
+      }}
     $('#vOk').onclick=async()=>{
+      pintar();const duda=filas.find(r=>r.matId==='');if(duda)return toast('Elige cuál es: “'+duda.dicho+'”');const sinP=filas.find(r=>r.total==null);
+      if(sinP)return toast('Falta el precio de: '+(sinP.matId==='__n'?sinP.nuevo:(mat(sinP.matId)||{}).nombre));
       try{window.__vozStop&&window.__vozStop()}catch(e){}
       const f=$('#vF').value||hoy();let n=0;
       for(const r of filas){
         if(!(r.cant>0))continue;let id=r.matId;
         if(id==='__n'){const ya=S.materiales.find(x=>sa_(x.nombre)===sa_(r.nuevo));if(ya)id=ya.id;else{const x={id:uid(),nombre:r.nuevo,unidad:r.unidad||'unidades'};S.materiales.push(x);id=x.id}}
-        S.movs.push({id:uid(),sec:'ramos',tipo:'ingreso',fecha:f,itemId:id,cant:r.cant,unit:r.total/r.cant,total:r.total,nota:'Por voz',creado:Date.now()});n++}
+        S.movs.push({id:uid(),sec:'ramos',tipo:'ingreso',fecha:f,itemId:id,cant:r.cant,unit:r.total/r.cant,total:r.total,nota:'Por voz',creado:Date.now()});n++;
+        const A=S.config.vozAlias=S.config.vozAlias||{};const k=VOZ.clave(r.dicho);if(k&&k!==VOZ.clave((mat(id)||{}).nombre||'')){delete A[k];A[k]=id;const ks=Object.keys(A);if(ks.length>300)delete A[ks[0]]}}
       if(!n)return toast('Revisa las cantidades');
       await guardar();cerrar();render();toast(`${n} ${n===1?'compra agregada':'compras agregadas'} al stock`);
     };
   });
 }
-const sa_=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim();
 
 function formMatIngreso(preId){
   const ms=[...S.materiales].sort((a,b)=>a.nombre.localeCompare(b.nombre));

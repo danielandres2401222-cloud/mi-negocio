@@ -1021,11 +1021,13 @@ const VOZ=(()=>{
 })();
 
 function formVoz(){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const ios=/iP(hone|ad|od)/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const SR=(ios||localStorage.getItem('voz_teclado'))?null:(window.SpeechRecognition||window.webkitSpeechRecognition);
   abrir(`<h2>🎤 Compra por voz</h2>
   <p class="small muted" style="margin:-4px 0 12px">Di lo que compraste con el <b>total</b> de cada cosa. Ej: <i>"Compré 100 palos a 10.000 y 50 rosas a 5.000"</i></p>
-  ${SR?`<button class="btn pri" id="vMic" style="margin-bottom:10px">🎤 Tocar y hablar</button>`:''}
-  <div class="f"><label>${SR?'Lo que escuché (puedes corregirlo)':'Toca el 🎤 del teclado y dícelo'}</label><textarea id="vTxt" rows="3" placeholder="Compré 100 palos a 10.000, 50 rosas a 5.000"></textarea></div>
+  <button class="btn pri" id="vMic" style="margin-bottom:10px">🎤 Tocar y hablar</button>
+  ${SR?'':`<div class="box" id="vTip" style="margin-bottom:12px;text-align:center"><b>Se abrirá el teclado:</b> toca el <b>🎤 abajo a la derecha</b> del teclado, habla, y toca de nuevo el 🎤 para terminar.</div>`}
+  <div class="f"><label>Lo que escuché (puedes corregirlo)</label><textarea id="vTxt" rows="3" placeholder="Compré 100 palos a 10.000, 50 rosas a 5.000"></textarea></div>
   <div id="vPrev"></div>
   <div class="f"><label>Fecha</label><input type="date" id="vF" value="${hoy()}"></div>
   <button class="btn pri" id="vOk" disabled>Agregar al stock</button>`,()=>{
@@ -1046,6 +1048,8 @@ function formVoz(){
       document.querySelectorAll('[data-vc],[data-vt]').forEach(e=>e.oninput=()=>upd(+(e.dataset.vc??e.dataset.vt)));
     };
     $('#vTxt').oninput=pintar;
+    const teclado=()=>{const t=$('#vTxt');t.focus();const n=t.value.length;try{t.setSelectionRange(n,n)}catch(e){}};
+    if(!SR)$('#vMic').onclick=teclado;
     if(SR){let rec=null,base='';
       const parar=()=>{try{rec&&rec.stop()}catch(e){}};
       $('#vMic').onclick=()=>{
@@ -1053,7 +1057,7 @@ function formVoz(){
         try{rec=new SR()}catch(e){toast('Usa el 🎤 del teclado');return}
         rec.lang='es-CL';rec.interimResults=true;rec.continuous=true;base=$('#vTxt').value.trim();base=base?base+', ':'';
         rec.onresult=e=>{let t='';for(const r of e.results)t+=r[0].transcript;$('#vTxt').value=base+t.trim();pintar()};
-        rec.onerror=e=>{toast(e.error==='not-allowed'?'Permite el micrófono en Ajustes del iPhone':'No pude escuchar. Usa el 🎤 del teclado')};
+        rec.onerror=e=>{if(e.error==='no-speech'||e.error==='aborted')return;try{localStorage.setItem('voz_teclado','1')}catch(_){}toast('Usa el 🎤 del teclado');$('#vMic').onclick=teclado};
         rec.onend=()=>{rec=null;const b=$('#vMic');if(b){b.textContent='🎤 Tocar y hablar';b.classList.remove('rec')}};
         try{rec.start();$('#vMic').textContent='⏹ Escuchando… toca para terminar';$('#vMic').classList.add('rec')}catch(e){rec=null;toast('Usa el 🎤 del teclado')}
       };

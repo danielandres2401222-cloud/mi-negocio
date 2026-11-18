@@ -640,7 +640,20 @@ async function cargar(){
   catch(e){try{S=JSON.parse(localStorage.getItem(KEY)||'null')}catch(_){S=null}}
   if(!S)S=vacio();
   S=Object.assign(vacio(),S);S.config=Object.assign(vacio().config,S.config||{});
+  try{if(fusionarRepetidos())guardar()}catch(e){}
 }
+/* Nombres iguales sin importar mayúsculas, tildes ni espacios */
+const nomKey=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+const matPorNombre=n=>S.materiales.find(x=>nomKey(x.nombre)===nomKey(n));
+function fusionarRepetidos(){
+  const vistos={},cambio={};const quedan=[];
+  for(const x of S.materiales){const k=nomKey(x.nombre);if(vistos[k]){cambio[x.id]=vistos[k].id}else{vistos[k]=x;quedan.push(x)}}
+  const ids=Object.keys(cambio);if(!ids.length)return false;
+  const m=id=>cambio[id]||id;
+  for(const v of S.movs){if(v.sec==='ramos'&&v.tipo==='ingreso')v.itemId=m(v.itemId);for(const u of v.usados||[])u.matId=m(u.matId)}
+  for(const r of S.recetas||[])for(const u of r.mats||[])u.matId=m(u.matId);
+  const A=S.config.vozAlias||{};for(const k in A)A[k]=m(A[k]);
+  S.materiales=quedan;return true}
 async function guardar(){
   try{const db=await idb();await new Promise((res,rej)=>{const t=db.transaction(STORE,'readwrite');t.objectStore(STORE).put(S,KEY);t.oncomplete=res;t.onerror=()=>rej(t.error)})}
   catch(e){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(_){toast('No se pudo guardar')}}
@@ -1084,7 +1097,8 @@ const VOZ=(()=>{
         if(nOk===qn.length&&!colorFalta)full.push({x,sc});
         else part.push({x,sc})}
     }
-    full.sort((a,b)=>b.sc-a.sc);part.sort((a,b)=>b.sc-a.sc);
+    const uniq=L=>{const v=new Set();return L.filter(y=>{const k=sa(y.x.nombre).replace(/\s+/g,' ').trim();if(v.has(k))return false;v.add(k);return true})};
+    full.sort((a,b)=>b.sc-a.sc);part.sort((a,b)=>b.sc-a.sc);const f1=uniq(full),p1=uniq(part);full.length=0;full.push(...f1);part.length=0;part.push(...p1);
     if(full.length){
       const top=full.filter(y=>full[0].sc-y.sc<0.01);
       if(top.length===1&&(!qc.length||true))return{mat:top[0].x,dudas:[],parecidos:[...full.slice(1),...part].map(y=>y.x).concat(par)};
@@ -1151,7 +1165,7 @@ function formVoz(){
       const f=$('#vF').value||hoy();let n=0;
       for(const r of filas){
         if(!(r.cant>0))continue;let id=r.matId;
-        if(id==='__n'){const ya=S.materiales.find(x=>sa_(x.nombre)===sa_(r.nuevo));if(ya)id=ya.id;else{const x={id:uid(),nombre:r.nuevo,unidad:r.unidad||'unidades'};S.materiales.push(x);id=x.id}}
+        if(id==='__n'){const ya=matPorNombre(r.nuevo);if(ya)id=ya.id;else{const x={id:uid(),nombre:r.nuevo,unidad:r.unidad||'unidades'};S.materiales.push(x);id=x.id}}
         S.movs.push({id:uid(),sec:'ramos',tipo:'ingreso',fecha:f,itemId:id,cant:r.cant,unit:r.total/r.cant,total:r.total,nota:'Por voz',creado:Date.now()});n++;
         const A=S.config.vozAlias=S.config.vozAlias||{};const k=VOZ.clave(r.dicho);if(k&&k!==VOZ.clave((mat(id)||{}).nombre||'')){delete A[k];A[k]=id;const ks=Object.keys(A);if(ks.length>300)delete A[ks[0]]}}
       if(!n)return toast('Revisa las cantidades');
@@ -1178,7 +1192,7 @@ function formMatIngreso(preId){
     sel.onchange=sync;$('#mu').onchange=sync;$('#mc').oninput=sync;$('#mt').oninput=sync;sync();
     $('#mok').onclick=async()=>{
       let id=sel.value;const cant=num($('#mc').value),total=Math.round(num($('#mt').value));
-      if(id==='__n'){const n=$('#mn').value.trim();if(!n)return toast('Escribe el nombre del material');const x={id:uid(),nombre:n,unidad:$('#mu').value};S.materiales.push(x);id=x.id}
+      if(id==='__n'){const n=$('#mn').value.trim();if(!n)return toast('Escribe el nombre del material');const ya=matPorNombre(n);if(ya)id=ya.id;else{const x={id:uid(),nombre:n,unidad:$('#mu').value};S.materiales.push(x);id=x.id}}
       if(cant<=0)return toast('La cantidad debe ser mayor a 0');
       S.movs.push({id:uid(),sec:'ramos',tipo:'ingreso',fecha:$('#mf').value||hoy(),itemId:id,cant,unit:total/cant,total,nota:$('#mno').value.trim(),creado:Date.now()});
       await guardar();cerrar();render();toast('Ingreso guardado');
@@ -1195,7 +1209,7 @@ function formMaterial(id){
   <button class="btn pri" id="xok" style="margin-bottom:10px">Guardar</button>
   ${id?`<button class="btn dan" id="xdel">Eliminar material</button>`:''}`,()=>{
     if(id)$('#xIn').onclick=()=>formMatIngreso(id);
-    $('#xok').onclick=async()=>{const n=$('#xn').value.trim();if(!n)return toast('Escribe el nombre');
+    $('#xok').onclick=async()=>{const n=$('#xn').value.trim();if(!n)return toast('Escribe el nombre');const ya=matPorNombre(n);if(ya&&ya.id!==id)return toast('Ya tienes ese material: '+ya.nombre);
       if(id){x.nombre=n;x.unidad=$('#xu').value}else S.materiales.push({id:uid(),nombre:n,unidad:$('#xu').value});
       await guardar();cerrar();render();toast('Guardado')};
     const d=$('#xdel');if(d)d.onclick=()=>{if(usado)return toast('Tiene movimientos: elimínalos primero');confirmar('¿Eliminar material?',x.nombre,'Eliminar',async()=>{S.materiales=S.materiales.filter(y=>y.id!==id);await guardar();render()})};

@@ -133,6 +133,15 @@ nav.tabs button{font-size:10.5px}
 .gbar{transform-box:fill-box;transform-origin:bottom;animation:grow .8s cubic-bezier(.2,.8,.2,1) both}
 .bar i{transition:width 1s cubic-bezier(.2,.8,.2,1)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.cimg{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;background:var(--rosa-3);box-shadow:var(--sombra)}
+.cimg img{width:100%;height:100%;object-fit:cover;display:block}
+.cimg .cp{position:absolute;right:6px;bottom:6px;border:0;border-radius:10px;background:rgba(255,255,255,.92);color:var(--rosa-ink);font-size:12px;font-weight:700;padding:6px 8px;box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.cimg .tag{position:absolute;left:6px;top:6px;font-size:10px;font-weight:700;padding:2px 6px;border-radius:99px;background:rgba(255,255,255,.9);color:var(--rosa-ink);max-width:calc(100% - 12px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cimg.sel{outline:3px solid var(--rosa);outline-offset:-3px}
+.cbig{width:100%;border-radius:16px;display:block;margin:0 0 12px;max-height:46vh;object-fit:contain;background:var(--rosa-3)}
+nav.tabs button{font-size:10px}
 </style>
 </head>
 <body>
@@ -144,6 +153,7 @@ nav.tabs button{font-size:10.5px}
   <button data-v="ropa"><svg viewBox="0 0 24 24"><path d="M8 3l-5 3 2 5 2-1v11h10V10l2 1 2-5-5-3c0 2-2 3-4 3S8 5 8 3z"/></svg>Ropa</button>
   <button data-v="ramos"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M12 4c1 1.5 1 2.5 0 4M9 7c1.5.3 2.3 1 3 1M12 12v9M12 16c-2-1-4-1-5 0 1 1.5 3 1.5 5 0zM12 18c2-1 4-1 5 0-1 1.5-3 1.5-5 0z"/></svg>Ramos</button>
   <button data-v="pedidos"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3h6v3H9zM9 11h6M9 15h4"/></svg>Pedidos</button>
+  <button data-v="catalogo"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-9 8"/></svg>Catálogo</button>
   <button data-v="informes"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Informes</button>
   <button data-v="ajustes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-1-1.5 1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.5-1 1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></svg>Ajustes</button>
 </nav>
@@ -152,6 +162,7 @@ nav.tabs button{font-size:10.5px}
 <div class="sheet" id="sheet"><div class="grab"></div><div id="sheetBody"></div></div>
 <div class="toast" id="toast"></div>
 <input type="file" id="fileIn" accept=".json,application/json" hidden>
+<input type="file" id="fotoIn" accept="image/*" multiple hidden>
 
 <script>/** @license
  *
@@ -567,7 +578,7 @@ function(t){t.__bidiEngine__=t.prototype.__bidiEngine__=function(t){var r,n,i,a,
 /* ================= Datos (IndexedDB, solo en este teléfono) ================= */
 const DB_NAME='miNegocioDB', STORE='kv', KEY='estado';
 let S=null; // estado
-function vacio(){return{version:1,config:{negocio:'Mi Negocio',stockMin:3},productos:[],materiales:[],movs:[],pedidos:[]}}
+function vacio(){return{version:1,config:{negocio:'Mi Negocio',stockMin:3},productos:[],materiales:[],movs:[],pedidos:[],fotos:[]}}
 function idb(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,1);r.onupgradeneeded=()=>r.result.createObjectStore(STORE);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
 async function cargar(){
   try{const db=await idb();S=await new Promise((res,rej)=>{const t=db.transaction(STORE).objectStore(STORE).get(KEY);t.onsuccess=()=>res(t.result||null);t.onerror=()=>rej(t.error)})}
@@ -624,13 +635,13 @@ function rangoMes(off=0){const d=new Date();const a=new Date(d.getFullYear(),d.g
 
 /* ================= Navegación ================= */
 let vista='inicio'; const ui={ropaTab:'stock',ramosTab:'stock',q:'',inf:{per:'mes',sec:'todo',desde:'',hasta:''}};
-const TABS=['inicio','ropa','ramos','pedidos','informes','ajustes'];
+const TABS=['inicio','ropa','ramos','pedidos','catalogo','informes','ajustes'];
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{const d=TABS.indexOf(b.dataset.v)-TABS.indexOf(vista);if(!d)return;$('#view').style.setProperty('--dx',(d>0?18:-18)+'px');vista=b.dataset.v;render();window.scrollTo(0,0)});
 function setHead(t,s){$('#htitle').textContent=t;$('#hsub').textContent=s||''}
 function render(anim){
   syncTema();
   document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v===vista));
-  ({inicio:vInicio,ropa:vRopa,ramos:vRamos,pedidos:vPedidos,informes:vInformes,ajustes:vAjustes})[vista]();
+  ({inicio:vInicio,ropa:vRopa,ramos:vRamos,pedidos:vPedidos,catalogo:vCatalogo,informes:vInformes,ajustes:vAjustes})[vista]();
   const v=$('#view');
   if(anim!==false){v.classList.remove('enter');void v.offsetWidth;v.classList.add('enter');setTimeout(()=>v.style.setProperty('--dx','0px'),400)}
   animarNumeros();
@@ -787,6 +798,7 @@ function vAjustes(){
     <div class="kv"><span>Materiales</span><span>${S.materiales.length}</span></div>
     <div class="kv"><span>Movimientos</span><span>${S.movs.length}</span></div>
     <div class="kv"><span>Pedidos</span><span>${S.pedidos.length}</span></div>
+    <div class="kv"><span>Fotos del catálogo</span><span>${S.fotos.length}</span></div>
     <button class="btn dan" id="aDel" style="margin-top:12px">Borrar todos los datos</button>
   </div>`;
   document.querySelectorAll('[data-tema]').forEach(b=>b.onclick=()=>setTema(b.dataset.tema));
@@ -1105,6 +1117,73 @@ function graficos(sec,r,a,b){
   <svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">${g}</svg>
   <div class="legend"><span><i style="background:var(--rosa)"></i>Ventas</span><span><i style="background:var(--muted);opacity:.55"></i>Compras</span></div>
   <p class="small" style="margin:10px 0 0">Ganancia de las ventas este mes: <b class="${gm>=0?'pos':'neg'}">${$$(gm)}</b>${dif!=null&&isFinite(dif)?` <span class="${dif>=0?'pos':'neg'}">(${dif>=0?'▲':'▼'} ${Math.abs(dif)}% vs mes pasado)</span>`:''}</p></div>${donut}`;
+}
+
+
+/* ================= Catálogo de fotos (copiar y pegar en el chat) ================= */
+async function idbSet(k,v){const db=await idb();return new Promise((res,rej)=>{const t=db.transaction(STORE,'readwrite');v===undefined?t.objectStore(STORE).delete(k):t.objectStore(STORE).put(v,k);t.oncomplete=res;t.onerror=()=>rej(t.error)})}
+async function idbGetK(k){const db=await idb();return new Promise((res,rej)=>{const t=db.transaction(STORE).objectStore(STORE).get(k);t.onsuccess=()=>res(t.result);t.onerror=()=>rej(t.error)})}
+const fotoURL={};
+async function urlFoto(id){if(fotoURL[id])return fotoURL[id];const b=await idbGetK('foto_'+id);if(!b)return'';return fotoURL[id]=URL.createObjectURL(b)}
+async function achicar(file){
+  const bmp=await createImageBitmap(file);const M=1400,k=Math.min(1,M/Math.max(bmp.width,bmp.height));
+  const c=document.createElement('canvas');c.width=Math.round(bmp.width*k);c.height=Math.round(bmp.height*k);c.getContext('2d').drawImage(bmp,0,0,c.width,c.height);
+  return new Promise(r=>c.toBlob(r,'image/jpeg',.88));
+}
+async function pngDe(id){ // el portapapeles del iPhone pide PNG
+  const b=await idbGetK('foto_'+id);const bmp=await createImageBitmap(b);const c=document.createElement('canvas');c.width=bmp.width;c.height=bmp.height;c.getContext('2d').drawImage(bmp,0,0);
+  return new Promise(r=>c.toBlob(r,'image/png'));
+}
+function fotosVisibles(){const f=ui.catF||'todo';return S.fotos.filter(x=>f==='todo'||x.sec===f).sort((a,b)=>(b.creado||0)-(a.creado||0))}
+function vCatalogo(){
+  setHead('Catálogo','Fotos listas para pegar en el chat');
+  const f=ui.catF||'todo', L=fotosVisibles();
+  $('#view').innerHTML=`
+  <div class="btnrow"><button class="btn in" id="cAdd">${ICON.plus} Agregar fotos</button><button class="btn out" id="cAll">📋 Copiar ${f==='todo'?'todas':'estas'}</button></div>
+  <div class="seg"><button data-cf="todo" class="${f==='todo'?'on':''}">Todo (${S.fotos.length})</button><button data-cf="ramos" class="${f==='ramos'?'on':''}">Ramos</button><button data-cf="ropa" class="${f==='ropa'?'on':''}">Ropa</button></div>
+  ${L.length?`<div class="cgrid">${L.map(x=>`<div class="cimg" data-foto="${x.id}"><img alt="" data-src="${x.id}">${x.nombre||x.precio?`<span class="tag">${esc(x.nombre||'')}${x.precio?' · '+$$(x.precio):''}</span>`:''}<button class="cp" data-cp="${x.id}">Copiar</button></div>`).join('')}</div>
+  <p class="small muted" style="text-align:center">Toca <b>Copiar</b> en una foto (o <b>Copiar ${f==='todo'?'todas':'estas'}</b>), entra al chat, mantén presionado y elige <b>Pegar</b>.</p>`
+  :`<div class="card empty">Aún no hay fotos en el catálogo.<br>Toca <b>Agregar fotos</b> y elige fotos de tus ramos o tu ropa.</div>`}`;
+  document.querySelectorAll('img[data-src]').forEach(async im=>{im.src=await urlFoto(im.dataset.src)});
+  $('#cAdd').onclick=()=>$('#fotoIn').click();
+  $('#cAll').onclick=()=>copiarFotos(fotosVisibles().map(x=>x.id));
+  document.querySelectorAll('[data-cf]').forEach(b=>b.onclick=()=>{ui.catF=b.dataset.cf;render(false)});
+  document.querySelectorAll('[data-cp]').forEach(b=>b.onclick=e=>{e.stopPropagation();copiarFotos([b.dataset.cp])});
+  document.querySelectorAll('[data-foto]').forEach(el=>el.onclick=()=>detalleFoto(el.dataset.foto));
+}
+$('#fotoIn').onchange=async e=>{
+  const files=[...e.target.files];e.target.value='';if(!files.length)return;
+  toast('Agregando '+files.length+(files.length===1?' foto…':' fotos…'));
+  const sec=(ui.catF&&ui.catF!=='todo')?ui.catF:'ramos';let n=0;
+  for(const f of files){try{const b=await achicar(f);const id=uid();await idbSet('foto_'+id,b);S.fotos.push({id,sec,nombre:'',precio:0,creado:Date.now()+n});n++}catch(_){}}
+  await guardar();render(false);toast(n?(n===1?'Foto agregada':n+' fotos agregadas'):'No se pudieron agregar');
+};
+function copiarFotos(ids){
+  if(!ids.length)return toast('No hay fotos para copiar');
+  const ok=()=>toast(ids.length===1?'Foto copiada 📋 Pégala en el chat':ids.length+' fotos copiadas 📋 Pégalas en el chat');
+  const fallo=()=>{
+    if(ids.length>1)abrir(`<h2>Copiar varias fotos</h2><p class="muted">Tu teléfono no deja copiar varias fotos a la vez. Puedes enviarlas todas juntas al chat con este botón (eliges WhatsApp y el chat), o copiarlas de a una.</p><button class="btn pri" id="shAll" style="margin-bottom:10px">Enviar las ${ids.length} fotos</button><button class="btn sec" id="shNo">Cancelar</button>`,()=>{
+      $('#shNo').onclick=cerrar;$('#shAll').onclick=async()=>{try{const files=await Promise.all(ids.map(async(id,i)=>new File([await idbGetK('foto_'+id)],'catalogo-'+(i+1)+'.jpg',{type:'image/jpeg'})));await navigator.share({files});cerrar()}catch(e){if(!e||e.name!=='AbortError')toast('No se pudieron enviar')}}});
+    else toast('No se pudo copiar la foto');
+  };
+  try{
+    if(!(navigator.clipboard&&window.ClipboardItem))return fallo();
+    navigator.clipboard.write(ids.map(id=>new ClipboardItem({'image/png':pngDe(id)}))).then(ok).catch(fallo);
+  }catch(_){fallo()}
+}
+async function detalleFoto(id){
+  const x=S.fotos.find(f=>f.id===id);if(!x)return;const u=await urlFoto(id);
+  abrir(`<img class="cbig" src="${u}" alt="">
+  <button class="btn pri" id="dCp" style="margin-bottom:12px">📋 Copiar esta foto</button>
+  <div class="f"><label>Nombre (opcional)</label><input id="dN" value="${esc(x.nombre||'')}" placeholder="Ej: Ramo 24 rosas rojas"></div>
+  <div class="f2"><div class="f"><label>Precio (opcional)</label><input id="dP" inputmode="numeric" value="${x.precio||''}" placeholder="$"></div>
+  <div class="f"><label>Sección</label><select id="dS"><option value="ramos" ${x.sec==='ramos'?'selected':''}>Ramos</option><option value="ropa" ${x.sec==='ropa'?'selected':''}>Ropa</option></select></div></div>
+  <button class="btn sec" id="dOk" style="margin-bottom:10px">Guardar</button>
+  <button class="btn dan" id="dDel">Eliminar foto</button>`,()=>{
+    $('#dCp').onclick=()=>copiarFotos([id]);
+    $('#dOk').onclick=async()=>{x.nombre=$('#dN').value.trim();x.precio=num($('#dP').value);x.sec=$('#dS').value;await guardar();cerrar();render(false);toast('Guardado')};
+    $('#dDel').onclick=()=>confirmar('¿Eliminar foto?','Se quitará del catálogo (no se borra de tu galería).','Eliminar',async()=>{S.fotos=S.fotos.filter(f=>f.id!==id);await idbSet('foto_'+id,undefined);if(fotoURL[id]){URL.revokeObjectURL(fotoURL[id]);delete fotoURL[id]}await guardar();render(false);toast('Foto eliminada')});
+  });
 }
 
 /* ================= Informes: PDF y Excel ================= */

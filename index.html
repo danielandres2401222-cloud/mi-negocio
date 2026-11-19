@@ -51,9 +51,9 @@ header.top.consec h1,header.top.consec .sub{display:none}
 .mdbanner{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#ffe3ee,#fff);border-radius:16px;padding:10px 14px;margin:8px 0 4px;box-shadow:var(--sombra);font-size:14px;color:#b82e63;font-weight:650;cursor:pointer;border:0;width:100%;text-align:left}
 html[data-theme=dark] .mdcard{background:linear-gradient(160deg,#2a1520,#3a1a2a)}html[data-theme=dark] .mdm{color:#fbe4ee}
 header.top.conlogo,header.top.consec{position:relative}
-html[data-fx]:not([data-fx=none]) header.top::before{opacity:0;transition:opacity .25s ease}
-html.scrolled[data-fx]:not([data-fx=none]) header.top::before{opacity:1}
-header.top.conlogo::before,header.top.consec::before{display:none!important}
+html[data-fx]:not([data-fx=none]) header.top::before{display:none!important}
+#topblur{display:none;position:fixed;left:0;right:0;top:-320px;height:calc(346px + var(--blurH,90px));z-index:4;pointer-events:none;-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 44px),transparent);transition:height .25s ease}
+html[data-fx]:not([data-fx=none]) #topblur{display:block}
 header.top .sub{font-size:13px;color:var(--muted);font-weight:500;letter-spacing:.02em}
 header.top h1{margin:0;color:var(--rosa-ink);font-size:28px;letter-spacing:-.02em;font-weight:750}
 main{padding:6px 16px 24px;max-width:640px;margin:0 auto}
@@ -222,7 +222,7 @@ html[data-fx]:not([data-fx=none]) .kpi.big{box-shadow:0 10px 30px rgba(217,74,12
 </style>
 </head>
 <body>
-<header class="top"><div class="hlogos" id="hlogos"><img src="logo-ropa.png" alt="Stylo Fashion" data-go="ropa"><img src="logo-ramos.png" alt="Tulip Clouds" data-go="ramos"></div><img class="hsec" id="hsec" alt=""><div class="sub" id="hsub"></div><h1 id="htitle">Inicio</h1><button class="thb" id="thBtn" aria-label="Claro / Nocturno"></button></header>
+<div id="topblur" aria-hidden="true"></div><header class="top"><div class="hlogos" id="hlogos"><img src="logo-ropa.png" alt="Stylo Fashion" data-go="ropa"><img src="logo-ramos.png" alt="Tulip Clouds" data-go="ramos"></div><img class="hsec" id="hsec" alt=""><div class="sub" id="hsub"></div><h1 id="htitle">Inicio</h1><button class="thb" id="thBtn" aria-label="Claro / Nocturno"></button></header>
 <div id="bgfx" aria-hidden="true"></div>
 <div id="bgimg" aria-hidden="true"></div>
 <canvas id="bgpart" aria-hidden="true"></canvas>
@@ -1123,8 +1123,7 @@ function verMsgDia(){const r0=msgDelDia(),i=r0.i,TXT=r0.txt||MSGS[i];
 function chequearMsgDia(){if(document.querySelector('.msgdia'))return;const r=msgDelDia();if(r.nuevo)setTimeout(verMsgDia,700)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)chequearMsgDia()});
 
-addEventListener('scroll',()=>document.documentElement.classList.toggle('scrolled',scrollY>4),{passive:true});
-function setHead(t,s){$('#htitle').textContent=t;$('#hsub').textContent=s||'';const h=document.querySelector('header.top');h.classList.toggle('conlogo',vista==='inicio');const L={ropa:['logo-ropa.png','Stylo Fashion'],ramos:['logo-ramos.png','Tulip Clouds']}[vista];h.classList.toggle('consec',!!L);if(L){$('#hsec').src=L[0];$('#hsec').alt=L[1]}}
+function setHead(t,s){$('#htitle').textContent=t;$('#hsub').textContent=s||'';const h=document.querySelector('header.top');h.classList.toggle('conlogo',vista==='inicio');const L={ropa:['logo-ropa.png','Stylo Fashion'],ramos:['logo-ramos.png','Tulip Clouds']}[vista];h.classList.toggle('consec',!!L);if(L){$('#hsec').src=L[0];$('#hsec').alt=L[1]};requestAnimationFrame(()=>{const h=document.querySelector('header.top');const fijo=getComputedStyle(h).position==='sticky';document.documentElement.style.setProperty('--blurH',(fijo?h.offsetHeight:Math.round(parseFloat(getComputedStyle(h).paddingTop)||0)+34)+'px')})}
 function render(anim){
   syncTema();
   document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v===vista));

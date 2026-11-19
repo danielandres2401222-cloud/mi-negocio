@@ -179,7 +179,7 @@ nav.tabs button{font-size:10.5px}
 .cbig{width:100%;border-radius:16px;display:block;margin:0 0 12px;max-height:46vh;object-fit:contain;background:var(--rosa-3)}
 nav.tabs button{font-size:10px}
 
-#bgfx{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+#bgfx{position:fixed;left:0;top:-20vh;width:100vw;height:140vh;z-index:0;pointer-events:none}
 main{position:relative;z-index:1}
 :root{--cardA:rgba(255,255,255,.62)}
 html[data-theme=dark],html[data-fx=galaxia],html[data-fx=imagen],html[data-fx=via-lactea],html[data-fx=cielo-profundo],html[data-fx^=cc-]{--cardA:rgba(36,20,27,.6)}
@@ -1103,8 +1103,9 @@ const MSGS=[
 "Eres el mejor capítulo de mi vida 📖💗"
 ];
 const FIRMA='De: Daniel El Xulo Ps.';
-const ESPECIALES={'01-01':'¡Feliz Año Nuevo, mi amor! 🎆 Este año va a ser el año de tus negocios. Te amo 💗','02-14':'Feliz día de los enamorados 💘 Gracias por ser mi persona favorita. Hoy tus ramos van a volar, ¡pero tú eres mi flor favorita! 🌹','09-18':'¡Felices Fiestas Patrias! 🇨🇱 Que hoy descanses, comas harto rico y lo pasemos bacán juntos 🥟💗','12-24':'Feliz Nochebuena, mi amor 🎄 Gracias por este año tan lindo. Estoy muy orgulloso de todo lo que lograste 💗','12-25':'¡Feliz Navidad! 🎁 Mi mejor regalo eres tú 💗','12-31':'Último día del año 🥂 Mira todo lo que lograste. El próximo año vamos por más, juntos 💗'};
-function msgDelDia(){const h=hoy();const esp=ESPECIALES[h.slice(5)];
+const ESPECIALES={'01-01':'¡Feliz Año Nuevo, mi amor! 🎆 Este año va a ser el año de tus negocios. Te amo 💗','02-14':'Feliz día de los enamorados 💘 Gracias por ser mi persona favorita. Hoy tus ramos van a volar, ¡pero tú eres mi flor favorita! 🌹','09-18':'¡Felices Fiestas Patrias! 🇨🇱 Que hoy descanses, comas harto rico y lo pasemos bacán juntos 🥟💗','12-24':'Feliz Nochebuena y feliz mes juntos, mi amor 🎄💗 Gracias por este año tan lindo. Estoy muy orgulloso de todo lo que lograste y feliz de pasar otra Navidad contigo','01-24':'¡Feliz aniversario, mi amor! 💍💗 Un año más juntos y te quiero más que nunca. Gracias por cada día, por tu cariño y por dejarme ser parte de tus sueños. Te amo 🥹❤️','12-25':'¡Feliz Navidad! 🎁 Mi mejor regalo eres tú 💗','12-31':'Último día del año 🥂 Mira todo lo que lograste. El próximo año vamos por más, juntos 💗'};
+const MESES_JUNTOS=['','','Feliz mes, mi amor 💗 Otro mes más a tu lado y sigo igual de enamorado 🥰','Hoy cumplimos mes 💗 Gracias por hacer mis días más bonitos ✨','¡Feliz mes juntos! 🌷 Eres lo mejor que me ha pasado','Feliz mesiversario 💗 Contigo todo es mejor, hasta los lunes 😂','Hoy es 24 y eso significa una cosa: feliz mes, mi vida 💗','¡Un mes más juntos! 🎉 Te quiero más que ayer y menos que mañana 💗','Feliz mes, mi amor 💐 Gracias por tu paciencia, tu risa y tus abrazos','Hoy celebramos otro mes 🥂 Eres mi persona favorita en el mundo 💗','Feliz mes juntos 💗 Me encanta construir cosas contigo, como tu negocio y lo nuestro','Feliz mesiversario, preciosa 💗 Cada mes contigo es un regalo 🎁','Feliz mes, mi amor 💗 Ya casi otro año juntos, y quiero muchos más 🥹'];
+function msgDelDia(){const h=hoy();const md=h.slice(5);const esp=ESPECIALES[md]||(md.slice(3)==='24'?MESES_JUNTOS[+md.slice(0,2)]:'');
   if(esp){let st={};try{st=JSON.parse(localStorage.getItem('mn_msgdia')||'{}')}catch(_){}const nuevo=st.fecha!==h;if(nuevo){st.fecha=h;st.i=-1;try{localStorage.setItem('mn_msgdia',JSON.stringify(st))}catch(_){}}return{i:-1,txt:esp,nuevo}}let st={};try{st=JSON.parse(localStorage.getItem('mn_msgdia')||'{}')}catch(_){}
   if(st.fecha===h&&MSGS[st.i]!=null)return{i:st.i,nuevo:false};
   let usados=Array.isArray(st.usados)?st.usados.filter(i=>i<MSGS.length):[];if(usados.length>=MSGS.length)usados=[];

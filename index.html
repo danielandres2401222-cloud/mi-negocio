@@ -36,6 +36,19 @@ header.top.conlogo h1,header.top.conlogo .sub{display:none}
 header.top.consec{text-align:center;padding-bottom:8px}
 header.top.consec #hsec{display:block;margin:4px auto 0;width:min(40vw,160px);height:auto;border-radius:50%;filter:drop-shadow(0 4px 12px rgba(184,46,99,.18))}
 header.top.consec h1,header.top.consec .sub{display:none}
+.msgdia{position:fixed;inset:0;z-index:40;background:rgba(60,15,35,.45);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity .35s;overflow:hidden}
+.msgdia.on{opacity:1}
+.mdcard{position:relative;z-index:2;background:linear-gradient(160deg,#fff,#ffeef5);border-radius:26px;padding:26px 22px 20px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(184,46,99,.35);transform:scale(.85) translateY(20px);transition:transform .45s cubic-bezier(.2,1.3,.4,1)}
+.msgdia.on .mdcard{transform:none}
+.mdcor{font-size:46px;line-height:1;animation:latir 1.4s ease-in-out infinite}
+@keyframes latir{0%,100%{transform:scale(1)}15%{transform:scale(1.15)}30%{transform:scale(1)}45%{transform:scale(1.1)}}
+.mdt{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d94a7d;margin:10px 0 6px}
+.mdm{font-size:20px;line-height:1.35;font-weight:650;color:#3d1f2c;margin:6px 0 14px}
+.mdf{font-style:italic;font-weight:700;color:#b82e63;margin:0 0 16px}
+.msgdia i{position:absolute;bottom:-40px;font-style:normal;animation:subir 5s linear infinite;opacity:.8;z-index:1}
+@keyframes subir{0%{transform:translateY(0) rotate(0)}100%{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.mdbanner{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#ffe3ee,#fff);border-radius:16px;padding:10px 14px;margin:8px 0 4px;box-shadow:var(--sombra);font-size:14px;color:#b82e63;font-weight:650;cursor:pointer;border:0;width:100%;text-align:left}
+html[data-theme=dark] .mdcard{background:linear-gradient(160deg,#2a1520,#3a1a2a)}html[data-theme=dark] .mdm{color:#fbe4ee}
 header.top .sub{font-size:13px;color:var(--muted);font-weight:500;letter-spacing:.02em}
 header.top h1{margin:0;color:var(--rosa-ink);font-size:28px;letter-spacing:-.02em;font-weight:750}
 main{padding:6px 16px 24px;max-width:640px;margin:0 auto}
@@ -719,6 +732,74 @@ let vista='inicio'; const ui={ropaTab:'stock',ramosTab:'stock',q:'',inf:{per:'me
 const TABS=['inicio','ropa','ramos','pedidos','catalogo','informes','ajustes'];
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{const d=TABS.indexOf(b.dataset.v)-TABS.indexOf(vista);if(!d)return;$('#view').style.setProperty('--dx',(d>0?18:-18)+'px');vista=b.dataset.v;render();window.scrollTo(0,0)});
 document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('[data-go]');if(g){vista=g.dataset.go;render()}});
+/* ===== Mensaje del día de parte de Daniel ===== */
+const MSGS=[
+'Buenos días, mi emprendedora favorita ☀️ Hoy es un buen día para vender todo.',
+'Recuerda que cada ramo que haces lleva tu cariño, por eso a la gente le encantan 🌹',
+'Paso a paso estás construyendo algo tuyo. Estoy orgulloso de ti 💗',
+'Hoy vas a vender más que ayer. Confío en ti 💪',
+'No olvides tomar agüita y comer algo rico antes de ponerte a trabajar 😘',
+'Stylo Fashion y Tulip Clouds tienen a la mejor jefa del mundo 👑',
+'Si hoy algo sale mal, no pasa nada: mañana lo haces mejor. Yo estoy contigo.',
+'Tus clientas tienen suerte de comprarte a ti ✨',
+'Cada venta chiquita también cuenta. Vas súper bien 📈',
+'Eres más capaz de lo que crees, de verdad.',
+'Hoy toca brillar como las luces de tus ramos ✨🌹',
+'Tómate un respiro si lo necesitas. Descansar también es avanzar.',
+'Me encanta verte trabajar en lo tuyo. Eres seca 🔥',
+'Un día a la vez, una venta a la vez. Vamos que se puede 💪',
+'Tu esfuerzo de hoy es tu negocio grande de mañana 🚀',
+'Sonríe, que con esa sonrisa vendes el doble 😄',
+'No te compares con nadie: tu estilo es único 💅',
+'Pase lo que pase hoy, yo te admiro un montón 💗',
+'Recuerda subir fotos lindas hoy: tus productos merecen que los vean 📸',
+'Hoy alguien va a ser feliz con un ramo tuyo. Eso es bacán 🌹',
+'Eres creativa, trabajadora y preciosa. Combinación perfecta ✨',
+'Si te cansas, acuérdate de por qué empezaste. Vas a lograrlo.',
+'Te quiero mucho. Ahora a romperla con las ventas 😎',
+'La constancia le gana al talento, y tú tienes las dos 💪',
+'Hoy es un día perfecto para responder todos los mensajes con buena onda 💬',
+'Tu negocio crece porque tú creces. Sigue así 🌱',
+'Cada pedido entregado es una clienta feliz gracias a ti 📦💗',
+'No olvides cobrar lo que vale tu trabajo. Vales mucho 💰',
+'Hoy te mando toda mi buena energía para que te vaya increíble ⚡',
+'Las cosas lindas toman tiempo, como tus ramos. Paciencia 🌷',
+'Estoy aquí para ayudarte en lo que necesites, siempre 🤝',
+'Eres la jefa: tú decides cómo va a ser este día 👑',
+'Un error no te define. Tu esfuerzo sí 💪',
+'Cuando tu negocio sea gigante, me vas a tener que contratar 😂',
+'Hoy céntrate en una cosa a la vez y te va a rendir todo.',
+'Me encanta lo dedicada que eres. Se nota en cada detalle ✨',
+'Que tengas un día tan bonito como tus diseños 💗',
+'Hoy alguien va a ver tus fotos y va a decir "lo quiero". Vamos 🛍️',
+'No estás sola en esto. Somos equipo 💪💗',
+'Recuerda: un "no" de una clienta no es un no del mundo. Sigue.',
+'Eres inspiración para mí todos los días ✨',
+'Hoy date permiso para estar orgullosa de lo que has logrado 🏆',
+'Lo que estás haciendo es valiente: emprender no es para cualquiera 🔥',
+'Cada mañana es una nueva oportunidad para vender y para sonreír ☀️',
+'Si hoy vendes uno, mañana vendes dos. Así se construye 📈',
+'Tu talento merece ser visto. Muéstralo con orgullo 🌟',
+'Ojalá hoy tengas mil pedidos y cero estrés 😆',
+'Pase lo que pase, al final del día yo te voy a seguir queriendo igual 💗',
+'Descansa cuando lo necesites: la mejor versión de ti es la descansada 😴✨',
+'Gracias por ser como eres. Ahora sí, a conquistar el día 🚀'
+];
+const FIRMA='De: Daniel El Xulo Ps.';
+function msgDelDia(){const h=hoy();let st={};try{st=JSON.parse(localStorage.getItem('mn_msgdia')||'{}')}catch(_){}
+  if(st.fecha===h&&MSGS[st.i]!=null)return{i:st.i,nuevo:false};
+  let usados=Array.isArray(st.usados)?st.usados.filter(i=>i<MSGS.length):[];if(usados.length>=MSGS.length)usados=[];
+  const libres=MSGS.map((_,i)=>i).filter(i=>!usados.includes(i));const i=libres[Math.floor(Math.random()*libres.length)];
+  usados.push(i);try{localStorage.setItem('mn_msgdia',JSON.stringify({fecha:h,i,usados}))}catch(_){}return{i,nuevo:true}}
+function verMsgDia(){const{i}=msgDelDia();
+  const d=document.createElement('div');d.className='msgdia';d.innerHTML=`<div class="mdcard"><div class="mdcor">💌</div><div class="mdt">Mensaje del día</div><p class="mdm">${esc(MSGS[i])}</p><div class="mdf">${FIRMA}</div><button class="btn pri" id="mdOk">Gracias 💗</button></div>${'<i>💗</i>'.repeat(12)}`;
+  document.body.appendChild(d);d.querySelectorAll('i').forEach((h,k)=>{h.style.left=(5+Math.random()*90)+'%';h.style.animationDelay=(k*0.25)+'s';h.style.fontSize=(14+Math.random()*16)+'px'});
+  requestAnimationFrame(()=>d.classList.add('on'));
+  const cerrarM=()=>{d.classList.remove('on');setTimeout(()=>d.remove(),350)};
+  d.querySelector('#mdOk').onclick=cerrarM;d.onclick=e=>{if(e.target===d)cerrarM()}}
+function chequearMsgDia(){if(document.querySelector('.msgdia'))return;const r=msgDelDia();if(r.nuevo)setTimeout(verMsgDia,700)}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)chequearMsgDia()});
+
 function setHead(t,s){$('#htitle').textContent=t;$('#hsub').textContent=s||'';const h=document.querySelector('header.top');h.classList.toggle('conlogo',vista==='inicio');const L={ropa:['logo-ropa.png','Stylo Fashion'],ramos:['logo-ramos.png','Tulip Clouds']}[vista];h.classList.toggle('consec',!!L);if(L){$('#hsec').src=L[0];$('#hsec').alt=L[1]}}
 function render(anim){
   syncTema();
@@ -758,6 +839,7 @@ function vInicio(){
   const standalone=window.navigator.standalone||matchMedia('(display-mode: standalone)').matches;
   $('#view').innerHTML=`
   ${!standalone&&/iPhone|iPad/.test(navigator.userAgent)?`<div class="install"><b>Instálala en tu iPhone:</b> toca <b>Compartir</b> y luego <b>"Agregar a pantalla de inicio"</b>.</div>`:''}
+  <button class="mdbanner" id="mdBan">💌 <span>Mensaje del día de Daniel El Xulo Ps.</span></button>
   <div class="grid2" style="margin-top:8px">
     <div class="kpi big"><div class="l">Ganancia del mes (ventas − costo de lo vendido)</div><div class="v ${r.ganancia>=0?'pos':'neg'}">${cnt$(r.ganancia)}</div></div>
     <div class="kpi"><div class="l">Vendido</div><div class="v">${cnt$(r.ventas)}</div></div>
@@ -773,7 +855,7 @@ function vInicio(){
   ${bajos.length?`<div class="card"><h2>Queda poco stock</h2>${bajos.slice(0,6).map(x=>`<div class="kv"><span>${esc(x.n)}</span><span class="${x.s<=0?'neg':''}">${nf(x.s)} ${esc(x.u)}</span></div>`).join('')}</div>`:''}
   <div class="sectitle"><h3>Últimos movimientos</h3></div>
   ${ult.length?`<div class="list">${ult.map(m=>filaMov(m,true)).join('')}</div>`:`<div class="card empty">Todavía no hay movimientos.<br>Parte en <b>Ropa</b> o <b>Ramos</b> registrando un ingreso.</div>`}`;
-  bindMovs();bindInicioExtra();
+  bindMovs();bindInicioExtra();const mb=$('#mdBan');if(mb)mb.onclick=verMsgDia;
 }
 
 function vRopa(){
@@ -1760,7 +1842,7 @@ function informeCSV(a,b,nom,sec){
 }
 
 /* ================= Inicio ================= */
-(async()=>{await cargar();render();
+(async()=>{await cargar();render();chequearMsgDia();
   if('serviceWorker' in navigator&&location.protocol==='https:'){try{navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(_){}}
 })();
 </script>

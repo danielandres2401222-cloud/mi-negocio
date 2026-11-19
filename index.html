@@ -51,6 +51,9 @@ header.top.consec h1,header.top.consec .sub{display:none}
 .mdbanner{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#ffe3ee,#fff);border-radius:16px;padding:10px 14px;margin:8px 0 4px;box-shadow:var(--sombra);font-size:14px;color:#b82e63;font-weight:650;cursor:pointer;border:0;width:100%;text-align:left}
 html[data-theme=dark] .mdcard{background:linear-gradient(160deg,#2a1520,#3a1a2a)}html[data-theme=dark] .mdm{color:#fbe4ee}
 header.top.conlogo,header.top.consec{position:relative}
+html[data-fx]:not([data-fx=none]) header.top::before{opacity:0;transition:opacity .25s ease}
+html.scrolled[data-fx]:not([data-fx=none]) header.top::before{opacity:1}
+header.top.conlogo::before,header.top.consec::before{display:none!important}
 header.top .sub{font-size:13px;color:var(--muted);font-weight:500;letter-spacing:.02em}
 header.top h1{margin:0;color:var(--rosa-ink);font-size:28px;letter-spacing:-.02em;font-weight:750}
 main{padding:6px 16px 24px;max-width:640px;margin:0 auto}
@@ -1120,6 +1123,7 @@ function verMsgDia(){const r0=msgDelDia(),i=r0.i,TXT=r0.txt||MSGS[i];
 function chequearMsgDia(){if(document.querySelector('.msgdia'))return;const r=msgDelDia();if(r.nuevo)setTimeout(verMsgDia,700)}
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)chequearMsgDia()});
 
+addEventListener('scroll',()=>document.documentElement.classList.toggle('scrolled',scrollY>4),{passive:true});
 function setHead(t,s){$('#htitle').textContent=t;$('#hsub').textContent=s||'';const h=document.querySelector('header.top');h.classList.toggle('conlogo',vista==='inicio');const L={ropa:['logo-ropa.png','Stylo Fashion'],ramos:['logo-ramos.png','Tulip Clouds']}[vista];h.classList.toggle('consec',!!L);if(L){$('#hsec').src=L[0];$('#hsec').alt=L[1]}}
 function render(anim){
   syncTema();
